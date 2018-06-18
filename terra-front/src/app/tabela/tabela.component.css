@@ -1,0 +1,7 @@
+.tabela{
+    width: 80%;
+    margin: 15px auto;
+}
+mat-header-cell, mat-form-field{
+    width: calc(100% - 40px);
+}

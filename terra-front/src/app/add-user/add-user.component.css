@@ -1,0 +1,42 @@
+.main{
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+}
+mat-card-actions{
+    margin-left: 5px !important;
+}
+.before-form span{
+    font-family: 'Roboto', sans-serif;
+    font-weight: normal;
+    font-size: 20px;
+    margin-right: 10px;
+}
+.parent{
+    color: #9E9E9E;
+    cursor: pointer;
+}
+mat-card-content, mat-card-actions{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;;
+    align-items: baseline;
+
+}
+mat-form-field{
+    flex: 1 1 auto;
+    flex-basis: 30%;
+    margin: 5px;
+}
+@media(max-width: 600px){
+    mat-form-field{
+        flex-basis: 100%;
+    }
+    
+}
+@media(max-width: 800px){
+    mat-form-field{
+        flex-basis: 40%;
+    }
+    
+}

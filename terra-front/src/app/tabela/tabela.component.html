@@ -1,0 +1,58 @@
+<div class="mat-elevation-z8 tabela">
+  <mat-table #table [dataSource]="dataSource" matSort aria-label="Elements">
+
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-form-field>
+          <input type="text" matInput placeholder='Id' (input)="search$.next({search: $event.target.value, prop: 'id'})" />
+        </mat-form-field>
+        <span mat-sort-header></span>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
+    </ng-container>
+    
+    <!-- User Column -->
+    <ng-container matColumnDef="user">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-form-field>
+          <input type="text" matInput placeholder='Usuário' (input)="search$.next({search: $event.target.value, prop: 'user'})" />
+        </mat-form-field>
+        <span mat-sort-header></span>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.user}}</mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-form-field>
+          <input type="text" matInput placeholder='Nome' (input)="search$.next({search: $event.target.value, prop: 'name'})" />
+        </mat-form-field>
+        <span mat-sort-header></span>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+    </ng-container>
+
+    <!-- Role Column -->
+    <ng-container matColumnDef="role">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-form-field>
+          <input type="text" matInput placeholder='Permissão' (input)="search$.next({search: $event.target.value, prop: 'role'})" />
+        </mat-form-field>
+        <span mat-sort-header></span>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.role == 0 ? 'Usuário' : 'Administrador'}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator
+    [length]="dataSource.data.length"
+    [pageIndex]="0"
+    [pageSize]="defaultPageSize"
+    [pageSizeOptions]="pageSizes">
+  </mat-paginator>
+</div>

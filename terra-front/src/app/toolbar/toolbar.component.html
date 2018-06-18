@@ -1,0 +1,13 @@
+<div class="main-content">
+  <div class="navbar">
+    <mat-toolbar>
+      <img class="logo" src="../../assets/images/project-logo.png" height="50px" /> MinhaLogo
+      <span class="spacer"></span>
+      <button mat-button [matMenuTriggerFor]="menu"><img src="../../assets/images/user-icon.png" height="50px" width="auto"></button>
+    </mat-toolbar>
+  </div>
+</div>
+<mat-menu #menu="matMenu" yPosition='below' xPosition='after' overlapTrigger='false'>
+  <p>{{username}}</p>
+  <button mat-menu-item (click)='logout()'>Sair</button>
+</mat-menu>

@@ -1,0 +1,8 @@
+<app-toolbar></app-toolbar>
+<div class="before-table">
+  <div>
+    <span>Usuários</span>
+  </div>
+  <button mat-raised-button color="primary" *ngIf='isAdmin' (click)='navAddUser()'>Adicionar Usuário</button>
+</div>
+<app-tabela></app-tabela>
