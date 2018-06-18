@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  url: 'localhost:8080',
+  mock: false,
 };

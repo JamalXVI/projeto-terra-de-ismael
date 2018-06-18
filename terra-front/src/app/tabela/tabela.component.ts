@@ -32,7 +32,7 @@ export class TabelaComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource(this.userService.gerUsers());
+    this.dataSource = new MatTableDataSource(this.userService.getUsers());
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = this.createFilter();
