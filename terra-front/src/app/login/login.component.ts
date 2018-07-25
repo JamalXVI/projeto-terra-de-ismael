@@ -6,7 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CustomErrorStateMatcher } from '../core/CustomErrorStateMatcher.model';
 import { AuthService } from '../core/auth/auth-service.service';
-
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 
 @Component({
@@ -54,12 +55,15 @@ export class LoginComponent implements OnInit {
   }
   public sendForm() {
     if (this.siginForm.valid) {
-      if (this.authService.logIn(this.siginForm.get('user').value, this.siginForm.get('pwd').value)) {
+      this.authService.logIn(this.siginForm.get('user').value, this.siginForm.get('pwd').value)
+      .subscribe(vlr => {
         this.openSnackBar('Quem procura acha né homi?');
         this.router.navigate(['/home']);
-      } else {
+
+      }, err => {
         this.openSnackBar('Oxi, encontrei foi não! Tem certeza que está certo ai?');
-      }
+
+      });
     }
   }
   openSnackBar(message: string) {

@@ -6,7 +6,13 @@ export class LocalStorage {
         if (!localStorage.getItem(key) || localStorage.getItem(key).toString() === 'undefined') {
             localStorage.setItem(key, defaultValue);
         }
-        return JSON.parse(localStorage.getItem(key));
+        let retorno: any;
+        try {
+            retorno = JSON.parse(localStorage.getItem(key));
+        } catch (error) {
+            retorno = localStorage.getItem(key);
+        }
+        return retorno;
     }
 
     setItem(key: string, value: any): void {

@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  url: 'localhost:8080',
-  mock: true,
+  url: 'http://localhost:8080',
+  mock: false,
 };
 
 /*

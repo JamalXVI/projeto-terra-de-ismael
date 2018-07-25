@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatPaginatorIntl } from '@angular/material';
 import { UserService } from '../core/user/user.service';
-import { DEFAULT_PAGE_SIZE_OPTION, PAGE_SIZE_OPTIONS, UserFilter, CustomPaginatorLabels } from '../core/constants';
+import { DEFAULT_PAGE_SIZE_OPTION, PAGE_SIZE_OPTIONS, UserFilter, CustomPaginatorLabels } from '../core/const/constants';
 import { Subject } from 'rxjs/internal/Subject';
 import { map } from 'rxjs/internal/operators/map';
 import { distinctUntilChanged } from 'rxjs/operators';

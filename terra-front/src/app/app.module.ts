@@ -22,6 +22,9 @@ import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { TabelaComponent } from './tabela/tabela.component';
 import { MatTableModule, MatPaginatorModule, MatSortModule, MatSelectModule } from '@angular/material';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { LoginInterceptor } from './core/interceptors/login.interceptor';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,8 @@ import { MatTableModule, MatPaginatorModule, MatSortModule, MatSelectModule } fr
     TabelaComponent,
   ],
   imports: [
+    HttpClientModule,
+    HttpModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -52,7 +57,20 @@ import { MatTableModule, MatPaginatorModule, MatSortModule, MatSelectModule } fr
     MatSortModule,
     MatSelectModule
   ],
-  providers: [],
+  providers: [
+    AuthInterceptor,
+    LoginInterceptor,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoginInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
