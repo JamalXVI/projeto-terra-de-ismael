@@ -12,7 +12,7 @@ export class ToolbarComponent implements OnInit {
   username: String = '';
   constructor(private authService: AuthService,
     private router: Router) {
-    this.username = this.authService.getUserName().toUpperCase();
+    this.authService.getUserName().subscribe(usr =>this.username = usr.toUpperCase());
   }
 
   ngOnInit() {

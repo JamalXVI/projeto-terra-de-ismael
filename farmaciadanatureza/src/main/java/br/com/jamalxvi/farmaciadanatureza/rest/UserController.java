@@ -74,11 +74,14 @@ public class UserController {
    * We are not using userService.findByUsername here(we could), so it is good that we are making
    * sure that the user has role "ROLE_USER" to access this endpoint.
    */
-  @RequestMapping("/whoami")
+  @RequestMapping("/quemsou")
   @PreAuthorize("hasRole('USUARIO')")
-  public Usuario user() {
-    return (Usuario)
-            SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  public RequisicaoDoUsuario user() {
+    Usuario usuario = (Usuario)
+        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return RequisicaoDoUsuario.builder().usuario(usuario.getUsuario())
+        .cpf(usuario.getPessoa().getCpf()).nome(usuario.getPessoa().getNome())
+        .id(usuario.getId()).sobrenome(usuario.getPessoa().getSobrenome()).build();
   }
 
 }

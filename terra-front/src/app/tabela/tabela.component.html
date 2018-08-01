@@ -13,25 +13,25 @@
     </ng-container>
     
     <!-- User Column -->
-    <ng-container matColumnDef="user">
+    <ng-container matColumnDef="usuario">
       <mat-header-cell *matHeaderCellDef>
         <mat-form-field>
           <input type="text" matInput placeholder='Usuário' (input)="search$.next({search: $event.target.value, prop: 'user'})" />
         </mat-form-field>
         <span mat-sort-header></span>
       </mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.user}}</mat-cell>
+      <mat-cell *matCellDef="let row">{{row.usuario}}</mat-cell>
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container matColumnDef="name">
+    <ng-container matColumnDef="nome">
       <mat-header-cell *matHeaderCellDef>
         <mat-form-field>
           <input type="text" matInput placeholder='Nome' (input)="search$.next({search: $event.target.value, prop: 'name'})" />
         </mat-form-field>
         <span mat-sort-header></span>
       </mat-header-cell>
-      <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+      <mat-cell *matCellDef="let row">{{row.nome}}</mat-cell>
     </ng-container>
 
     <!-- Role Column -->

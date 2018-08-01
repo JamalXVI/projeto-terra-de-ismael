@@ -24,45 +24,45 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input matInput placeholder="Nome" formControlName="name" [errorStateMatcher]="matcher"/>
+            <input matInput placeholder="Nome" formControlName="nome" [errorStateMatcher]="matcher"/>
             <mat-icon matPrefix>supervised_user_circle</mat-icon>
-            <mat-hint *ngIf="!form.controls['id'].pristine && form.controls['name'].pristine">Digite o nome do usuário</mat-hint>
-            <mat-error *ngIf="form.controls['name'].hasError('minlength') && !form.controls['name'].hasError('required')">
+            <mat-hint *ngIf="!form.controls['id'].pristine && form.controls['nome'].pristine">Digite o nome do usuário</mat-hint>
+            <mat-error *ngIf="form.controls['nome'].hasError('minlength') && !form.controls['nome'].hasError('required')">
               O nome precisa de no mínimo 3 dígitos
             </mat-error>
-            <mat-error *ngIf="form.controls['name'].hasError('required')">
+            <mat-error *ngIf="form.controls['nome'].hasError('required')">
               Você precisa preencher o nome
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input matInput placeholder="Usuário" formControlName="user" [errorStateMatcher]="matcher"/>
+            <input matInput placeholder="Usuário" formControlName="usuario" [errorStateMatcher]="matcher"/>
             <mat-icon matPrefix>account_circle</mat-icon>
-            <mat-hint *ngIf="!form.controls['name'].pristine && form.controls['user'].pristine">Digite o usuário</mat-hint>
-            <mat-error *ngIf="form.controls['user'].hasError('minlength') && !form.controls['user'].hasError('required') && !form.controls['user'].hasError('alreadyExists')">
+            <mat-hint *ngIf="!form.controls['nome'].pristine && form.controls['usuario'].pristine">Digite o usuário</mat-hint>
+            <mat-error *ngIf="form.controls['usuario'].hasError('minlength') && !form.controls['usuario'].hasError('required') && !form.controls['usuario'].hasError('alreadyExists')">
                 O usuário precisa de no mínimo 3 dígitos
             </mat-error>
-            <mat-error *ngIf="form.controls['user'].hasError('required') && !form.controls['user'].hasError('alreadyExists')">
+            <mat-error *ngIf="form.controls['usuario'].hasError('required') && !form.controls['usuario'].hasError('alreadyExists')">
               Não tem como você entrar sem digitar um usuário!
             </mat-error>
-            <mat-error *ngIf="form.controls['user'].hasError('alreadyExists')">
+            <mat-error *ngIf="form.controls['usuario'].hasError('alreadyExists')">
               Este id já existe, por favor digite um outro.
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input matInput placeholder="Senha" formControlName="password" [errorStateMatcher]="matcher" type="password" />
+            <input matInput placeholder="Senha" formControlName="senha" [errorStateMatcher]="matcher" type="senha" />
             <mat-icon matPrefix>lock</mat-icon>
-            <mat-hint *ngIf="!form.controls['user'].pristine && form.controls['password'].pristine">Digite uma senha, por favor</mat-hint>
-            <mat-error *ngIf="form.controls['password'].hasError('minlength') && !form.controls['password'].hasError('required')">
+            <mat-hint *ngIf="!form.controls['usuario'].pristine && form.controls['senha'].pristine">Digite uma senha, por favor</mat-hint>
+            <mat-error *ngIf="form.controls['senha'].hasError('minlength') && !form.controls['senha'].hasError('required')">
               Ninguém coloca uma senha de 3 dígitos, né?
             </mat-error>
-            <mat-error *ngIf="form.controls['password'].hasError('required')">
+            <mat-error *ngIf="form.controls['senha'].hasError('required')">
               Não vou nem comentar, sério? Sem senha?
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input matInput placeholder="Confirme a Senha" formControlName="confpassword" [errorStateMatcher]="matcher" type="password" />
+            <input matInput placeholder="Confirme a Senha" formControlName="confpassword" [errorStateMatcher]="matcher" type="senha" />
             <mat-icon matPrefix class="lock-confirm">lock</mat-icon>
-            <mat-hint *ngIf="!form.controls['password'].pristine && form.controls['confpassword'].pristine">Agora só Confirme a senha, rs</mat-hint>
+            <mat-hint *ngIf="!form.controls['senha'].pristine && form.controls['confpassword'].pristine">Agora só Confirme a senha, rs</mat-hint>
             <mat-error *ngIf="form.controls['confpassword'].hasError('minlength') && !form.controls['confpassword'].hasError('required') && !form.controls['confpassword'].hasError('invalidSame')">
               Ninguém coloca uma senha de 3 dígitos, né?
             </mat-error>

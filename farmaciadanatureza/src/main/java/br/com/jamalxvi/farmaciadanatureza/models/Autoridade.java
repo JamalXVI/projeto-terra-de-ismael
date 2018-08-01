@@ -2,6 +2,7 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumAutorizacaoUsuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @Entity
 @Table(name="AUTORIDADE")
 @Data
+@Builder
 public class Autoridade implements GrantedAuthority, Serializable {
 
     @Id

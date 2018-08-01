@@ -73,7 +73,7 @@ public class TokenHelper {
 
     /**
      * Gera o token com base no usuário
-     * @param username nome do usuário para criptografar com JWT
+     * @param username nomePopular do usuário para criptografar com JWT
      * @return o JWT gerado em String
      */
     public String gerarToken(String username) {
@@ -193,7 +193,7 @@ public class TokenHelper {
      * @param request
      *            O objeto de requisição HTTP
      * @param name
-     *            O nome do Cookie de autorização para se procurar
+     *            O nomePopular do Cookie de autorização para se procurar
      * @return O Cookie ou <code>null</code> se for encontrado.
      */
     public Cookie getValorDoCookiePeloNome(HttpServletRequest request, String name) {

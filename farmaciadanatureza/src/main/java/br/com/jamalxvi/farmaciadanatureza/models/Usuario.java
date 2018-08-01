@@ -7,6 +7,7 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +27,7 @@ import java.util.List;
 @Entity
 @Table(name="USUARIO", uniqueConstraints = {@UniqueConstraint(columnNames = "USR_USR")})
 @Data
+@Builder
 public class Usuario implements UserDetails, Serializable {
 
 	private static final long serialVersionUID = -4936434517036231231L;
@@ -45,7 +47,7 @@ public class Usuario implements UserDetails, Serializable {
 	@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name="ID_PES")
 	private Pessoa pessoa;
-    @OneToMany(mappedBy="usuario", targetEntity = FotoPerfil.class)
+    @OneToMany(mappedBy="usuario", targetEntity = FotoPerfil.class, fetch = FetchType.LAZY)
     private List<FotoPerfil> fotos;
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_autoridade",

@@ -32,16 +32,7 @@ export abstract class AbstractAuthService {
         }
         return of(false);
     }
-    getUserName(): String {
-        const id: Number = this.localStorage.getItem(DEFAULT_LOGIN_NAME);
-        if (id) {
-            const users: User[] = this.userService.getUsers().filter(usr => usr.id === id);
-            if (users && users.length > 0) {
-                return users[0].user;
-            }
-        }
-        return 'Não Encontrado!';
-    }
+    abstract getUserName(): Observable<String>;
     abstract logIn(username: string, password: string): Observable<boolean>;
 
     logout(): void {

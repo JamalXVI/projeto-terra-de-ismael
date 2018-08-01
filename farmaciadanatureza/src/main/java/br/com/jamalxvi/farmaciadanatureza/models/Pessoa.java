@@ -31,7 +31,9 @@ public class Pessoa {
     @Pattern(regexp = "([0-9]{3}[\\.][0-9]{3}[\\.][0-9]{3}-[0-9]{2})")
     private String cpf;
 
-    @OneToOne
-    @JoinColumn(name="ID_USR")
+    @OneToOne(mappedBy = "pessoa",fetch = FetchType.LAZY)
     private Usuario usuario;
+
+    @OneToOne(mappedBy = "pessoa",fetch = FetchType.LAZY)
+    private Medico medico;
 }

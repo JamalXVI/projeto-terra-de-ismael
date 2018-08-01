@@ -47,9 +47,9 @@ public class ManipuladorDeAutenticacaoSucedida extends SimpleUrlAuthenticationSu
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication ) throws IOException, ServletException {
 		clearAuthenticationAttributes(request);
-		Usuario user = (Usuario)authentication.getPrincipal();
+		Usuario usuario = (Usuario)authentication.getPrincipal();
 
-		String jws = tokenHelper.gerarToken( user.getUsername() );
+		String jws = tokenHelper.gerarToken( usuario.getUsername() );
 
         // Cria o token de autorização para o cookie
         Cookie authCookie = new Cookie( TOKEN_COOKIE, ( jws ) );

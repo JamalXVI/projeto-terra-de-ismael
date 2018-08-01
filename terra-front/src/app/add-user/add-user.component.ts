@@ -36,15 +36,15 @@ export class AddUserComponent implements OnInit {
         Validators.required,
         Validators.pattern('^[1-9][0-9]*$')
       ]),
-      name: new FormControl('', [
+      nome: new FormControl('', [
         Validators.required,
         Validators.minLength(3)
       ]),
-      user: new FormControl('', [
+      usuario: new FormControl('', [
         Validators.required,
         Validators.minLength(3)
       ]),
-      password: new FormControl('', [
+      senha: new FormControl('', [
         Validators.required,
         Validators.minLength(3)
       ]),
@@ -72,7 +72,7 @@ export class AddUserComponent implements OnInit {
     if (this.form.valid) {
       const users: User[] = this.userService.getUsers();
       const idError: boolean = users.filter(usr => usr.id === +this.form.value.id).length > 0;
-      const usrError: boolean = users.filter(usr => usr.user === this.form.value.user).length > 0;
+      const usrError: boolean = users.filter(usr => usr.usuario === this.form.value.user).length > 0;
       if (!idError && !usrError) {
         const md5 = new Md5();
         const newUsr = new User(Object.assign({}, this.form.value, {password: md5.appendStr(this.form.value.password).end()}));

@@ -8,3 +8,11 @@ export const LOGIN_HEADERS = new HttpHeaders({
     'Access-Control-Allow-Origin': '*',
     'withCredentials': 'true'
 });
+
+export function authHeaders(login): HttpHeaders {
+    return new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Autorization': login
+    })
+};

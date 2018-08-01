@@ -49,8 +49,7 @@ public class AutorizadadeServiceImpl implements AutoridadeService {
     if(enumAutorizacaoUsuario != null){
       Autoridade auth = this.autoridadeRepository.findByAutorizacao(enumAutorizacaoUsuario);
       if(auth == null){
-          auth = new Autoridade();
-          auth.setAutorizacao(enumAutorizacaoUsuario);
+          auth = Autoridade.builder().autorizacao(enumAutorizacaoUsuario).build();
           this.autoridadeRepository.save(auth);
       }
       auths.add(auth);
@@ -77,8 +76,7 @@ public class AutorizadadeServiceImpl implements AutoridadeService {
 
   private Autoridade criarAutoridade(EnumAutorizacaoUsuario role) {
     if(role != null){
-      Autoridade autoridade = new Autoridade();
-      autoridade.setAutorizacao(role);
+      Autoridade autoridade = Autoridade.builder().autorizacao(role).build();
       Autoridade encontrada = getAutoridade(autoridade);
       if(encontrada == null){
         autoridadeRepository.save(autoridade);

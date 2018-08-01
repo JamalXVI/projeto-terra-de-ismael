@@ -24,7 +24,7 @@ export class TabelaComponent implements OnInit {
   pageSizes: Number[] = PAGE_SIZE_OPTIONS;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'user', 'name', 'role'];
+  displayedColumns = ['id', 'usuario', 'nome', 'role'];
   constructor(private userService: UserService) {
     this.search$.pipe(map(query => query || ''), distinctUntilChanged(),
       map((column: { search: any, prop: string }) => set(this.filters, column.prop, column.search)))
