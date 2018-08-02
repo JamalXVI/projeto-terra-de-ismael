@@ -1,6 +1,8 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumUnidadesMetricas;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Estocavel;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Lotavel;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -37,7 +40,7 @@ import java.time.LocalDate;
 })
 @Builder
 @Data
-public class PlantaDesidratadaEstoque extends EntidadeBase implements Estocavel, Lotavel{
+public class PlantaDesidratadaEstoque extends EntidadeBase implements Estocavel, Lotavel {
   @Column(name = "QTD_PLT_DES_EST")
   private BigDecimal quantidade;
   @Column(name = "LOT_PLT_DES_EST")
@@ -49,7 +52,8 @@ public class PlantaDesidratadaEstoque extends EntidadeBase implements Estocavel,
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = PlantaDesidratada.class)
   @JoinColumn(name = "ID_PLT_DES")
   private PlantaDesidratada plantaDesidratada;
-
+  @OneToMany(fetch = FetchType.LAZY, targetEntity = PlantaDesidratadaUsoEstoque.class,
+  mappedBy = "estoque")
   @Override
   public EnumUnidadesMetricas getUnidade() {
     return EnumUnidadesMetricas.GRAMAS;

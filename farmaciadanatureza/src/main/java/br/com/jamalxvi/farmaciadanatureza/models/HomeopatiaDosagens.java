@@ -1,6 +1,8 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumTipoDiluicao;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Diluivel;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.DuracaoLotavel;
 import lombok.Builder;
 import lombok.Data;
 

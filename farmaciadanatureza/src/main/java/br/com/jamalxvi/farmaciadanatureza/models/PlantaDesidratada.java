@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.DuracaoLotavel;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**

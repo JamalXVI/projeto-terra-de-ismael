@@ -1,6 +1,8 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumUnidadesMetricas;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Estocavel;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Lotavel;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,9 +13,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Esta classe é responsável por controlar o estoque das tinturas dosadas.
@@ -47,7 +51,9 @@ public class TinturaDosagensEstoque extends EntidadeBase implements Estocavel, L
   private LocalDate dataCriacaoLote;
   @Column(name = "DAT_VEN_LOT_TIN_DOS_EST")
   private LocalDate dataVencimentoLote;
-
+  @OneToMany(mappedBy = "estoque", fetch = FetchType.LAZY,
+      targetEntity = TinturaDosagensUsoEstoque.class)
+  private List<TinturaDosagensUsoEstoque> usoEstoque;
   @Override
   public EnumUnidadesMetricas getUnidade() {
     return EnumUnidadesMetricas.MILILITROS;

@@ -1,6 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumUnidadesMetricas;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Estocavel;
 import lombok.Builder;
 import lombok.Data;
 

@@ -1,6 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumUnidadesMetricas;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Estocavel;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,8 +12,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Esta classe é responsável por controlar o estoque das homeopatias dosadas.
@@ -40,7 +43,9 @@ public class HomeopatiaDosagensEstoque extends EntidadeBase implements Estocavel
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = HomeopatiaDosagens.class)
   @JoinColumn(name = "ID_HOM_DOS")
   private HomeopatiaDosagens homeopatiaDosagem;
-
+  @OneToMany(fetch = FetchType.LAZY, targetEntity = HomeopatiaDosagensUsoEstoque.class,
+  mappedBy = "estoque")
+  private List<HomeopatiaDosagensUsoEstoque> usoEstoque;
   @Override
   public EnumUnidadesMetricas getUnidade() {
     return EnumUnidadesMetricas.MILILITROS;

@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.DuracaoLotavel;
 import lombok.Builder;
 import lombok.Data;
 
@@ -35,7 +36,7 @@ import java.util.List;
 })
 @Builder
 @Data
-public class Pomada extends Cientifica implements DuracaoLotavel{
+public class Pomada extends Cientifica implements DuracaoLotavel {
   @Column(name = "DUR_LOT_POM")
   private Long duracaoLote;
   @OneToMany(targetEntity = PomadaEstoqueInterno.class, fetch = FetchType.LAZY, mappedBy = "pomada")

@@ -1,6 +1,8 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumUnidadesMetricas;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Estocavel;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Lotavel;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,8 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -41,7 +41,7 @@ import java.util.List;
 })
 @Builder
 @Data
-public class CapsulaEstoque extends EntidadeBase implements Estocavel, Lotavel{
+public class CapsulaEstoque extends EntidadeBase implements Estocavel, Lotavel {
   @Column(name = "QTD_CAP_EST")
   private BigDecimal quantidade;
   @Column(name = "LOT_CAP_EST")
@@ -53,7 +53,7 @@ public class CapsulaEstoque extends EntidadeBase implements Estocavel, Lotavel{
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = Capsula.class)
   @JoinColumn(name = "ID_CAP")
   private Capsula capsula;
-  @OneToMany(fetch = FetchType.LAZY, targetEntity = CapsulaUsoEstoque.class)
+  @OneToMany(fetch = FetchType.LAZY, targetEntity = CapsulaUsoEstoque.class, mappedBy = "estoque")
   private List<CapsulaUsoEstoque> usoEstoques;
   @Override
   public EnumUnidadesMetricas getUnidade() {

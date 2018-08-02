@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 /**
 * Filtro de Autenticação do Token. A função desta classe é escutar todas as requisições,
 * verificar o token ou estabelecer um token como usuário anônimo, além de verificar as rotas
-* que devem ser escutadas. Esta classe extende a interface OncePerRequestFilter, pois é através
+* que devem ser escutadas. Esta classe extende a interfaces OncePerRequestFilter, pois é através
 * desta que será indentificado o filtro. Métodos:<br/>
 * -<b>Fazer Filtro</b><br/><code>doFilterInternal(HttpServletRequest request, HttpServletResponse
  * response, FilterChain chain)</code>

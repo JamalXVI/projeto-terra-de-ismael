@@ -8,20 +8,24 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * Esta classe é a representante dos médicos dentro do sistema.
  * Todos os médicos apresentam:<br/>
  * -Entidade Base.<br/>
- * -CRM.<br/>
- * -Pessoa.<br/>
+ * - CRM;<br/>
+ * - a pessoa que representa o médico;<br/>
+ * - todas as receitas de sua reponsabilidade;
  * @author Jamal XVI <henriquearantest@gmail.com>
  * @version 0.1
  * @since 0.1
@@ -42,5 +46,6 @@ public class Medico extends EntidadeBase {
   @OneToOne(cascade = CascadeType.REMOVE)
   @JoinColumn(name="ID_PES")
   private Pessoa pessoa;
-
+  @OneToMany(mappedBy = "medico", targetEntity = Receita.class, fetch = FetchType.LAZY)
+  private List<Medico> medicos;
 }

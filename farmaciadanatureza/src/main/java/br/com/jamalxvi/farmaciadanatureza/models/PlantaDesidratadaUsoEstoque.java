@@ -18,36 +18,36 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
- * Esta classe por relacionar o estoque de cápsulas com seu uso.
+ * Esta classe por relacionar o estoque das plantas desidratadas com seu uso.
  * Este estoque apresenta:<br/>
- * -Entidade Base.<br/>
- * -Lote (Lotável).<br/>
- * -A Capsula de Origem.<br/>
- * -Data de criação do lote.<br/>
+ * -Entidade Base;<br/>
+ * -Lote (Lotável);<br/>
+ * -A Planta Desidratada de Origem;<br/>
+ * -Data de criação do lote;<br/>
+ * -A quantidade;<br/>
  * -Duração máxima de um lote.
- * <p>Unidade Padrão da Cápsula: gramas</p>
  * @author Jamal XVI <henriquearantest@gmail.com>
  * @version 0.1
  * @since 0.1
  */
 @Entity
-@Table(name = "CAPSULA_USO_ESTOQUE")
+@Table(name = "PLANTA_DESIDRATADA_USO_ESTOQUE")
 @AttributeOverrides(value = {
-    @AttributeOverride(name = "id", column = @Column(name = "ID_CAP_USO_EST")),
-    @AttributeOverride(name = "versao", column = @Column(name = "VER_CAP_USO_EST")),
-    @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_CAP_USO_EST"))
+    @AttributeOverride(name = "id", column = @Column(name = "ID_PLT_DES_USO_EST")),
+    @AttributeOverride(name = "versao", column = @Column(name = "VER_PLT_DES_USO_EST")),
+    @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_PLT_DES_USO_EST"))
 })
 @Builder
 @Data
-public class CapsulaUsoEstoque extends EntidadeBase
-    implements Etiquetavel, PodeUsarEstoque, Receitavel {
-    @Column(name = "POS_CAP_USO_EST")
+public class PlantaDesidratadaUsoEstoque extends EntidadeBase implements Etiquetavel,
+    PodeUsarEstoque, Receitavel {
+    @Column(name = "POS_PLT_DES_USO_EST")
     private String posologia;
-    @Column(name = "VAL_CAP_USO_EST")
+    @Column(name = "VAL_PLT_DES_USO_EST")
     private LocalDate validadeReceita;
-    @Column(name = "QTD_CAP_USO_EST")
+    @Column(name = "QTD_PLT_DES_USO_EST")
     private BigDecimal quantidade;
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = CapsulaEstoque.class)
-    @JoinColumn(name = "ID_CAP_EST")
-    private CapsulaEstoque estoque;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = PlantaDesidratadaEstoque.class)
+    @JoinColumn(name = "ID_PLT_DES_EST")
+    private PlantaDesidratadaEstoque estoque;
 }

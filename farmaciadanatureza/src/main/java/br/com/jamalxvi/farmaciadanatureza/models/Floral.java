@@ -8,6 +8,7 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
@@ -31,4 +32,6 @@ import java.util.List;
 public class Floral extends EntidadeBase {
   @Column(name = "NOM_FLO")
   private String nome;
+  @OneToMany(fetch = FetchType.LAZY, targetEntity = FloralUso.class, mappedBy = "origem")
+  private List<FloralUso> usos;
 }

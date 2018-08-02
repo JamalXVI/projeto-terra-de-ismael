@@ -21,8 +21,23 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- *
- * @author henrique
+ * Esta é a classe do usuário (representada pelo atendente). O usuário é o coração do sistema.
+ * Esta classe também implementa a interface UserDetails (Utilizada para integrar com a segurança
+ * do Spring Secutiry, pois boa parte do processo de autenticação é feito pelo Spring).
+ * Todos os usuários possuem de atributos:<br/>
+ * - id;<br/>
+ * - usuario;<br/>
+ * - senha;<br/>
+ * - ativo;<br/>
+ * - a pessoa que representa o usuário;<br/>
+ * - todas as fotos de perfis do usuário;<br/>
+ * - as permissões do usuário (Autoridade);<br/>
+ * - as receitas que o usuário cadastrou no sistema;<br/>
+ * - os registros dos logs do usuário.<br/>
+ * Além destes atributos existem os médotos exigiros pela interface do Spring Boot.
+ * @author Jamal XVI <henriquearantest@gmail.com>
+ * @version 0.1
+ * @since 0.1
  */
 @Entity
 @Table(name="USUARIO", uniqueConstraints = {@UniqueConstraint(columnNames = "USR_USR")})
@@ -54,6 +69,11 @@ public class Usuario implements UserDetails, Serializable {
 			joinColumns = @JoinColumn(name = "ID_USR", referencedColumnName = "ID_USR"),
 			inverseJoinColumns = @JoinColumn(name = "ID_AUT", referencedColumnName = "ID_AUT"))
 	private List<Autoridade> autoridades;
+	@OneToMany(fetch = FetchType.LAZY, targetEntity = Receita.class, mappedBy = "usuario")
+    private List<Receita> receitas;
+	@OneToMany(fetch = FetchType.LAZY, targetEntity = Log.class, mappedBy = "usuario")
+    private List<Log> logs;
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.autoridades;
@@ -69,8 +89,7 @@ public class Usuario implements UserDetails, Serializable {
         return this.usuario;
     }
 
-    // We can add the below fields in the users table.
-	// For now, they are hardcoded.
+    //TODO: IMPLEMENTAR OS MÉTODOS FALTANTES
 	@JsonIgnore
 	@Override
 	public boolean isAccountNonExpired() {
