@@ -10,3 +10,16 @@
   position: sticky;
   top: 0;
 }
+.spacer{
+  flex: 1 1 auto;
+}
+p{
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+.logo{
+  margin-right: 5px;
+}
+.hidden{
+  display: none;
+}

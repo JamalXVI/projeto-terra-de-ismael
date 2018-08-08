@@ -4,6 +4,7 @@
     class="sidenav"
     fixedInViewport="true"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [ngClass]="{hidden: (isHandset$ | async)!.matches}"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
     <mat-toolbar color="primary">Menu</mat-toolbar>
@@ -15,16 +16,24 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
+      <!-- 
+        *ngIf="isHandset$ | async" on botton-->
       <button
         type="button"
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
+        >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>projeto-terra-de-ismael</span>
+      <img class="logo" src="../../assets/images/logo-normal.png" height="40px" />Farmácia Terra de Ismael
+      <span class="spacer"></span>
+      <button mat-button [matMenuTriggerFor]="menu"><img src="../../assets/images/user-icon.png" height="50px" width="auto"></button>
     </mat-toolbar>
     <!-- Add Content Here -->
   </mat-sidenav-content>
 </mat-sidenav-container>
+<mat-menu #menu="matMenu" yPosition='below' xPosition='after' overlapTrigger='false'>
+  <p>{{username}}</p>
+  <button mat-menu-item (click)='logout()'>Sair</button>
+</mat-menu>
