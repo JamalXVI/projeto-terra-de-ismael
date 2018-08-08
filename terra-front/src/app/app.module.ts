@@ -21,10 +21,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { TabelaComponent } from './tabela/tabela.component';
-import { MatTableModule, MatPaginatorModule, MatSortModule, MatSelectModule } from '@angular/material';
+import { MatTableModule, MatPaginatorModule, MatSortModule, MatSelectModule, MatSidenavModule, MatListModule } from '@angular/material';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoginInterceptor } from './core/interceptors/login.interceptor';
+import { MainNavComponent } from './main-nav/main-nav.component';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import { LoginInterceptor } from './core/interceptors/login.interceptor';
     PageNotFoundComponent,
     ToolbarComponent,
     TabelaComponent,
+    MainNavComponent,
   ],
   imports: [
     HttpClientModule,
@@ -55,7 +58,10 @@ import { LoginInterceptor } from './core/interceptors/login.interceptor';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatSelectModule
+    MatSelectModule,
+    LayoutModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [
     AuthInterceptor,
