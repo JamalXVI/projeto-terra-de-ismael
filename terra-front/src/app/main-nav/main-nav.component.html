@@ -30,7 +30,7 @@
       <span class="spacer"></span>
       <button mat-button [matMenuTriggerFor]="menu"><img src="../../assets/images/user-icon.png" height="50px" width="auto"></button>
     </mat-toolbar>
-    <!-- Add Content Here -->
+    <ng-content></ng-content>
   </mat-sidenav-content>
 </mat-sidenav-container>
 <mat-menu #menu="matMenu" yPosition='below' xPosition='after' overlapTrigger='false'>
