@@ -3,7 +3,7 @@
 }
 
 .sidenav {
-  width: 200px;
+  width: 250px;
 }
 
 .mat-toolbar.mat-primary {
@@ -22,4 +22,18 @@ p{
 }
 .hidden{
   display: none;
+}
+.fa{
+  margin-right: 5px;
+}
+mat-expansion-panel{
+  box-shadow: none !important;
+}
+mat-panel-title{
+  font-size: 16px !important;
+  font-family: Roboto,"Helvetica Neue",sans-serif !important;
+} 
+mat-expansion-panel-header{
+  padding-left: 16px !important;
+  padding-right: 16px !important;
 }
