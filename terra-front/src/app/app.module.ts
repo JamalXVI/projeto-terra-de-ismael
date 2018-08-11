@@ -12,6 +12,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
+  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf
+} from '@fortawesome/free-solid-svg-icons';
 
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
@@ -21,13 +27,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { TabelaComponent } from './tabela/tabela.component';
-import { MatTableModule, MatPaginatorModule, MatSortModule, MatSelectModule, MatSidenavModule, MatListModule,
-   MatExpansionModule } from '@angular/material';
+import {
+  MatTableModule, MatPaginatorModule, MatSortModule, MatSelectModule, MatSidenavModule, MatListModule,
+  MatExpansionModule
+} from '@angular/material';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoginInterceptor } from './core/interceptors/login.interceptor';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
+
+library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
+  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf);
 
 @NgModule({
   declarations: [
@@ -63,7 +74,8 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatExpansionModule,
     LayoutModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    FontAwesomeModule
   ],
   providers: [
     AuthInterceptor,

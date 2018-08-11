@@ -3,7 +3,7 @@
 }
 
 .sidenav {
-  width: 250px;
+  width: 275px;
 }
 
 .mat-toolbar.mat-primary {
@@ -23,7 +23,7 @@ p{
 .hidden{
   display: none;
 }
-.fa{
+fa-icon{
   margin-right: 5px;
 }
 mat-expansion-panel{

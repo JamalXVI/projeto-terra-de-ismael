@@ -4,24 +4,25 @@
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item href="#">
-        <i class="fa fa-file-text" aria-hidden="true"></i>Receita</a>
-
+        <fa-icon [icon]="['fas', 'notes-medical']"></fa-icon>Receita</a>
+      <a mat-list-item href="#">
+        <fa-icon [icon]="['fas', 'eye-dropper']"></fa-icon>Floral</a>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <i class="fa fa-address-card-o" aria-hidden="true"></i> Pessoas
+            <fa-icon [icon]="['fas', 'user']"></fa-icon> Pessoas
           </mat-panel-title>
           <mat-panel-description>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <a mat-list-item href="#">Médicos</a>
-        <a mat-list-item href="#">Pessoas</a>
+        <a mat-list-item href="#">Pacientes</a>
         <a mat-list-item href="#">Usuários</a>
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <i class="fa fa-tint" aria-hidden="true"></i> Tintura
+            <fa-icon [icon]="['fas', 'tint']"></fa-icon> Tintura
           </mat-panel-title>
           <mat-panel-description>
           </mat-panel-description>
@@ -33,7 +34,7 @@
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <i class="fa fa-user-md" aria-hidden="true"></i> Pomada
+            <fa-icon [icon]="['fas', 'prescription-bottle']"></fa-icon> Pomada
           </mat-panel-title>
           <mat-panel-description>
           </mat-panel-description>
@@ -45,14 +46,47 @@
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <i class="fa fa-tint" aria-hidden="true"></i> Pomada
+            <fa-icon [icon]="['fas', 'pills']"></fa-icon> Cápsulas
           </mat-panel-title>
           <mat-panel-description>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <a mat-list-item href="#">Adicionar</a>
         <a mat-list-item href="#">Controle</a>
-        <a mat-list-item href="#">Controle Interno</a>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <fa-icon [icon]="['fas', 'leaf']"></fa-icon> Plantas Desidratadas
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <a mat-list-item href="#">Adicionar</a>
+        <a mat-list-item href="#">Controle</a>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <fa-icon [icon]="['fas', 'mortar-pestle']"></fa-icon> Homeopatia
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <a mat-list-item href="#">Adicionar</a>
+        <a mat-list-item href="#">Controle</a>
+        <a mat-list-item href="#">Criar Dosagem</a>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <fa-icon [icon]="['fas', 'tablets']"></fa-icon> Outros Medicamentos
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <a mat-list-item href="#">Adicionar</a>
+        <a mat-list-item href="#">Controle</a>
       </mat-expansion-panel>
     </mat-nav-list>
   </mat-sidenav>
