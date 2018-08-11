@@ -36,6 +36,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoginInterceptor } from './core/interceptors/login.interceptor';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
+import { BotaoHamburgerComponent } from './botao-hamburger/botao-hamburger.component';
 
 library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
   faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf);
@@ -50,6 +51,7 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
     ToolbarComponent,
     TabelaComponent,
     MainNavComponent,
+    BotaoHamburgerComponent
   ],
   imports: [
     HttpClientModule,

@@ -1,0 +1,38 @@
+div{
+    width: 30px;
+    height: 30px;
+    position: relative;
+    z-index: 9999;
+    cursor: pointer;
+    display: inline-flex;
+    background-color: rgba(11, 11, 11, 0.00);
+    margin-top: 20px;
+    /* margin-top: calc(100vh - ((100vw - 100px) * 0.25) - 75px); */
+    
+}
+/* @media(min-width:600px){
+    div{
+        display: none;
+    }
+} */
+div span{
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 70%;
+    background: #FAFAFA;
+    opacity: 1;
+    left: 10%;
+
+}
+div span:nth-child(1) {
+    top: 4px;
+}
+  
+div span:nth-child(2) {
+    top: 9px;
+}
+  
+div span:nth-child(3) {
+    top: 14px;
+}
