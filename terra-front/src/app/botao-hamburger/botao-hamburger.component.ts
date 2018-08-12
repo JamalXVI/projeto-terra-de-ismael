@@ -1,5 +1,10 @@
-import { Component, OnInit, Output, ViewChild, ElementRef, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, Output, ViewChild, ElementRef, EventEmitter, Input } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+
+import { Observable } from '../../../node_modules/rxjs/internal/Observable';
+import { of, Subject } from '../../../node_modules/rxjs';
+import { distinctUntilChanged, map } from '../../../node_modules/rxjs/operators';
+import { BreakpointObserver, Breakpoints } from '../../../node_modules/@angular/cdk/layout';
 
 
 @Component({
@@ -28,8 +33,24 @@ export class BotaoHamburgerComponent implements OnInit {
   @ViewChild('barra') barra: ElementRef;
   @Output() aberta: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() antesAbrir: EventEmitter<boolean> = new EventEmitter<boolean>();
-  constructor() {
+  @Input() escutarMudancaBarra: Subject<boolean> = new Subject<boolean>();
+  private ativadoAutomatico:boolean = false;
+  constructor(private breakpointObserver: BreakpointObserver) {
     // this.alterarEstado(!(window.innerWidth > 600));
+    this.breakpointObserver.observe(Breakpoints.Handset)
+      .pipe(
+        map(result => result.matches)
+      ).subscribe((value: boolean) => {
+        if (this.estado === value) {
+          this.estado = !this.estado;
+        }
+      });
+    this.escutarMudancaBarra.pipe(distinctUntilChanged()).subscribe((valor: boolean) => {
+      if (this.estado === valor) {
+        this.estado = !this.estado;
+        this.ativadoAutomatico = true;
+      }
+    });
   }
 
   ngOnInit() {
@@ -44,7 +65,11 @@ export class BotaoHamburgerComponent implements OnInit {
     }
   }
   finalizarAnimacao() {
-    this.aberta.emit(!this.estado);
+    if(!this.ativadoAutomatico){
+      this.aberta.emit(!this.estado);
+    }else{
+      this.ativadoAutomatico = false;
+    }
   }
   // @HostListener('window:resize', ['$event'])
   // mudarTamanho($event) {

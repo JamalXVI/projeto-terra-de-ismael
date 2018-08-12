@@ -6,5 +6,5 @@ public enum EnumOutrosMedicamentos {
   SABONETE,
   SHAMPOO,
   SOLUCAO_NASAL,
-  XAROPE,
+  XAROPE
 }
