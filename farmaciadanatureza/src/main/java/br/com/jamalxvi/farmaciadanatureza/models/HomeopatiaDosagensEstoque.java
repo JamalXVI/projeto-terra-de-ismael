@@ -28,26 +28,27 @@ import java.util.List;
  * @version 0.1
  * @since 0.1
  */
-@Entity
-@Table(name = "HOMEOPATIA_DOSAGEM_ESTOQUE")
-@AttributeOverrides(value = {
-    @AttributeOverride(name = "id", column = @Column(name = "ID_HOM_DOS_EST")),
-    @AttributeOverride(name = "versao", column = @Column(name = "VER_HOM_DOS_EST")),
-    @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_HOM_DOS_EST"))
-})
-@Builder
-@Data
-public class HomeopatiaDosagensEstoque extends EntidadeBase implements Estocavel {
-  @Column(name = "QTD_HOM_DOS_EST")
-  private BigDecimal quantidade;
-  @ManyToOne(fetch = FetchType.LAZY, targetEntity = HomeopatiaDosagens.class)
-  @JoinColumn(name = "ID_HOM_DOS")
-  private HomeopatiaDosagens homeopatiaDosagem;
-  @OneToMany(fetch = FetchType.LAZY, targetEntity = HomeopatiaDosagensUsoEstoque.class,
-  mappedBy = "estoque")
-  private List<HomeopatiaDosagensUsoEstoque> usoEstoque;
-  @Override
-  public EnumUnidadesMetricas getUnidade() {
-    return EnumUnidadesMetricas.MILILITROS;
-  }
+@Deprecated
+//@Entity
+//@Table(name = "HOMEOPATIA_DOSAGEM_ESTOQUE")
+//@AttributeOverrides(value = {
+//    @AttributeOverride(name = "id", column = @Column(name = "ID_HOM_DOS_EST")),
+//    @AttributeOverride(name = "versao", column = @Column(name = "VER_HOM_DOS_EST")),
+//    @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_HOM_DOS_EST"))
+//})
+//@Builder
+//@Data
+public class HomeopatiaDosagensEstoque{// extends EntidadeBase implements Estocavel {
+//  @Column(name = "QTD_HOM_DOS_EST")
+//  private BigDecimal quantidade;
+//  @ManyToOne(fetch = FetchType.LAZY, targetEntity = HomeopatiaDosagens.class)
+//  @JoinColumn(name = "ID_HOM_DOS")
+//  private HomeopatiaDosagens homeopatiaDosagem;
+//  @OneToMany(fetch = FetchType.LAZY, targetEntity = HomeopatiaDosagensUso.class,
+//  mappedBy = "estoque")
+//  private List<HomeopatiaDosagensUso> usoEstoque;
+//  @Override
+//  public EnumUnidadesMetricas getUnidade() {
+//    return EnumUnidadesMetricas.MILILITROS;
+//  }
 }
