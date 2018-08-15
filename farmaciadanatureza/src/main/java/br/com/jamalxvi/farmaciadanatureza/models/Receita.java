@@ -68,9 +68,9 @@ public class Receita extends EntidadeBase {
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "RECEITA_HOMEOPATIA",
       joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
-      inverseJoinColumns = @JoinColumn(name = "ID_HOM_DOS_USO_EST",
-          referencedColumnName = "ID_HOM_DOS_USO_EST"))
-  private List<HomeopatiaDosagensUsoEstoque> usoHomeopatia;
+      inverseJoinColumns = @JoinColumn(name = "ID_HOM_DOS_USO",
+          referencedColumnName = "ID_HOM_DOS_USO"))
+  private List<HomeopatiaDosagensUso> usoHomeopatia;
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "RECEITA_FLORAL",
       joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),

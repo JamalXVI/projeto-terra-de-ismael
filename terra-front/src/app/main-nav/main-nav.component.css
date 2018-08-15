@@ -3,10 +3,37 @@
 }
 
 .sidenav {
-  width: 200px;
+  width: 275px;
 }
 
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;
+}
+.spacer{
+  flex: 1 1 auto;
+}
+p{
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+.logo{
+  margin-right: 5px;
+}
+.hidden{
+  display: none;
+}
+fa-icon{
+  margin-right: 5px;
+}
+mat-expansion-panel{
+  box-shadow: none !important;
+}
+mat-panel-title{
+  font-size: 16px !important;
+  font-family: Roboto,"Helvetica Neue",sans-serif !important;
+} 
+mat-expansion-panel-header{
+  padding-left: 16px !important;
+  padding-right: 16px !important;
 }

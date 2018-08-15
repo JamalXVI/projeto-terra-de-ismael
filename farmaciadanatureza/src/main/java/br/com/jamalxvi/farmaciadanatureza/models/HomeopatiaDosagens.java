@@ -53,7 +53,7 @@ public class HomeopatiaDosagens extends EntidadeBase implements Diluivel, Duraca
   @ManyToOne
   @JoinColumn(name = "ID_HOM")
   private Homeopatia homeopatia;
-  @OneToMany(targetEntity = HomeopatiaDosagensEstoque.class, fetch = FetchType.LAZY,
-      mappedBy = "homeopatiaDosagem")
-  private List<HomeopatiaDosagens> homeopatiaDosagens;
+  @OneToMany(targetEntity = HomeopatiaDosagensUso.class, fetch = FetchType.LAZY,
+      mappedBy = "origem")
+  private List<HomeopatiaDosagensUso> homeopatiaDosagensUsos;
 }
