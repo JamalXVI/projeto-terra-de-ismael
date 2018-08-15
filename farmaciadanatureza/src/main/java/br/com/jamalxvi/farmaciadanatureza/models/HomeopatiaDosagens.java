@@ -23,10 +23,7 @@ import java.util.List;
  * Esta classe é a controloda por homeopatias. Esta classe representa as dosagens de homeopatias.
  * Toda Dosagem de homeopatia apresenta:<br/>
  * -Entidade Base.<br/>
- * -Lote (Lotável).<br/>
- * -Tipo de Diluição (DH ou CH)<br/>
- * -Diluição<br/>
- * -Duração máxima de um lote.
+ * -Diluição (Diluivel);<br/>
  * <p>Unidade Padrão da Dosagem de Homeopatia: ml</p>
  *
  * @author Jamal XVI <henriquearantest@gmail.com>
@@ -42,14 +39,9 @@ import java.util.List;
 })
 @Builder
 @Data
-public class HomeopatiaDosagens extends EntidadeBase implements Diluivel, DuracaoLotavel {
-  @Enumerated(value = EnumType.STRING)
-  @Column(name = "TIP_DIL_HOM_DOS", columnDefinition = "enum('CH','DH')")
-  private EnumTipoDiluicao tipoDiluicao;
+public class HomeopatiaDosagens extends EntidadeBase implements Diluivel {
   @Column(name = "DIL_HOM_DOS")
   private Integer diluicao;
-  @Column(name = "DUR_LOT_HOM_DOS")
-  private Long duracaoLote;
   @ManyToOne
   @JoinColumn(name = "ID_HOM")
   private Homeopatia homeopatia;
