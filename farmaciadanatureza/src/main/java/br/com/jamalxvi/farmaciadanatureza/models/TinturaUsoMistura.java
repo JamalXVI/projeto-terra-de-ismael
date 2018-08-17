@@ -28,6 +28,9 @@ public class TinturaUsoMistura extends EntidadeBase{
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TinturaDosagensEstoque.class)
     @JoinColumn(name = "ID_TIN_DOS_USO_EST")
     private TinturaDosagensUsoEstoque dosagem;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = TinturaUsoMisturaReceita.class)
+    @JoinColumn(name = "ID_TIN_USO_MIS_REC")
+    private TinturaUsoMisturaReceita receita;
     @Column(name = "PROP_TIN_USO_MIS")
     private BigDecimal proporcao;
 }

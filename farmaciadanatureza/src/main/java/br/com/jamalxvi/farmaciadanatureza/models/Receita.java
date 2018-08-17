@@ -3,16 +3,7 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -53,6 +44,9 @@ public class Receita extends EntidadeBase {
       inverseJoinColumns = @JoinColumn(name = "ID_TIN_DOS_USO_EST",
           referencedColumnName = "ID_TIN_DOS_USO_EST"))
   private List<TinturaDosagensUsoEstoque> usoTintura;
+  @OneToMany(mappedBy = "receita", fetch = FetchType.LAZY,
+          targetEntity = TinturaUsoMisturaReceita.class)
+  private List<TinturaUsoMisturaReceita> usoMistura;
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "RECEITA_POMADA",
       joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
