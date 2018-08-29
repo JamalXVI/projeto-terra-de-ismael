@@ -78,6 +78,12 @@ public class Receita extends EntidadeBase {
           referencedColumnName = "ID_FLO_USO"))
   private List<FloralUso> usoFloral;
   @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "RECEITA_MULTIMISTURA",
+          joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
+          inverseJoinColumns = @JoinColumn(name = "ID_MUM_USO",
+                  referencedColumnName = "ID_MUM_USO"))
+  private List<MultiMisturaUso> usoMultimistura;
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "RECEITA_CAPSULA",
       joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
       inverseJoinColumns = @JoinColumn(name = "ID_CAP_USO_EST",
