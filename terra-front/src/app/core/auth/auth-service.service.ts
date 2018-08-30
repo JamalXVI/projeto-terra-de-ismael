@@ -25,12 +25,12 @@ export class AuthService extends AbstractAuthService {
         this.service = factory.getService();
     }
     isLoggedIn(): Observable<Boolean> {
-       return this.service.isLoggedIn();
+        return this.service.isLoggedIn();
     }
     logIn(username: string, password: string): Observable<boolean> {
         return this.service.logIn(username, password);
     }
-    
+
     getUserName(): Observable<String> {
         return this.service.getUserName();
     }
