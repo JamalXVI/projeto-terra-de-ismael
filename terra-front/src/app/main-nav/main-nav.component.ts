@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 
 import { BotaoHamburgerComponent } from '../botao-hamburger/botao-hamburger.component';
 import { AuthService } from '../core/auth/auth-service.service';
+import { Router } from '../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-main-nav',
@@ -22,11 +23,15 @@ export class MainNavComponent {
     );
 
   constructor(private authService: AuthService,
-    private breakpointObserver: BreakpointObserver) {
+    private breakpointObserver: BreakpointObserver,
+    private router: Router) {
     this.authService.getUserName().subscribe(usr => this.username = usr.toUpperCase());
   }
   mudarEstadoBotao($event: any) {
     this.botaoHamburger.escutarMudancaBarra.next($event);
   }
-
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login'], { queryParams: { mensagem: 'deslogado' } });
+  }
 }
