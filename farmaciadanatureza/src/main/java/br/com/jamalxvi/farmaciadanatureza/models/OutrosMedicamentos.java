@@ -47,7 +47,7 @@ public class OutrosMedicamentos extends EntidadeBase {
   private String nome;
   @Enumerated(EnumType.STRING)
   @Column(name = "TIP_MED_OUT_MED", columnDefinition = "enum('EXTRATO_AQUOSO', " +
-      "'OLEOS_MEDICINAIS','SABONETE', 'SHAMPOO', 'SOLUCAO_NASAL', 'XAROPE'")
+      "'OLEOS_MEDICINAIS','SABONETE', 'SHAMPOO', 'SOLUCAO_NASAL', 'XAROPE', 'CHA', 'CAPSULA','MEDICAMENTOS', 'OUTROS'")
   private EnumOutrosMedicamentos tipoMedicamento;
   @OneToMany(mappedBy = "outrosMedicamentos", fetch = FetchType.LAZY,
       targetEntity = OutrosMedicamentosEstoque.class)

@@ -39,9 +39,9 @@ import java.util.List;
 @Builder
 @Data
 public class Capsula extends Cientifica implements DuracaoLotavel {
-  @Column(name = "PES_MIN_CAP")
+  @Column(name = "PES_MIN_CAP", precision = 4)
   private BigDecimal pesoMinimo;
-  @Column(name = "PES_MAX_CAP")
+  @Column(name = "PES_MAX_CAP", precision = 4)
   private BigDecimal pesoMaximo;
   @Column(name = "DUR_LOT_CAP")
   private Long duracaoLote;

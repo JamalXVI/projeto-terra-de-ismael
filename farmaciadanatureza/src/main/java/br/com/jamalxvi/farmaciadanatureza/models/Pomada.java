@@ -39,6 +39,4 @@ import java.util.List;
 public class Pomada extends Cientifica implements DuracaoLotavel {
   @Column(name = "DUR_LOT_POM")
   private Long duracaoLote;
-  @OneToMany(targetEntity = PomadaEstoqueInterno.class, fetch = FetchType.LAZY, mappedBy = "pomada")
-  private List<PomadaEstoqueInterno> estoqueInterno;
 }

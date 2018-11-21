@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatCardModule } from '@angular/material/card';
@@ -29,7 +29,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { TabelaComponent } from './tabela/tabela.component';
 import {
   MatTableModule, MatPaginatorModule, MatSortModule, MatSelectModule, MatSidenavModule, MatListModule,
-  MatExpansionModule
+  MatExpansionModule, MatStepperModule
 } from '@angular/material';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
@@ -37,6 +37,7 @@ import { LoginInterceptor } from './core/interceptors/login.interceptor';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { BotaoHamburgerComponent } from './botao-hamburger/botao-hamburger.component';
+import { GeradorReceitaComponent } from './gerador-receita/gerador-receita.component';
 
 library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
   faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf);
@@ -51,7 +52,8 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
     ToolbarComponent,
     TabelaComponent,
     MainNavComponent,
-    BotaoHamburgerComponent
+    BotaoHamburgerComponent,
+    GeradorReceitaComponent
   ],
   imports: [
     HttpClientModule,
@@ -73,10 +75,12 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
     MatPaginatorModule,
     MatSortModule,
     MatSelectModule,
+    MatStepperModule,
     MatExpansionModule,
     LayoutModule,
     MatSidenavModule,
     MatListModule,
+    FlexLayoutModule,
     FontAwesomeModule
   ],
   providers: [

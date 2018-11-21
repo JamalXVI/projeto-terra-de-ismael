@@ -5,16 +5,9 @@ import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Estocavel;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -31,23 +24,30 @@ import java.util.List;
 @Entity
 @Table(name = "OUTROS_MEDICAMENTOS_ESTOQUE")
 @AttributeOverrides(value = {
-    @AttributeOverride(name = "id", column = @Column(name = "ID_OUT_MED_EST")),
-    @AttributeOverride(name = "versao", column = @Column(name = "VER_OUT_MED_EST")),
-    @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_OUT_MED_EST"))
+        @AttributeOverride(name = "id", column = @Column(name = "ID_OUT_MED_EST")),
+        @AttributeOverride(name = "versao", column = @Column(name = "VER_OUT_MED_EST")),
+        @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_OUT_MED_EST"))
 })
 @Builder
 @Data
-public class OutrosMedicamentosEstoque extends EntidadeBase implements Estocavel {
-  @Column(name = "QTD_OUT_MED_EST")
-  private BigDecimal quantidade;
-  @ManyToOne(fetch = FetchType.LAZY, targetEntity = OutrosMedicamentos.class)
-  @JoinColumn(name = "ID_OUT_MED")
-  private OutrosMedicamentos outrosMedicamentos;
-  @OneToMany(mappedBy = "estoque", targetEntity = OutrosMedicamentosUsoEstoque.class,
-      fetch = FetchType.LAZY)
-  private List<OutrosMedicamentosUsoEstoque> usoEstoque;
-  @Override
-  public EnumUnidadesMetricas getUnidade() {
-    return EnumUnidadesMetricas.UNIDADES;
-  }
+public class OutrosMedicamentosEstoque extends EntidadeBase implements Estocavel, Lotavel {
+    @Column(name = "QTD_OUT_MED_EST")
+    private BigDecimal quantidade;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = OutrosMedicamentos.class)
+    @JoinColumn(name = "ID_OUT_MED")
+    private OutrosMedicamentos outrosMedicamentos;
+    @OneToMany(mappedBy = "estoque", targetEntity = OutrosMedicamentosUsoEstoque.class,
+            fetch = FetchType.LAZY)
+    private List<OutrosMedicamentosUsoEstoque> usoEstoque;
+    @Column(name = "LOT_OUT_MED_EST")
+    private Long lote;
+    @Column(name = "DAT_CRI_LOT_OUT_MED_EST")
+    private LocalDate dataCriacaoLote;
+    @Column(name = "DAT_VEN_LOT_OUT_MED_EST")
+    private LocalDate dataVencimentoLote;
+
+    @Override
+    public EnumUnidadesMetricas getUnidade() {
+        return EnumUnidadesMetricas.UNIDADES;
+    }
 }
