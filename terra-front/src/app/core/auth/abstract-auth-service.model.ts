@@ -11,18 +11,23 @@ import { UserRole } from '../user/user-role.enum';
 import { ErrorsService } from '../errors/errors.service';
 
 export abstract class AbstractAuthService {
+    protected users: User[] = [];
     constructor(
         @Inject(LocalStorage) protected localStorage: LocalStorage,
         protected userService: UserService,
         protected router: Router,
         protected http: HttpClient,
         protected errorService: ErrorsService
-    ) {}
+    ) {
+        this.userService.getUsers().subscribe(users => {
+            this.users = users
+        });
+    }
     abstract isLoggedIn(): Observable<Boolean>;
     isAdmin(): Observable<Boolean> {
         const id: Number = this.localStorage.getItem(DEFAULT_LOGIN_NAME);
         if (id) {
-            const users: User[] = this.userService.getUsers().filter(usr => usr.id === id);
+            const users: User[] = this.users.filter(usr => usr.id === id);
             if (users && users.length > 0) {
                 const user: User = users[0];
                 if (user.role === UserRole.ADMIN) {

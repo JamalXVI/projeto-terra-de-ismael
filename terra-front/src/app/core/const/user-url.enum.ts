@@ -1,4 +1,4 @@
 export enum UserUrl {
-    WHOAIM = '/api/quemsou'
-
-}
+    WHOAIM = '/api/quemsou',
+    GETLIST = '/api/users/all'
+};

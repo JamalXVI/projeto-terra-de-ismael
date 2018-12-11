@@ -17,7 +17,7 @@ export class AuthMockService extends AbstractAuthService {
     logIn(username: string, password: string): Observable<boolean> {
         const md5 = new Md5();
         const encryptPassword: any = md5.appendStr(password).end();
-        const possibleUsers: User[] = this.userService.getUsers().filter((user: User) => user.usuario === username
+        const possibleUsers: User[] = this.users.filter((user: User) => user.usuario === username
             && user.senha === encryptPassword);
         if (possibleUsers.length > 0) {
             this.localStorage.setItem(DEFAULT_LOGIN_NAME, possibleUsers[0].id);
@@ -29,7 +29,7 @@ export class AuthMockService extends AbstractAuthService {
     getUserName(): Observable<String> {
         const id: Number = this.localStorage.getItem(DEFAULT_LOGIN_NAME);
         if (id) {
-            const users: User[] = this.userService.getUsers().filter(usr => usr.id === id);
+            const users: User[] = this.users.filter(usr => usr.id === id);
             if (users && users.length > 0) {
                 return of(users[0].usuario);
             }

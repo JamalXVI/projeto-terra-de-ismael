@@ -70,7 +70,7 @@ export class AddUserComponent implements OnInit {
   }
   sendForm() {
     if (this.form.valid) {
-      const users: User[] = this.userService.getUsers();
+      const users: User[] = []//this.userService.getUsers();
       const idError: boolean = users.filter(usr => usr.id === +this.form.value.id).length > 0;
       const usrError: boolean = users.filter(usr => usr.usuario === this.form.value.user).length > 0;
       if (!idError && !usrError) {
