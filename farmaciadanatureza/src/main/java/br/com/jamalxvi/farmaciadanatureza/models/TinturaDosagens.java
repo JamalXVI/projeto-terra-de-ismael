@@ -3,6 +3,8 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumTipoDiluicao;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Diluivel;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.DuracaoLotavel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -51,8 +53,10 @@ public class TinturaDosagens extends EntidadeBase implements Diluivel, DuracaoLo
   private Long duracaoLote;
   @ManyToOne
   @JoinColumn(name = "ID_TIN")
+  @JsonBackReference
   private Homeopatia tintura;
   @OneToMany(targetEntity = TinturaDosagensEstoque.class, fetch = FetchType.LAZY,
   mappedBy = "tinturaDosagens")
+  @JsonManagedReference
   private List<TinturaDosagensEstoque> tinturaDosagensEstoques;
 }

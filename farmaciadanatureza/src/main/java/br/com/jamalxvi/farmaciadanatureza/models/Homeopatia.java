@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -32,6 +33,7 @@ public class Homeopatia extends EntidadeBase {
   @Column(name = "NOM_HOM")
   private String nome;
   @OneToMany(mappedBy="homeopatia", targetEntity = HomeopatiaDosagens.class, fetch = FetchType.LAZY)
+  @JsonManagedReference
   private List<HomeopatiaDosagens> dosagens;
 
 }

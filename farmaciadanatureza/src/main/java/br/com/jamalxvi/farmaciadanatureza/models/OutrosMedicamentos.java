@@ -1,6 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumOutrosMedicamentos;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -28,6 +29,7 @@ import java.util.List;
  * -Óleos Medicinais;<br/>
  * -Shampoo;<br/>
  * -Sabonete;<br/>
+ *
  * @author Jamal XVI <henriquearantest@gmail.com>
  * @version 0.1
  * @since 0.1
@@ -43,7 +45,9 @@ import java.util.List;
 @Data
 public class OutrosMedicamentos extends EntidadeBase {
   @Column(name = "NOM_OUT_MED")
-  @NotNull @NotEmpty @Size(max = 255)
+  @NotNull
+  @NotEmpty
+  @Size(max = 255)
   private String nome;
   @Enumerated(EnumType.STRING)
   @Column(name = "TIP_MED_OUT_MED", columnDefinition = "enum('EXTRATO_AQUOSO', " +
@@ -51,5 +55,6 @@ public class OutrosMedicamentos extends EntidadeBase {
   private EnumOutrosMedicamentos tipoMedicamento;
   @OneToMany(mappedBy = "outrosMedicamentos", fetch = FetchType.LAZY,
       targetEntity = OutrosMedicamentosEstoque.class)
+  @JsonManagedReference
   private List<OutrosMedicamentosEstoque> estoque;
 }

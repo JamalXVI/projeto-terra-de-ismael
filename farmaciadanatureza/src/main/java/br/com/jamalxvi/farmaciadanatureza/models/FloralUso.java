@@ -2,6 +2,7 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.PodeUsarEstoque;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Receitavel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -42,5 +43,6 @@ public class FloralUso extends EntidadeBase implements Receitavel {
     private LocalDate validadeReceita;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Floral.class)
     @JoinColumn(name = "ID_FLO")
+    @JsonBackReference
     private Floral origem;
 }

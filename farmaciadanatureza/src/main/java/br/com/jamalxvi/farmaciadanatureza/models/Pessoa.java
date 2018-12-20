@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -48,10 +49,12 @@ public class Pessoa {
     @Pattern(regexp = "([0-9]{3}[\\.][0-9]{3}[\\.][0-9]{3}-[0-9]{2})")
     private String cpf;
 
-    @OneToOne(mappedBy = "pessoa",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "pessoa",fetch = FetchType.LAZY, optional = true)
+    @JsonManagedReference
     private Usuario usuario;
 
-    @OneToOne(mappedBy = "pessoa",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "pessoa",fetch = FetchType.LAZY, optional = true)
+    @JsonManagedReference
     private Medico medico;
     @OneToMany(fetch = FetchType.LAZY, targetEntity = Receita.class, mappedBy = "pessoa")
     private List<Receita> receitas;

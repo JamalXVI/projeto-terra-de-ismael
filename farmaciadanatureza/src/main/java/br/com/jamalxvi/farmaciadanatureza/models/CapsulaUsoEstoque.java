@@ -3,6 +3,7 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Etiquetavel;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.PodeUsarEstoque;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Receitavel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -49,5 +50,6 @@ public class CapsulaUsoEstoque extends EntidadeBase
     private BigDecimal quantidade;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = CapsulaEstoque.class)
     @JoinColumn(name = "ID_CAP_EST")
+    @JsonBackReference
     private CapsulaEstoque estoque;
 }

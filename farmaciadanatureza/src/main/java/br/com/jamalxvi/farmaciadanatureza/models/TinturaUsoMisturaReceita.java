@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -31,5 +32,6 @@ public class TinturaUsoMisturaReceita extends EntidadeBase{
     private BigDecimal quantidade;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Receita.class)
     @JoinColumn(name = "ID_REC")
+    @JsonManagedReference
     private Receita receita;
 }

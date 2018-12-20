@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -26,5 +27,6 @@ public class MultiMistura extends EntidadeBase {
   @Column(name = "NOM_MUM")
   private String nome;
   @OneToMany(fetch = FetchType.LAZY, targetEntity = FloralUso.class, mappedBy = "origem")
+  @JsonManagedReference
   private List<MultiMisturaUso> usos;
 }

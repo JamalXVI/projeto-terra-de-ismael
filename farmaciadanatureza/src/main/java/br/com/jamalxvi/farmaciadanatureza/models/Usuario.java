@@ -6,7 +6,9 @@
 
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -61,8 +63,10 @@ public class Usuario implements UserDetails, Serializable {
 	private Boolean ativo;
 	@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name="ID_PES")
+	@JsonBackReference
 	private Pessoa pessoa;
     @OneToMany(mappedBy="usuario", targetEntity = FotoPerfil.class, fetch = FetchType.LAZY)
+	@JsonManagedReference
     private List<FotoPerfil> fotos;
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_autoridade",
@@ -72,6 +76,7 @@ public class Usuario implements UserDetails, Serializable {
 	@OneToMany(fetch = FetchType.LAZY, targetEntity = Receita.class, mappedBy = "usuario")
     private List<Receita> receitas;
 	@OneToMany(fetch = FetchType.LAZY, targetEntity = Log.class, mappedBy = "usuario")
+	@JsonManagedReference
     private List<Log> logs;
 
 	@Override

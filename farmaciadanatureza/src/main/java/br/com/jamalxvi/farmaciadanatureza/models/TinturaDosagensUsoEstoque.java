@@ -2,6 +2,7 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Etiquetavel;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.PodeUsarEstoque;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -48,5 +49,6 @@ public class TinturaDosagensUsoEstoque extends EntidadeBase implements Etiquetav
     private BigDecimal quantidade;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TinturaDosagensEstoque.class)
     @JoinColumn(name = "ID_TIN_DOS_EST")
+    @JsonBackReference
     private TinturaDosagensEstoque estoque;
 }

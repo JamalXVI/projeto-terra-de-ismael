@@ -3,6 +3,8 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumTipoDiluicao;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Diluivel;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.DuracaoLotavel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -44,8 +46,10 @@ public class HomeopatiaDosagens extends EntidadeBase implements Diluivel {
   private Integer diluicao;
   @ManyToOne
   @JoinColumn(name = "ID_HOM")
+  @JsonBackReference
   private Homeopatia homeopatia;
   @OneToMany(targetEntity = HomeopatiaDosagensUso.class, fetch = FetchType.LAZY,
       mappedBy = "origem")
+  @JsonManagedReference
   private List<HomeopatiaDosagensUso> homeopatiaDosagensUsos;
 }

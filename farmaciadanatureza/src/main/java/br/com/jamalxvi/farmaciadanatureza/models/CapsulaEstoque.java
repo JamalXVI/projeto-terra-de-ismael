@@ -3,6 +3,8 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumUnidadesMetricas;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Estocavel;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Lotavel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -52,8 +54,10 @@ public class CapsulaEstoque extends EntidadeBase implements Estocavel, Lotavel {
   private LocalDate dataVencimentoLote;
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = Capsula.class)
   @JoinColumn(name = "ID_CAP")
+  @JsonBackReference
   private Capsula capsula;
   @OneToMany(fetch = FetchType.LAZY, targetEntity = CapsulaUsoEstoque.class, mappedBy = "estoque")
+  @JsonManagedReference
   private List<CapsulaUsoEstoque> usoEstoques;
   @Override
   public EnumUnidadesMetricas getUnidade() {
