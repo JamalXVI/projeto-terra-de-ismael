@@ -5,6 +5,7 @@ import br.com.jamalxvi.farmaciadanatureza.models.Autoridade;
 import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
 import br.com.jamalxvi.farmaciadanatureza.models.RequisicaoDoUsuario;
 import br.com.jamalxvi.farmaciadanatureza.models.Usuario;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.UsuarioDto;
 import br.com.jamalxvi.farmaciadanatureza.repository.UsuarioRepository;
 import br.com.jamalxvi.farmaciadanatureza.service.AutoridadeService;
 import br.com.jamalxvi.farmaciadanatureza.service.PessoaService;
@@ -72,10 +73,13 @@ public class UsuarioServiceImpl extends BaseService implements UsuarioService {
     return u;
   }
 
-          @PreAuthorize("hasRole('ADMIN')")
-  public List<Usuario> findAll() throws AccessDeniedException {
+  @PreAuthorize("hasRole('ADMIN')")
+  public List<UsuarioDto> findAll() throws AccessDeniedException {
     List<Usuario> result = usuarioRepository.findAll();
-    List<Usuario> ftr = result.stream().filter(u -> u.getAtivo()).collect(Collectors.toList());
+    List<UsuarioDto> ftr = result.stream().filter(u -> u.getAtivo())
+        .map(usuario -> UsuarioDto.builder().nome(usuario.getPessoa().getNome())
+            .sobrenome(usuario.getPessoa().getSobrenome()).usuario(usuario.getUsuario()).build())
+        .collect(Collectors.toList());
     return ftr;
   }
 

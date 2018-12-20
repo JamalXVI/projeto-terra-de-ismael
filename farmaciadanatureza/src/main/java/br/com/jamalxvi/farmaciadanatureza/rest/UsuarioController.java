@@ -3,6 +3,7 @@ package br.com.jamalxvi.farmaciadanatureza.rest;
 import br.com.jamalxvi.farmaciadanatureza.exception.ExcecaoDeConflitoDeRecurso;
 import br.com.jamalxvi.farmaciadanatureza.models.RequisicaoDoUsuario;
 import br.com.jamalxvi.farmaciadanatureza.models.Usuario;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.UsuarioDto;
 import br.com.jamalxvi.farmaciadanatureza.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -27,7 +28,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserController {
+public class UsuarioController {
 
   @Autowired
   private UsuarioService userService;
@@ -39,7 +40,7 @@ public class UserController {
   }
 
   @RequestMapping(method = GET, value = "/user/all")
-  public List<Usuario> loadAll() {
+  public List<UsuarioDto> loadAll() {
     return this.userService.findAll();
   }
 

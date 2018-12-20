@@ -2,6 +2,7 @@ package br.com.jamalxvi.farmaciadanatureza.service;
 
 import br.com.jamalxvi.farmaciadanatureza.models.RequisicaoDoUsuario;
 import br.com.jamalxvi.farmaciadanatureza.models.Usuario;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.UsuarioDto;
 
 import java.util.List;
 
@@ -18,7 +19,11 @@ public interface UsuarioService {
 
   Usuario findByUsuario(String usuario);
 
-  List<Usuario> findAll();
+  /**
+   * Retorna a lista de usuário (somente dados não sensíveis)
+   * @return a lista de usuários
+   */
+  List<UsuarioDto> findAll();
 
   Usuario save(RequisicaoDoUsuario user);
 }
