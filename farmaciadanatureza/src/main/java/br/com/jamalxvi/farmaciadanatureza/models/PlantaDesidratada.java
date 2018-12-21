@@ -1,6 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.DuracaoLotavel;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -41,5 +42,6 @@ public class PlantaDesidratada extends Cientifica implements DuracaoLotavel {
   private Long duracaoLote;
   @OneToMany(mappedBy = "plantaDesidratada", fetch = FetchType.LAZY,
       targetEntity = PlantaDesidratadaEstoque.class)
+  @JsonManagedReference
   private List<PlantaDesidratadaEstoque> estoque;
 }

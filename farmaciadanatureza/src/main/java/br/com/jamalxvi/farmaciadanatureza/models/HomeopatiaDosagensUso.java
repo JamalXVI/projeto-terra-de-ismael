@@ -3,6 +3,7 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Etiquetavel;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.PodeUsarEstoque;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Receitavel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -47,5 +48,6 @@ public class HomeopatiaDosagensUso extends EntidadeBase implements Etiquetavel, 
     private BigDecimal quantidade;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = HomeopatiaDosagens.class)
     @JoinColumn(name = "ID_HOM_DOS")
+    @JsonBackReference
     private HomeopatiaDosagens origem;
 }

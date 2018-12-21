@@ -1,6 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Receitavel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -34,5 +35,6 @@ public class MultiMisturaUso extends EntidadeBase implements Receitavel {
     private LocalDate validadeReceita;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = MultiMistura.class)
     @JoinColumn(name = "ID_MUM")
-    private Floral origem;
+    @JsonBackReference
+    private MultiMistura origem;
 }

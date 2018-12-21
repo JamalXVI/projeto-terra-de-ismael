@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -33,5 +34,6 @@ public class Floral extends EntidadeBase {
   @Column(name = "NOM_FLO")
   private String nome;
   @OneToMany(fetch = FetchType.LAZY, targetEntity = FloralUso.class, mappedBy = "origem")
+  @JsonManagedReference
   private List<FloralUso> usos;
 }

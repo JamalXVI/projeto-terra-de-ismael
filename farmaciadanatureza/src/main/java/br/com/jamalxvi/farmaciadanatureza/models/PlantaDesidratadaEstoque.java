@@ -3,6 +3,7 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumUnidadesMetricas;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Estocavel;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Lotavel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -51,6 +52,7 @@ public class PlantaDesidratadaEstoque extends EntidadeBase implements Estocavel,
   private LocalDate dataVencimentoLote;
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = PlantaDesidratada.class)
   @JoinColumn(name = "ID_PLT_DES")
+  @JsonBackReference
   private PlantaDesidratada plantaDesidratada;
   @OneToMany(fetch = FetchType.LAZY, targetEntity = PlantaDesidratadaUsoEstoque.class,
   mappedBy = "estoque")
