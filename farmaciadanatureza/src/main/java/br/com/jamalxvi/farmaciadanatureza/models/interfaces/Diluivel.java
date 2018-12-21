@@ -11,9 +11,9 @@ import br.com.jamalxvi.farmaciadanatureza.enums.EnumTipoDiluicao;
  * Definada o tipo de diluição é importante definir a proporção de diluição. Ex:<br/>
  * Curcuma CH 6. CH é o tipo de diluição e 6 é a diluição.<br/>
  * <strong>É importante ressaltar que a interface define somente a quantidade de diluição.</strong>
- * @author Jamal XVI <henriquearantest@gmail.com>
  * @version 0.1
  * @since 0.1
+ * @author Jamal XVI <henriquearantest@gmail.com>
  */
 public interface Diluivel {
   Integer getDiluicao();

@@ -10,7 +10,6 @@ import br.com.jamalxvi.farmaciadanatureza.repository.UsuarioRepository;
 import br.com.jamalxvi.farmaciadanatureza.service.AutoridadeService;
 import br.com.jamalxvi.farmaciadanatureza.service.PessoaService;
 import br.com.jamalxvi.farmaciadanatureza.service.UsuarioService;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -78,7 +77,8 @@ public class UsuarioServiceImpl extends BaseService implements UsuarioService {
     List<Usuario> result = usuarioRepository.findAll();
     List<UsuarioDto> ftr = result.stream().filter(u -> u.getAtivo())
         .map(usuario -> UsuarioDto.builder().nome(usuario.getPessoa().getNome())
-            .sobrenome(usuario.getPessoa().getSobrenome()).usuario(usuario.getUsuario()).build())
+            .sobrenome(usuario.getPessoa().getSobrenome())
+            .usuario(usuario.getUsuario()).id(usuario.getId()).build())
         .collect(Collectors.toList());
     return ftr;
   }

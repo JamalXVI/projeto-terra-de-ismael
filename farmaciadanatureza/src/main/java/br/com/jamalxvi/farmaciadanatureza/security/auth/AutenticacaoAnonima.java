@@ -5,9 +5,9 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 /**
  * Classe de que representa a autenticação anônima
- * @author      Jamal XVI <henriquearantest@gmail.com>
  * @version     0.1
  * @since       0.1
+ * @author      Jamal XVI <henriquearantest@gmail.com>
  */
 public class AutenticacaoAnonima extends AbstractAuthenticationToken {
 

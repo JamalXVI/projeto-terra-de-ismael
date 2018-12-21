@@ -234,6 +234,8 @@ public class UsuarioServiceImplMockTest {
   }
 
   private Pessoa criarPessoa(Long id, String nome, String sobrenome, String cpf) {
-    return Pessoa.builder().id(id).nome(nome).sobrenome(sobrenome).cpf(cpf).build();
+    Pessoa pessoa = Pessoa.builder().nome(nome).sobrenome(sobrenome).cpf(cpf).build();
+    pessoa.setId(id);
+    return pessoa;
   }
 }

@@ -10,15 +10,19 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Created by fan.jin on 2016-11-03.
- */
 
+/**
+ * Classe que representa a autoridade, considerando as permissões de usuário
+ * @author Jamal XVI <henriquearantest@gmail.com>
+ * @version 0.1
+ * @since 0.1
+ */
 @Entity
 @Table(name="AUTORIDADE")
 @Data
 @Builder
 public class Autoridade implements GrantedAuthority, Serializable {
+
 
     @Id
     @Column(name="ID_AUT")

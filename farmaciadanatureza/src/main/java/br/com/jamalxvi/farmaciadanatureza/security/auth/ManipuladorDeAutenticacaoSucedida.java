@@ -24,9 +24,9 @@ import java.io.IOException;
  * Classe utilizada quando o usuário consegue fazer seu login com sucesso.
  * Ela também é responsável por inserir o cookie e o header de autenticação no navegador do
  * usuário
- * @author      Jamal XVI <henriquearantest@gmail.com>
  * @version     0.1
  * @since       0.1
+ * @author      Jamal XVI <henriquearantest@gmail.com>
  */
 @Component
 public class ManipuladorDeAutenticacaoSucedida extends SimpleUrlAuthenticationSuccessHandler {

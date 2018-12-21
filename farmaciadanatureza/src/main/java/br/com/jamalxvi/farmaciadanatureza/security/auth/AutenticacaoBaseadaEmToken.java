@@ -6,9 +6,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * Classe de que representa o token autenticado
- * @author      Jamal XVI <henriquearantest@gmail.com>
  * @version     0.1
  * @since       0.1
+ * @author      Jamal XVI <henriquearantest@gmail.com>
  */
 public class AutenticacaoBaseadaEmToken extends AbstractAuthenticationToken {
 
