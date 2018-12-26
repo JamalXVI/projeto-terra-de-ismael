@@ -9,8 +9,10 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -45,6 +47,8 @@ import java.util.List;
 @Table(name="USUARIO", uniqueConstraints = {@UniqueConstraint(columnNames = "USR_USR")})
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Usuario implements UserDetails, Serializable {
 
 	private static final long serialVersionUID = -4936434517036231231L;

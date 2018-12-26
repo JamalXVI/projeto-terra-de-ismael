@@ -54,7 +54,7 @@ public class UsuarioServiceImpl extends BaseService implements UsuarioService {
   }
 
   @Override
-  // @PreAuthorize("hasRole('USER')")
+  @PreAuthorize("hasRole('USER')")
   public Usuario findByUsuario(String usuario) throws UsernameNotFoundException {
     Usuario u = usuarioRepository.findByUsuario(usuario);
     if (u != null && !u.getAtivo()) {
@@ -63,7 +63,7 @@ public class UsuarioServiceImpl extends BaseService implements UsuarioService {
     return u;
   }
 
-  //        @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   public Usuario findById(Long id) throws AccessDeniedException {
     Usuario u = usuarioRepository.findById(id).orElse(null);
     if (u != null && !u.getAtivo()) {
