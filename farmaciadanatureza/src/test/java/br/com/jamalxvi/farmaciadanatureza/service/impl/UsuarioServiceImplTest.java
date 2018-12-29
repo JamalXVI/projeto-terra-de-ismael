@@ -4,6 +4,7 @@ import br.com.jamalxvi.farmaciadanatureza.FarmaciadanaturezaApplication;
 import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
 import br.com.jamalxvi.farmaciadanatureza.models.RequisicaoDoUsuario;
 import br.com.jamalxvi.farmaciadanatureza.models.Usuario;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.UsuarioDto;
 import br.com.jamalxvi.farmaciadanatureza.repository.UsuarioRepository;
 import br.com.jamalxvi.farmaciadanatureza.service.PessoaService;
 import br.com.jamalxvi.farmaciadanatureza.service.UsuarioService;
@@ -76,14 +77,14 @@ public class UsuarioServiceImplTest {
     public void findAll() {
         Usuario usuario = retornaUsuario("João", "jsilva", "senha",
                 "123.456.789-01", "da Silva");
-        List<Usuario> usuarios = this.usuarioService.findAll();
+        List<UsuarioDto> usuarios = this.usuarioService.findAll();
         assert (usuarios.size() > 0);
         usuario.setAtivo(false);
         this.usuarioRepository.save(usuario);
-        List<Usuario> erros = this.usuarioService.findAll();
+        List<UsuarioDto> erros = this.usuarioService.findAll();
         assert (erros.isEmpty());
         this.usuarioRepository.delete(usuario);
-        List<Usuario> semUsuarios = this.usuarioService.findAll();
+        List<UsuarioDto> semUsuarios = this.usuarioService.findAll();
         assert ( semUsuarios.isEmpty());
     }
 

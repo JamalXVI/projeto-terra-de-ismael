@@ -30,9 +30,9 @@ import java.util.stream.Collectors;
 * desta que será indentificado o filtro. Métodos:<br/>
 * -<b>Fazer Filtro</b><br/><code>doFilterInternal(HttpServletRequest request, HttpServletResponse
  * response, FilterChain chain)</code>
-* @author      Jamal XVI <henriquearantest@gmail.com>
 * @version     0.1
 * @since       0.1
+* @author      Jamal XVI <henriquearantest@gmail.com>
 */
 public class FiltroDeAutenticacaoDoToken extends OncePerRequestFilter {
 

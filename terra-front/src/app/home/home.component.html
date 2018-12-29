@@ -5,5 +5,8 @@
     </div>
     <button mat-raised-button color="primary" *ngIf='isAdmin' (click)='navAddUser()'>Adicionar Usuário</button>
   </div>
-  <app-tabela></app-tabela>
+  <div fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0px">
+    <app-gerador-receita fxFlex="50%" fxFlex.xs="100%">
+    </app-gerador-receita>
+  </div>
 </app-main-nav>

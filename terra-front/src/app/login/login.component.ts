@@ -6,9 +6,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CustomErrorStateMatcher } from '../core/CustomErrorStateMatcher.model';
 import { AuthService } from '../core/auth/auth-service.service';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-
 
 @Component({
   selector: 'app-login',

@@ -2,6 +2,7 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.PodeUsarEstoque;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Receitavel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -44,5 +45,6 @@ public class OutrosMedicamentosUsoEstoque extends EntidadeBase
   private LocalDate validadeReceita;
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = OutrosMedicamentosEstoque.class)
   @JoinColumn(name = "ID_OUT_MED_EST")
+  @JsonBackReference
   private OutrosMedicamentosEstoque estoque;
 }

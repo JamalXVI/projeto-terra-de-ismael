@@ -11,9 +11,9 @@ import java.io.IOException;
 
 /**
  * Classe responsável por lidar com a Autenticação
- * @author      Jamal XVI <henriquearantest@gmail.com>
  * @version     0.1
  * @since       0.1
+ * @author      Jamal XVI <henriquearantest@gmail.com>
  */
 @Component
 public class ManipuladorDeAutenticacaoFalhada extends SimpleUrlAuthenticationFailureHandler {

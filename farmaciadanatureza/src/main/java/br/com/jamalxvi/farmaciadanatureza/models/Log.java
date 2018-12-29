@@ -1,6 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumLogAcoes;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -39,6 +40,7 @@ import javax.validation.constraints.Size;
 public class Log extends EntidadeBase {
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = Usuario.class)
   @JoinColumn(name = "ID_USR")
+  @JsonBackReference
   private Usuario usuario;
   @Enumerated(value = EnumType.ORDINAL)
   @Column(name = "ACT_LOG")

@@ -19,7 +19,7 @@ export class MainNavComponent {
   username: String = '';
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
-      map(result => result.matches)
+      map(result => !!result.matches ? result.matches : false)
     );
 
   constructor(private authService: AuthService,

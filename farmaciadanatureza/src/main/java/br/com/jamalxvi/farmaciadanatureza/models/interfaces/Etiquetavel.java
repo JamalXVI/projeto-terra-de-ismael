@@ -7,9 +7,9 @@ import java.time.LocalDate;
  *  que forem imprimir uma etiqueta devem apersentar:<br/>
  *  -Posologia;<br/>
  *  -Vencimento da Receita;<br/>
- * @author Jamal XVI <henriquearantest@gmail.com>
  * @version 0.1
  * @since 0.1
+ * @author Jamal XVI <henriquearantest@gmail.com>
  */
 public interface Etiquetavel {
   public String getPosologia();

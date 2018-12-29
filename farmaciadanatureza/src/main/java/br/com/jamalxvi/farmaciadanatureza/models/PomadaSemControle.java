@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 @AttributeOverrides(value = {
         @AttributeOverride(name = "id", column = @Column(name = "ID_POM_SEM_CTL")),
         @AttributeOverride(name = "versao", column = @Column(name = "VER_POM_SEM_CTL")),
-        @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_POM_SEM_CTL"))
+        @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_POM_SEM_CTL"))
 })
 @Builder
 @Data

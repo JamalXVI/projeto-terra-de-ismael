@@ -1,6 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.DuracaoLotavel;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -39,12 +40,13 @@ import java.util.List;
 @Builder
 @Data
 public class Capsula extends Cientifica implements DuracaoLotavel {
-  @Column(name = "PES_MIN_CAP")
+  @Column(name = "PES_MIN_CAP", precision = 4)
   private BigDecimal pesoMinimo;
-  @Column(name = "PES_MAX_CAP")
+  @Column(name = "PES_MAX_CAP", precision = 4)
   private BigDecimal pesoMaximo;
   @Column(name = "DUR_LOT_CAP")
   private Long duracaoLote;
   @OneToMany(targetEntity = CapsulaEstoque.class, fetch = FetchType.LAZY, mappedBy = "capsula")
+  @JsonManagedReference
   private List<CapsulaEstoque> estoque;
 }
