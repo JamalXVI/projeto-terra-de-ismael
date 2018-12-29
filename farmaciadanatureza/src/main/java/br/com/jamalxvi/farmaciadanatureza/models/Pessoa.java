@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -28,31 +29,41 @@ import java.util.List;
  */
 @Entity
 @Table(name="PESSOA", uniqueConstraints = {@UniqueConstraint(columnNames = "CPF_PES")})
+@AttributeOverrides(value = {
+    @AttributeOverride(name = "id", column = @Column(name = "ID_PES")),
+    @AttributeOverride(name = "versao", column = @Column(name = "VER_PES")),
+    @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_PES"))
+})
 @Data
 @Builder
-public class Pessoa {
+public class Pessoa extends EntidadeBase {
 
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="ID_PES")
-    private Long id;
     @NotNull @NotEmpty
     @Size(max=255)
     @Column(name="NOM_PES")
     private String nome;
+
     @NotNull @Size(max=255) @NotEmpty
     @Column(name="SOB_PES")
     private String sobrenome;
+
+    @Column(name = "ATV_PES")
+    private Boolean ativo;
+
     @NotNull @Size(max=255)
     @Column(name="CPF_PES")
     @NotEmpty @NotNull @Size(max = 14)
     @Pattern(regexp = "([0-9]{3}[\\.][0-9]{3}[\\.][0-9]{3}-[0-9]{2})")
     private String cpf;
 
-    @OneToOne(mappedBy = "pessoa",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "pessoa",fetch = FetchType.LAZY, optional = true)
+    @JsonManagedReference
     private Usuario usuario;
 
-    @OneToOne(mappedBy = "pessoa",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "pessoa",fetch = FetchType.LAZY, optional = true)
+    @JsonManagedReference
     private Medico medico;
+
     @OneToMany(fetch = FetchType.LAZY, targetEntity = Receita.class, mappedBy = "pessoa")
     private List<Receita> receitas;
 

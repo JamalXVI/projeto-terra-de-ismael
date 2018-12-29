@@ -73,14 +73,15 @@ public class PessoaServiceImplMockTest {
     if (!violations.isEmpty()) {
       return null;
     }
-    Pessoa existeCpf = pessoaRepository.findByCpf(p.getCpf());
+    Pessoa existeCpf = pessoaRepository.findByCpf(p.getCpf()).orElse(null);
     if (existeCpf != null) {
       if (existeCpf.getUsuario() != null) {
         return null;
       }
       p = Pessoa.builder().usuario(p.getUsuario()).nome(p.getNome())
-          .sobrenome(p.getSobrenome()).cpf(existeCpf.getCpf()).id(existeCpf.getId())
+          .sobrenome(p.getSobrenome()).cpf(existeCpf.getCpf())
           .build();
+      p.setId(existeCpf.getId());
     }
     Pessoa pessoa = pessoaRepository.save(p);
 
@@ -125,7 +126,7 @@ public class PessoaServiceImplMockTest {
   }
 
   private Pessoa findByCpf(String cpf) {
-    Pessoa pessoa = pessoaRepository.findByCpf(cpf);
+    Pessoa pessoa = pessoaRepository.findByCpf(cpf).orElse(null);
     return pessoa;
   }
 
@@ -177,9 +178,10 @@ public class PessoaServiceImplMockTest {
 
   private List<Pessoa> bancoDePessoas() {
     List<Pessoa> pessoas = new ArrayList<>();
-    pessoas.add(Pessoa.builder().cpf("233.257.678-93").nome("João").sobrenome("da Silva")
-        .id(new Long(1))
-        .build());
+    Pessoa pessoa = Pessoa.builder().cpf("233.257.678-93").nome("João").sobrenome("da Silva")
+        .build();
+    pessoa.setId(1L);
+    pessoas.add(pessoa);
     return pessoas;
   }
 }

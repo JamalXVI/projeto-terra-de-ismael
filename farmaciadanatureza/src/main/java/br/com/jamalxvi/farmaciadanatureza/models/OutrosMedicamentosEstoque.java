@@ -2,6 +2,8 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumUnidadesMetricas;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Estocavel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -35,9 +37,11 @@ public class OutrosMedicamentosEstoque extends EntidadeBase implements Estocavel
     private BigDecimal quantidade;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = OutrosMedicamentos.class)
     @JoinColumn(name = "ID_OUT_MED")
+    @JsonBackReference
     private OutrosMedicamentos outrosMedicamentos;
     @OneToMany(mappedBy = "estoque", targetEntity = OutrosMedicamentosUsoEstoque.class,
             fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<OutrosMedicamentosUsoEstoque> usoEstoque;
     @Column(name = "LOT_OUT_MED_EST")
     private Long lote;

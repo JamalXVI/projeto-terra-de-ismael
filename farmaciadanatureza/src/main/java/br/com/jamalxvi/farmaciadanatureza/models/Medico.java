@@ -1,5 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -43,9 +45,11 @@ public class Medico extends EntidadeBase {
   @NotEmpty @NotNull @Size(max = 13)
   @Column(name = "CRM_MED")
   private String crm;
-  @OneToOne(cascade = CascadeType.REMOVE)
+  @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
   @JoinColumn(name="ID_PES")
+  @JsonBackReference
   private Pessoa pessoa;
   @OneToMany(mappedBy = "medico", targetEntity = Receita.class, fetch = FetchType.LAZY)
-  private List<Medico> medicos;
+  @JsonManagedReference
+  private List<Receita> receitas;
 }

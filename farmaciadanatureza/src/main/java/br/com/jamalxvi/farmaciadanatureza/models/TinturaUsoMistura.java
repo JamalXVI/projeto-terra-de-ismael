@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -27,6 +28,7 @@ import java.math.BigDecimal;
 public class TinturaUsoMistura extends EntidadeBase{
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TinturaDosagensEstoque.class)
     @JoinColumn(name = "ID_TIN_DOS_USO_EST")
+    @JsonBackReference
     private TinturaDosagensUsoEstoque dosagem;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TinturaUsoMisturaReceita.class)
     @JoinColumn(name = "ID_TIN_USO_MIS_REC")

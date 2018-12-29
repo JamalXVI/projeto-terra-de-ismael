@@ -3,6 +3,7 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumUnidadesMetricas;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Estocavel;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Lotavel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 
@@ -44,6 +45,7 @@ public class TinturaDosagensEstoque extends EntidadeBase implements Estocavel, L
   private BigDecimal quantidade;
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = HomeopatiaDosagens.class)
   @JoinColumn(name = "ID_TIN_DOS")
+  @JsonBackReference
   private TinturaDosagens tinturaDosagens;
   @Column(name = "LOT_TIN_DOS_EST")
   private Long lote;
