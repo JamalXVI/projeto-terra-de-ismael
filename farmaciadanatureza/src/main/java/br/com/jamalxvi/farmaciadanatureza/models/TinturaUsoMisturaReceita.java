@@ -30,6 +30,7 @@ public class TinturaUsoMisturaReceita extends EntidadeBase{
     private List<TinturaUsoMistura> usoMistura;
     @Column(name = "QTD_TIN_USO_MIS_REC")
     private BigDecimal quantidade;
+
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Receita.class)
     @JoinColumn(name = "ID_REC")
     @JsonManagedReference

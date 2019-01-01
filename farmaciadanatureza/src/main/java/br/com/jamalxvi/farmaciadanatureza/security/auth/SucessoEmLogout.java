@@ -13,21 +13,29 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe responsável por manipular o sucesso em logout
+ *
+ * @author Jamal XVI <henriquearantest@gmail.com>
+ * @version 0.1
+ * @since 0.1
+ */
 @Component
 public class SucessoEmLogout implements LogoutSuccessHandler {
 
-    @Autowired
-    ObjectMapper objectMapper;
+  @Autowired
+  ObjectMapper objectMapper;
 
-    @Override
-    public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse response, Authentication authentication)
-            throws IOException, ServletException {
-        Map<String, String> result = new HashMap<>();
-        result.put( "result", "success" );
-		response.setContentType("application/json");
-		response.getWriter().write( objectMapper.writeValueAsString( result ) );
-        response.setStatus(HttpServletResponse.SC_OK);
+  @Override
+  public void onLogoutSuccess(HttpServletRequest httpServletRequest,
+                              HttpServletResponse response, Authentication authentication)
+      throws IOException, ServletException {
+    Map<String, String> result = new HashMap<>();
+    result.put("result", "success");
+    response.setContentType("application/json");
+    response.getWriter().write(objectMapper.writeValueAsString(result));
+    response.setStatus(HttpServletResponse.SC_OK);
 
-    }
+  }
 
 }
