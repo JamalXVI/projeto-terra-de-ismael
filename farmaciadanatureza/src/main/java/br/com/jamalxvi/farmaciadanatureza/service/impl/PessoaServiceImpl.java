@@ -1,5 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.service.impl;
 
+import br.com.jamalxvi.farmaciadanatureza.enums.EnumExcecaoDto;
+import br.com.jamalxvi.farmaciadanatureza.exception.MensagemExcecao;
 import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.PessoaDto;
 import br.com.jamalxvi.farmaciadanatureza.repository.PessoaRepository;
@@ -12,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_LISTAR_PESSOA_ATRIBUTO_NULO;
 
 /**
  * Implementação do Serviço de pessoa
@@ -60,8 +64,13 @@ public class PessoaServiceImpl extends BaseService implements PessoaService {
     @Override
     public List<Pessoa> findAll() {
         List<Pessoa> pessoas = pessoaRepository.findAll();
-        return pessoas.stream().filter(p -> p.getAtivo() != null && p.getAtivo())
-                .collect(Collectors.toList());
+        try {
+            return pessoas.stream().filter(p -> p.getAtivo())
+                    .collect(Collectors.toList());
+        }catch (Exception e){
+            throw new MensagemExcecao(ERRO_LISTAR_PESSOA_ATRIBUTO_NULO.getMensagem(),
+                    EnumExcecaoDto.ATRIBUTO_EXISTE);
+        }
     }
 
     @Override

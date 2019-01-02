@@ -1,12 +1,15 @@
 package br.com.jamalxvi.farmaciadanatureza.service.impl;
 
+import br.com.jamalxvi.farmaciadanatureza.exception.MensagemExcecao;
 import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.PessoaDto;
 import br.com.jamalxvi.farmaciadanatureza.repository.PessoaRepository;
 import br.com.jamalxvi.farmaciadanatureza.service.PessoaService;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
@@ -21,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_LISTAR_PESSOA_ATRIBUTO_NULO;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
@@ -38,6 +42,9 @@ public class PessoaServiceImplTest {
     private List<Pessoa> pessoas;
 
     private List<Pessoa> pessoasBanco;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
@@ -109,11 +116,21 @@ public class PessoaServiceImplTest {
         assertPessoaEErros(pessoa, pessoas);
     }
 
+    // region: findAll
     @Test
     public void findAll() {
         List<Pessoa> pessoas = pessoaService.findAll();
         assertTrue(pessoas.size() == 1);
     }
+
+    @Test
+    public void findAll_Error() {
+        this.pessoasBanco.add(Pessoa.builder().nome("Júlio").build());
+        thrown.expect(MensagemExcecao.class);
+        thrown.expectMessage(ERRO_LISTAR_PESSOA_ATRIBUTO_NULO.getMensagem());
+        List<Pessoa> pessoas = pessoaService.findAll();
+    }
+    //endRegion
 
     @Test
     public void findAllDto() {

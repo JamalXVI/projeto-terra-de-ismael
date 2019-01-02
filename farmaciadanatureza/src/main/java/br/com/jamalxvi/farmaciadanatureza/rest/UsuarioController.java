@@ -1,6 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.rest;
 
-import br.com.jamalxvi.farmaciadanatureza.exception.ExcecaoDeConflitoDeRecurso;
+import br.com.jamalxvi.farmaciadanatureza.enums.EnumExcecaoDto;
+import br.com.jamalxvi.farmaciadanatureza.exception.MensagemExcecao;
 import br.com.jamalxvi.farmaciadanatureza.models.Usuario;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.RequisicaoDoUsuarioDto;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.UsuarioDto;
@@ -30,53 +31,53 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UsuarioController {
 
-  @Autowired
-  private UsuarioService userService;
+    @Autowired
+    private UsuarioService userService;
 
 
-  @RequestMapping(method = GET, value = "/user/{userId}")
-  public Usuario loadById(@PathVariable Long userId) {
-    return this.userService.findById(userId);
-  }
-
-  @RequestMapping(method = GET, value = "/user/all")
-  @PreAuthorize("hasRole('USUARIO')")
-  public List<UsuarioDto> loadAll() {
-    return this.userService.findAll();
-  }
-
-  @RequestMapping(method = GET, value = "/user/reset-credentials")
-  public ResponseEntity<Map> resetCredentials() {
-    this.userService.resetCredentials();
-    Map<String, String> result = new HashMap<>();
-    result.put("result", "success");
-    return ResponseEntity.accepted().body(result);
-  }
-
-  @RequestMapping("/quemsou")
-  @PreAuthorize("hasRole('USUARIO')")
-  public RequisicaoDoUsuarioDto user() {
-    Usuario usuario = (Usuario)
-        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    return RequisicaoDoUsuarioDto.builder().usuario(usuario.getUsuario())
-        .cpf(usuario.getPessoa().getCpf()).nome(usuario.getPessoa().getNome())
-        .id(usuario.getId()).sobrenome(usuario.getPessoa().getSobrenome()).build();
-  }
-
-
-  @RequestMapping(method = POST, value = "/signup")
-  public ResponseEntity<?> addUser(@RequestBody RequisicaoDoUsuarioDto requisicaoDoUsuarioDto,
-                                   UriComponentsBuilder ucBuilder) {
-
-    Usuario usuarioExiste = this.userService.findByUsuario(requisicaoDoUsuarioDto.getUsuario());
-    if (usuarioExiste != null) {
-      throw new ExcecaoDeConflitoDeRecurso(requisicaoDoUsuarioDto.getId(),
-          "Usuário Já Existe");
+    @RequestMapping(method = GET, value = "/user/{userId}")
+    public Usuario loadById(@PathVariable Long userId) {
+        return this.userService.findById(userId);
     }
-    Usuario user = this.userService.save(requisicaoDoUsuarioDto);
-    HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-    return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
-  }
+
+    @RequestMapping(method = GET, value = "/user/all")
+    @PreAuthorize("hasRole('USUARIO')")
+    public List<UsuarioDto> loadAll() {
+        return this.userService.findAll();
+    }
+
+    @RequestMapping(method = GET, value = "/user/reset-credentials")
+    public ResponseEntity<Map> resetCredentials() {
+        this.userService.resetCredentials();
+        Map<String, String> result = new HashMap<>();
+        result.put("result", "success");
+        return ResponseEntity.accepted().body(result);
+    }
+
+    @RequestMapping("/quemsou")
+    @PreAuthorize("hasRole('USUARIO')")
+    public RequisicaoDoUsuarioDto user() {
+        Usuario usuario = (Usuario)
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return RequisicaoDoUsuarioDto.builder().usuario(usuario.getUsuario())
+                .cpf(usuario.getPessoa().getCpf()).nome(usuario.getPessoa().getNome())
+                .id(usuario.getId()).sobrenome(usuario.getPessoa().getSobrenome()).build();
+    }
+
+
+    @RequestMapping(method = POST, value = "/signup")
+    public ResponseEntity<?> addUser(@RequestBody RequisicaoDoUsuarioDto requisicaoDoUsuarioDto,
+                                     UriComponentsBuilder ucBuilder) {
+
+        Usuario usuarioExiste = this.userService.findByUsuario(requisicaoDoUsuarioDto.getUsuario());
+        if (usuarioExiste != null) {
+            throw new MensagemExcecao("Usuário Já Existe", requisicaoDoUsuarioDto.getId(),
+                    EnumExcecaoDto.ATRIBUTO_EXISTE);
+        }
+        Usuario user = this.userService.save(requisicaoDoUsuarioDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
+    }
 
 }
