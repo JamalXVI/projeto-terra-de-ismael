@@ -1,6 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.service;
 
-import br.com.jamalxvi.farmaciadanatureza.models.RequisicaoDoUsuario;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.RequisicaoDoUsuarioDto;
 import br.com.jamalxvi.farmaciadanatureza.models.Usuario;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.UsuarioDto;
 
@@ -43,5 +43,5 @@ public interface UsuarioService {
    * @param user o usuário em questão
    * @return retorna o usuário salvo attached com o JPA
    */
-  Usuario save(RequisicaoDoUsuario user);
+  Usuario save(RequisicaoDoUsuarioDto user);
 }

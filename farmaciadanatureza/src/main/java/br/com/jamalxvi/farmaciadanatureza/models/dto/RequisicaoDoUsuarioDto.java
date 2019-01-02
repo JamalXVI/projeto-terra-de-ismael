@@ -1,4 +1,4 @@
-package br.com.jamalxvi.farmaciadanatureza.models;
+package br.com.jamalxvi.farmaciadanatureza.models.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class RequisicaoDoUsuario {
+public class RequisicaoDoUsuarioDto {
 
   private Long id;
 

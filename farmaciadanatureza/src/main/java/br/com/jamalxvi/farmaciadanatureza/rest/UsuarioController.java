@@ -1,8 +1,8 @@
 package br.com.jamalxvi.farmaciadanatureza.rest;
 
 import br.com.jamalxvi.farmaciadanatureza.exception.ExcecaoDeConflitoDeRecurso;
-import br.com.jamalxvi.farmaciadanatureza.models.RequisicaoDoUsuario;
 import br.com.jamalxvi.farmaciadanatureza.models.Usuario;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.RequisicaoDoUsuarioDto;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.UsuarioDto;
 import br.com.jamalxvi.farmaciadanatureza.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,25 +55,25 @@ public class UsuarioController {
 
   @RequestMapping("/quemsou")
   @PreAuthorize("hasRole('USUARIO')")
-  public RequisicaoDoUsuario user() {
+  public RequisicaoDoUsuarioDto user() {
     Usuario usuario = (Usuario)
         SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    return RequisicaoDoUsuario.builder().usuario(usuario.getUsuario())
+    return RequisicaoDoUsuarioDto.builder().usuario(usuario.getUsuario())
         .cpf(usuario.getPessoa().getCpf()).nome(usuario.getPessoa().getNome())
         .id(usuario.getId()).sobrenome(usuario.getPessoa().getSobrenome()).build();
   }
 
 
   @RequestMapping(method = POST, value = "/signup")
-  public ResponseEntity<?> addUser(@RequestBody RequisicaoDoUsuario requisicaoDoUsuario,
+  public ResponseEntity<?> addUser(@RequestBody RequisicaoDoUsuarioDto requisicaoDoUsuarioDto,
                                    UriComponentsBuilder ucBuilder) {
 
-    Usuario usuarioExiste = this.userService.findByUsuario(requisicaoDoUsuario.getUsuario());
+    Usuario usuarioExiste = this.userService.findByUsuario(requisicaoDoUsuarioDto.getUsuario());
     if (usuarioExiste != null) {
-      throw new ExcecaoDeConflitoDeRecurso(requisicaoDoUsuario.getId(),
+      throw new ExcecaoDeConflitoDeRecurso(requisicaoDoUsuarioDto.getId(),
           "Usuário Já Existe");
     }
-    Usuario user = this.userService.save(requisicaoDoUsuario);
+    Usuario user = this.userService.save(requisicaoDoUsuarioDto);
     HttpHeaders headers = new HttpHeaders();
     headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
     return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);

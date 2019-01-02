@@ -3,7 +3,7 @@ package br.com.jamalxvi.farmaciadanatureza.service.impl;
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumAutorizacaoUsuario;
 import br.com.jamalxvi.farmaciadanatureza.models.Autoridade;
 import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
-import br.com.jamalxvi.farmaciadanatureza.models.RequisicaoDoUsuario;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.RequisicaoDoUsuarioDto;
 import br.com.jamalxvi.farmaciadanatureza.models.Usuario;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.UsuarioDto;
 import br.com.jamalxvi.farmaciadanatureza.repository.UsuarioRepository;
@@ -83,16 +83,16 @@ public class UsuarioServiceImpl extends BaseService implements UsuarioService {
   }
 
   @Override
-  public Usuario save(RequisicaoDoUsuario requisicaoDoUsuario) {
-    Usuario usuario = Usuario.builder().usuario(requisicaoDoUsuario.getUsuario())
-        .senha(requisicaoDoUsuario.getSenha()).build();
+  public Usuario save(RequisicaoDoUsuarioDto requisicaoDoUsuarioDto) {
+    Usuario usuario = Usuario.builder().usuario(requisicaoDoUsuarioDto.getUsuario())
+        .senha(requisicaoDoUsuarioDto.getSenha()).build();
     Set<ConstraintViolation<Usuario>> validate = validator.validate(usuario);
     Usuario jaTemUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
     if (!validate.isEmpty() || jaTemUsuario != null) {
       return null;
     }
-    Pessoa pessoa = Pessoa.builder().cpf(requisicaoDoUsuario.getCpf())
-        .nome(requisicaoDoUsuario.getNome()).sobrenome(requisicaoDoUsuario.getSobrenome())
+    Pessoa pessoa = Pessoa.builder().cpf(requisicaoDoUsuarioDto.getCpf())
+        .nome(requisicaoDoUsuarioDto.getNome()).sobrenome(requisicaoDoUsuarioDto.getSobrenome())
         .build();
     pessoa = pessoaService.save(pessoa);
     if (pessoa == null) {
