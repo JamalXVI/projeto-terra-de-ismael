@@ -54,7 +54,6 @@ public class UsuarioServiceImpl extends BaseService implements UsuarioService {
   }
 
   @Override
-  @PreAuthorize("hasRole('USER')")
   public Usuario findByUsuario(String usuario) throws UsernameNotFoundException {
     Usuario u = usuarioRepository.findByUsuario(usuario);
     if (u != null && !u.getAtivo()) {

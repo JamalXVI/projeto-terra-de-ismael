@@ -40,6 +40,7 @@ public class UsuarioController {
   }
 
   @RequestMapping(method = GET, value = "/user/all")
+  @PreAuthorize("hasRole('USUARIO')")
   public List<UsuarioDto> loadAll() {
     return this.userService.findAll();
   }
@@ -52,26 +53,6 @@ public class UsuarioController {
     return ResponseEntity.accepted().body(result);
   }
 
-
-  @RequestMapping(method = POST, value = "/signup")
-  public ResponseEntity<?> addUser(@RequestBody RequisicaoDoUsuario requisicaoDoUsuario,
-      UriComponentsBuilder ucBuilder) {
-
-    Usuario usuarioExiste = this.userService.findByUsuario(requisicaoDoUsuario.getUsuario());
-    if (usuarioExiste != null) {
-      throw new ExcecaoDeConflitoDeRecurso(requisicaoDoUsuario.getId(),
-              "Usuário Já Existe");
-    }
-    Usuario user = this.userService.save(requisicaoDoUsuario);
-    HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-    return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
-  }
-
-  /*
-   * We are not using userService.findByUsername here(we could), so it is good that we are making
-   * sure that the user has role "ROLE_USER" to access this endpoint.
-   */
   @RequestMapping("/quemsou")
   @PreAuthorize("hasRole('USUARIO')")
   public RequisicaoDoUsuario user() {
@@ -80,6 +61,22 @@ public class UsuarioController {
     return RequisicaoDoUsuario.builder().usuario(usuario.getUsuario())
         .cpf(usuario.getPessoa().getCpf()).nome(usuario.getPessoa().getNome())
         .id(usuario.getId()).sobrenome(usuario.getPessoa().getSobrenome()).build();
+  }
+
+
+  @RequestMapping(method = POST, value = "/signup")
+  public ResponseEntity<?> addUser(@RequestBody RequisicaoDoUsuario requisicaoDoUsuario,
+                                   UriComponentsBuilder ucBuilder) {
+
+    Usuario usuarioExiste = this.userService.findByUsuario(requisicaoDoUsuario.getUsuario());
+    if (usuarioExiste != null) {
+      throw new ExcecaoDeConflitoDeRecurso(requisicaoDoUsuario.getId(),
+          "Usuário Já Existe");
+    }
+    Usuario user = this.userService.save(requisicaoDoUsuario);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+    return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
   }
 
 }
