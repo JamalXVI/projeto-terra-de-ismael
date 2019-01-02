@@ -1,6 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -28,43 +30,66 @@ import java.util.List;
  * @since 0.1
  */
 @Entity
-@Table(name="PESSOA", uniqueConstraints = {@UniqueConstraint(columnNames = "CPF_PES")})
+@Table(name = "PESSOA", uniqueConstraints = {@UniqueConstraint(columnNames = "CPF_PES")})
 @AttributeOverrides(value = {
-    @AttributeOverride(name = "id", column = @Column(name = "ID_PES")),
-    @AttributeOverride(name = "versao", column = @Column(name = "VER_PES")),
-    @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_PES"))
+        @AttributeOverride(name = "id", column = @Column(name = "ID_PES")),
+        @AttributeOverride(name = "versao", column = @Column(name = "VER_PES")),
+        @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_PES"))
 })
 @Data
-@Builder
 public class Pessoa extends EntidadeBase {
 
-    @NotNull @NotEmpty
-    @Size(max=255)
-    @Column(name="NOM_PES")
+    @NotNull
+    @NotEmpty
+    @Size(max = 255)
+    @Column(name = "NOM_PES")
     private String nome;
 
-    @NotNull @Size(max=255) @NotEmpty
-    @Column(name="SOB_PES")
+    @NotNull
+    @Size(max = 255)
+    @NotEmpty
+    @Column(name = "SOB_PES")
     private String sobrenome;
 
     @Column(name = "ATV_PES")
     private Boolean ativo;
 
-    @NotNull @Size(max=255)
-    @Column(name="CPF_PES")
-    @NotEmpty @NotNull @Size(max = 14)
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "CPF_PES")
+    @NotEmpty
+    @NotNull
+    @Size(max = 14)
     @Pattern(regexp = "([0-9]{3}[\\.][0-9]{3}[\\.][0-9]{3}-[0-9]{2})")
     private String cpf;
 
-    @OneToOne(mappedBy = "pessoa",fetch = FetchType.LAZY, optional = true)
+    @OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY, optional = true)
     @JsonManagedReference
     private Usuario usuario;
 
-    @OneToOne(mappedBy = "pessoa",fetch = FetchType.LAZY, optional = true)
+    @OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY, optional = true)
     @JsonManagedReference
     private Medico medico;
 
     @OneToMany(fetch = FetchType.LAZY, targetEntity = Receita.class, mappedBy = "pessoa")
     private List<Receita> receitas;
 
+
+    @Builder
+    public Pessoa(Long id, Integer versao, LocalDate dataCriacao, String nome, String sobrenome,
+                  Boolean ativo, String cpf, Usuario usuario, Medico medico,
+                  List<Receita> receitas) {
+        super(id, versao, dataCriacao);
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+        this.ativo = ativo;
+        this.cpf = cpf;
+        this.usuario = usuario;
+        this.medico = medico;
+        this.receitas = receitas;
+    }
+
+
+    public Pessoa() {
+    }
 }

@@ -1,6 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.service;
 
 import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.PessoaDto;
 
 import java.util.List;
 
@@ -34,6 +35,14 @@ public interface PessoaService {
    * @return a Lista com todas as pessoas
    */
   List<Pessoa> findAll();
+
+
+  /**
+   * Retorna todas as pessoas ativas convertidas em Dto
+   *
+   * @return a Lista com todas as pessoas em Dto
+   */
+  List<PessoaDto> findAllDto();
 
   /**
    * Salva a pessoa no banco

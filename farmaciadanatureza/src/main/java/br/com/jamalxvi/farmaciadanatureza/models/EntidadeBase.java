@@ -1,6 +1,8 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,6 +29,8 @@ import java.time.LocalDate;
  */
 @Data
 @MappedSuperclass
+@AllArgsConstructor
+@NoArgsConstructor
 public abstract class EntidadeBase {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
