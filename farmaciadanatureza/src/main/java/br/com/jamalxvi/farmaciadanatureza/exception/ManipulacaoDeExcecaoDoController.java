@@ -5,6 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+/**
+ * Classe responsável por lidar com as Exceções
+ *
+ * @author Jamal XVI <henriquearantest@gmail.com>
+ * @version 0.1
+ * @since 0.1
+ */
 @ControllerAdvice
 public class ManipulacaoDeExcecaoDoController {
 
