@@ -9,8 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = {FarmaciadanaturezaApplication.class})
 public class FarmaciadanaturezaApplicationTests {
 
-	@Test
-	public void contextLoads() {
-	}
+    @Test
+    public void contextLoads() {
+    }
 
 }

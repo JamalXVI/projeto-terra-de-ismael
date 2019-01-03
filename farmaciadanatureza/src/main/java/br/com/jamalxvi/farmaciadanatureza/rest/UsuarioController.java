@@ -37,13 +37,18 @@ public class UsuarioController {
 
     @RequestMapping(method = GET, value = "/user/{userId}")
     public Usuario loadById(@PathVariable Long userId) {
-        return this.userService.findById(userId);
+        return this.userService.encontrarPeloId(userId);
     }
 
+    @RequestMapping(method = GET, value = "/user/find")
+    @PreAuthorize("hasRole('USUARIO')")
+    public UsuarioDto encontrarUsuario(String usuario) {
+        return this.userService.encontrarPeloNomeDeUsuarioDto(usuario);
+    }
     @RequestMapping(method = GET, value = "/user/all")
     @PreAuthorize("hasRole('USUARIO')")
     public List<UsuarioDto> loadAll() {
-        return this.userService.findAll();
+        return this.userService.listarTodos();
     }
 
     @RequestMapping(method = GET, value = "/user/reset-credentials")
@@ -69,12 +74,12 @@ public class UsuarioController {
     public ResponseEntity<?> addUser(@RequestBody RequisicaoDoUsuarioDto requisicaoDoUsuarioDto,
                                      UriComponentsBuilder ucBuilder) {
 
-        Usuario usuarioExiste = this.userService.findByUsuario(requisicaoDoUsuarioDto.getUsuario());
+        Usuario usuarioExiste = this.userService.encontrarPeloNomeDeUsuario(requisicaoDoUsuarioDto.getUsuario());
         if (usuarioExiste != null) {
             throw new MensagemExcecao("Usuário Já Existe", requisicaoDoUsuarioDto.getId(),
                     EnumExcecaoDto.ATRIBUTO_EXISTE);
         }
-        Usuario user = this.userService.save(requisicaoDoUsuarioDto);
+        Usuario user = this.userService.salvar(requisicaoDoUsuarioDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);

@@ -1,13 +1,16 @@
 package br.com.jamalxvi.farmaciadanatureza.service.impl;
 
+import br.com.jamalxvi.farmaciadanatureza.BaseTest;
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumAutorizacaoUsuario;
 import br.com.jamalxvi.farmaciadanatureza.models.Autoridade;
 import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
-import br.com.jamalxvi.farmaciadanatureza.models.dto.RequisicaoDoUsuarioDto;
 import br.com.jamalxvi.farmaciadanatureza.models.Usuario;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.RequisicaoDoUsuarioDto;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.UsuarioDto;
 import br.com.jamalxvi.farmaciadanatureza.repository.UsuarioRepository;
 import br.com.jamalxvi.farmaciadanatureza.service.AutoridadeService;
 import br.com.jamalxvi.farmaciadanatureza.service.PessoaService;
+import br.com.jamalxvi.farmaciadanatureza.service.UsuarioService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,226 +18,238 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_INSERIR_USUARIO;
+import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_USUARIO_NAO_ENCONTRADO;
+import static junit.framework.TestCase.assertTrue;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-public class UsuarioServiceImplTest {
+public class UsuarioServiceImplTest extends BaseTest {
 
-  private Validator validator;
-  List<Usuario> usuarios;
-  @Mock
-  private UsuarioRepository usuarioRepository;
-  @Mock
-  private PessoaService pessoaService;
-  @Mock
-  private AutoridadeService autoridadeService;
-  @Mock
-  private PasswordEncoder passwordEncoder;
+    List<Usuario> usuarios;
+    List<Usuario> bancoUsuarios;
+    private Validator validator;
+    @Mock
+    private UsuarioRepository usuarioRepository;
+    @Mock
+    private PessoaService pessoaService;
+    @Mock
+    private AutoridadeService autoridadeService;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
-  @Before
-  public void setUp() throws Exception {
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    validator = factory.getValidator();
-    usuarios = new ArrayList<>();
-    when(usuarioRepository.findById(anyLong())).thenAnswer(new Answer<Optional<Usuario>>() {
-      @Override
-      public Optional<Usuario> answer(InvocationOnMock invocationOnMock) throws Throwable {
-        return pesquisarUsuarioBanco((Long) invocationOnMock.getArguments()[0]);
-      }
-    });
-    when(usuarioRepository.findByUsuario(anyString())).thenAnswer(new Answer<Usuario>() {
-      @Override
-      public Usuario answer(InvocationOnMock invocationOnMock) throws Throwable {
-        return pesquisarUsuarioBanco((String) invocationOnMock.getArguments()[0]);
-      }
-    });
-    when(usuarioRepository.findAll()).thenReturn(bancoDeUsuarios());
-    when(usuarioRepository.save(any())).thenAnswer(new Answer<Usuario>() {
-      @Override
-      public Usuario answer(InvocationOnMock invocationOnMock) throws Throwable {
-        return (Usuario) invocationOnMock.getArguments()[0];
-      }
-    });
-    when(pessoaService.save(any())).thenAnswer(new Answer<Pessoa>() {
-      @Override
-      public Pessoa answer(InvocationOnMock invocationOnMock) throws Throwable {
-        return (Pessoa) invocationOnMock.getArguments()[0];
-      }
-    });
-    when(this.autoridadeService.findByAutorizacao((EnumAutorizacaoUsuario) any()))
-        .thenAnswer(new Answer<Autoridade>() {
-          @Override
-          public Autoridade answer(InvocationOnMock invocationOnMock) throws Throwable {
-            return Autoridade.builder()
-                .autorizacao((EnumAutorizacaoUsuario) invocationOnMock.getArguments()[0])
-                .id(new Long(1)).build();
-          }
+    private UsuarioService usuarioService;
+
+    @Before
+    public void setUp() throws Exception {
+        this.usuarioService = new UsuarioServiceImpl(usuarioRepository, passwordEncoder,
+                pessoaService, autoridadeService);
+        this.bancoUsuarios = new ArrayList<>();
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+        usuarios = new ArrayList<>();
+        when(usuarioRepository.findById(anyLong())).thenAnswer(new Answer<Optional<Usuario>>() {
+            @Override
+            public Optional<Usuario> answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return pesquisarUsuarioBanco((Long) invocationOnMock.getArguments()[0]);
+            }
         });
-    when(this.passwordEncoder.encode(any()))
-        .thenReturn("$2a$04$UIeR96XNyDwQHJE4G2DWquYMZmopzZ0z5o5f1bc2KA.YgFhGU7/aW");
-  }
-
-  @After
-  public void tearDown() throws Exception {
-
-  }
-
-  @Test
-  public void resetCredentials() {
-  }
-
-  @Test
-  public void findByUsuario() {
-    List<Usuario> usrs = bancoDeUsuarios();
-    usrs.parallelStream().forEach(usr -> {
-      usuarios.add(acharUsuario(usr.getUsuario()));
-    });
-    usuarios =this.filtrarErros();
-    assert (usuarios.size() == 1);
-  }
-  public Usuario acharUsuario(String usuario) throws UsernameNotFoundException {
-    Usuario u = usuarioRepository.findByUsuario(usuario);
-    if (u != null && !u.getAtivo()) {
-      return null;
+        when(usuarioRepository.findByUsuario(anyString())).thenAnswer(new Answer<Optional<Usuario>>() {
+            @Override
+            public Optional<Usuario> answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return pesquisarUsuarioBanco((String) invocationOnMock.getArguments()[0]);
+            }
+        });
+        when(usuarioRepository.findAll()).thenReturn(bancoDeUsuarios());
+        when(usuarioRepository.save(any())).thenAnswer(new Answer<Usuario>() {
+            @Override
+            public Usuario answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return (Usuario) invocationOnMock.getArguments()[0];
+            }
+        });
+        when(pessoaService.save(any())).thenAnswer(new Answer<Pessoa>() {
+            @Override
+            public Pessoa answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return (Pessoa) invocationOnMock.getArguments()[0];
+            }
+        });
+        when(this.autoridadeService.findByAutorizacao((EnumAutorizacaoUsuario) any()))
+                .thenAnswer(new Answer<Autoridade>() {
+                    @Override
+                    public Autoridade answer(InvocationOnMock invocationOnMock) throws Throwable {
+                        return Autoridade.builder()
+                                .autorizacao((EnumAutorizacaoUsuario) invocationOnMock.getArguments()[0])
+                                .id(new Long(1)).build();
+                    }
+                });
+        when(this.passwordEncoder.encode(any()))
+                .thenReturn("$2a$04$UIeR96XNyDwQHJE4G2DWquYMZmopzZ0z5o5f1bc2KA.YgFhGU7/aW");
     }
-    return u;
-  }
-  @Test
-  public void findById() {
-    List<Usuario> usrs = bancoDeUsuarios();
-    usrs.parallelStream().forEach(usr -> {
-      usuarios.add(encontrarUsuarioId(usr.getId()));
-    });
-    usuarios = this.filtrarErros();
-    assert (usuarios.size() == 1);
-  }
 
-  private Usuario encontrarUsuarioId(Long id) {
-    Usuario u = usuarioRepository.findById(id).orElse(null);
-    if (u != null && !u.getAtivo()) {
-      return null;
+    @After
+    public void tearDown() throws Exception {
+
     }
-    return u;
-  }
 
-  @Test
-  public void findAll() {
-    List<Usuario> result = usuarioRepository.findAll();
-    List<Usuario> ftr = result.stream().filter(u -> u.getAtivo()).collect(Collectors.toList());
-    assert(!ftr.isEmpty());
-  }
-
-  @Test
-  public void save() {
-    List<RequisicaoDoUsuarioDto> requisicaoDoUsuarioDtos = bancoDeRequisicaoUsuarios();
-    requisicaoDoUsuarioDtos.parallelStream().forEach(usr -> {
-      this.usuarios.add(salvarUsuario(usr));
-    });
-    this.usuarios = filtrarErros();
-    assert (this.usuarios.size() == 1);
-  }
-
-  private Usuario salvarUsuario(RequisicaoDoUsuarioDto usr) {
-    Usuario usuario = Usuario.builder().usuario(usr.getUsuario())
-        .senha(usr.getSenha()).build();
-    Set<ConstraintViolation<Usuario>> validate = validator.validate(usuario);
-    Usuario jaTemUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
-    if (!validate.isEmpty() || jaTemUsuario != null) {
-      return null;
+    // region encontrarPeloNomeDeUsuario
+    @Test
+    public void encontrarPeloNomeDeUsuarioDto() {
+        UsuarioDto usuario = usuarioService.encontrarPeloNomeDeUsuarioDto("jsilva");
+        assertTrue("Usuario não é nulo", usuario != null);
+        assertTrue("Usuário possuí o mesmo nome de usuário",
+                usuario.getUsuario().equals("jsilva"));
+        assertTrue("Usuário possuí o mesmo id",
+                usuario.getId().equals(1L));
     }
-    Pessoa pessoa = Pessoa.builder().cpf(usr.getCpf())
-        .nome(usr.getNome()).sobrenome(usr.getSobrenome())
-        .build();
-    pessoa = pessoaService.save(pessoa);
-    if (pessoa == null) {
-      return null;
+    @Test
+    public void encontrarPeloNomeDeUsuarioDtoFalha() {
+        this.esperarErroGenerico(ERRO_USUARIO_NAO_ENCONTRADO.getMensagem());
+        UsuarioDto usuario = usuarioService.encontrarPeloNomeDeUsuarioDto("inexistente");
     }
-    usuario.setPessoa(pessoa);
-    List<Autoridade> auth = autoridadeService.findByAutorizacao(
-        EnumAutorizacaoUsuario.ROLE_USUARIO.name());
-    usuario.setAutoridades(auth);
-    usuario.setAtivo(true);
-    usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-    usuario = this.usuarioRepository.save(usuario);
-    pessoa.setUsuario(usuario);
-    pessoaService.save(pessoa);
-    return usuario;
-  }
+    //
 
-  private Optional<Usuario> pesquisarUsuarioBanco(Long id) {
-    return bancoDeUsuarios().stream().filter(usr -> usr.getId().equals(id.longValue()))
-        .findFirst();
-  }
 
-  private Usuario pesquisarUsuarioBanco(String usuario) {
-    return bancoDeUsuarios().stream().filter(usr -> usr.getUsuario().equals(usuario))
-        .findFirst().orElse(null);
-  }
+    // region encontrarUsuarioId
+    @Test
+    public void encontrarPeloNomeDeUsuario() {
+        Usuario usuario = usuarioService.encontrarPeloNomeDeUsuario("jsilva");
+        assertTrue("Usuario não é nulo", usuario != null);
+        assertTrue("Usuário possuí o mesmo nome de usuário",
+                usuario.getUsername().equals("jsilva"));
+        assertTrue("Usuário possuí o mesmo id",
+                usuario.getId().equals(1L));
+        assertTrue("Usuário e a Pessoa estão ativos",
+                usuario.getAtivo() && usuario.getPessoa().getAtivo());
+    }
+    @Test
+    public void encontrarPeloNomeDeUsuarioFalha() {
+        this.esperarErroGenerico(ERRO_USUARIO_NAO_ENCONTRADO.getMensagem());
+        Usuario usuario = usuarioService.encontrarPeloNomeDeUsuario("inexistente");
+    }
+    //end
 
-  private List<RequisicaoDoUsuarioDto> bancoDeRequisicaoUsuarios() {
-    List<RequisicaoDoUsuarioDto> usuarios = new ArrayList<>();
-    usuarios.add(criarRequisicaoDoUsuario(new Long(1), "João", "da Silva",
-        "123.456.789-25", "jsilva", "123456"));
-    usuarios.add(criarRequisicaoDoUsuario(new Long(2),
-        "Joana", "da Silva", "465.456.789-25", "josilva",
-        "123456"));
-    usuarios.add(criarRequisicaoDoUsuario(new Long(1), "João",
-        "da Silva", "123.456.789-93", "jsilva", "12"));
-    usuarios.add(criarRequisicaoDoUsuario(new Long(1), "João",
-        "da Silva", "123.456.789-93", "jsilva", ""));
-    usuarios.add(criarRequisicaoDoUsuario(new Long(3), "João",
-        "da Silva", "123.456.789-93", "abc", ""));
-    return usuarios;
-  }
+    // region encontrarUsuarioId
+    @Test
+    public void encontrarUsuarioId() {
+        Usuario usuario = this.usuarioService.encontrarPeloId(1L);
+        assertTrue("Usuário não é nulo", usuario != null);
+        assertTrue("Usuário é igual ao encontrado no banco", usuario.equals(this.bancoUsuarios
+                .get(0)));
+    }
+    @Test
+    public void usuarioNaoEncontrado() {
+        this.esperarErroGenerico(ERRO_USUARIO_NAO_ENCONTRADO.getMensagem());
+        Usuario usuario = this.usuarioService.encontrarPeloId(99L);
+    }
+    //end
 
-  private List<Usuario> bancoDeUsuarios() {
-    List<Usuario> usuarios = new ArrayList<>();
-    usuarios.add(retornarUsuarioMockado(new Long(1), "João", "da Silva",
-        "123.456.789-25", "jsilva", "123456", true));
-    usuarios.add(retornarUsuarioMockado(new Long(4),
-        "Guilhermina", "da Silva", "654.123.987-85", "guiSilva",
-        "123456", false));
-    return usuarios;
-  }
+    // region listarTodos
+    @Test
+    public void listarTodos() {
+        List<UsuarioDto> result = usuarioService.listarTodos();
+        assertTrue("O resultado não deve ser nulo", result != null);
+        assertTrue("A lista deve conter elementos", result.size() == 1);
+    }
 
-  private List<Usuario> filtrarErros() {
-    return usuarios.stream().filter(p -> p != null).collect(Collectors.toList());
-  }
+    @Test
+    public void listarTodosVazio() {
+        when(this.usuarioRepository.findAll()).thenReturn(new ArrayList<>());
+        List<UsuarioDto> result = usuarioService.listarTodos();
+        assertTrue("O resultado não deve ser nulo", result != null);
+        assertTrue("A lista não deve conter elementos", result.size() == 0);
+    }
+    //end
 
-  private RequisicaoDoUsuarioDto criarRequisicaoDoUsuario(Long id, String nome, String sobrenome, String cpf,
-                                                          String usuario, String senha) {
-    return RequisicaoDoUsuarioDto.builder().id(id).nome(nome).sobrenome(sobrenome).cpf(cpf)
-        .usuario(usuario).senha(senha).build();
-  }
+    // region salvar
+    @Test
+    public void salvarFalhaValidacoes() {
+        List<RequisicaoDoUsuarioDto> requisicaoDoUsuarioDtos = bancoDeRequisicaoUsuarios();
+        this.esperarErroGenerico(ERRO_INSERIR_USUARIO.getMensagem());
+        requisicaoDoUsuarioDtos.parallelStream().forEach(usr -> {
+            this.usuarios.add(this.usuarioService.salvar(usr));
+        });
+    }
 
-  private Usuario retornarUsuarioMockado(Long id, String nome, String sobrenome, String cpf, String usr,
-                                         String senha, Boolean ativo) {
-    Pessoa pessoa = criarPessoa(id, nome, sobrenome, cpf);
-    Usuario usuario = Usuario.builder().id(id).usuario(usr).ativo(ativo)
-        .senha(senha).pessoa(pessoa).build();
-    return usuario;
-  }
+    @Test
+    public void salvar() {
+        RequisicaoDoUsuarioDto usuario = criarRequisicaoDoUsuario(new Long(2),
+                "Joana", "da Silva", "465.456.789-25", "josilva",
+                "123456");
+        Usuario us = this.usuarioService.salvar(usuario);
+        assertTrue("Usuário deve existir", us != null);
+        assertTrue("Usuário deve ter o mesmo usuário", usuario.getUsuario().equals(us
+                .getUsuario()));
+        assertTrue("Usuário deve ter a mesma senha", passwordEncoder.encode(usuario.getSenha())
+                .equals(us.getSenha()));
+        assertTrue("Usuário deve ter o mesmo cpf", usuario.getCpf().equals(us
+                .getPessoa().getCpf()));
+        assertTrue("Usuário deve ter o mesmo nome", usuario.getNome().equals(us
+                .getPessoa().getNome()));
+        assertTrue("Usuário deve ter o mesmo sobrenome", usuario.getSobrenome().equals(us
+                .getPessoa().getSobrenome()));
+    }
+    //end
 
-  private Pessoa criarPessoa(Long id, String nome, String sobrenome, String cpf) {
-    Pessoa pessoa = Pessoa.builder().nome(nome).sobrenome(sobrenome).cpf(cpf).build();
-    pessoa.setId(id);
-    return pessoa;
-  }
+    private Optional<Usuario> pesquisarUsuarioBanco(Long id) {
+        return bancoDeUsuarios().stream().filter(usr -> usr.getId().equals(id.longValue()))
+                .findFirst();
+    }
+
+    private Optional<Usuario> pesquisarUsuarioBanco(String usuario) {
+        return bancoDeUsuarios().stream().filter(usr -> usr.getUsuario().equals(usuario))
+                .findFirst();
+    }
+
+    private List<RequisicaoDoUsuarioDto> bancoDeRequisicaoUsuarios() {
+        List<RequisicaoDoUsuarioDto> usuarios = new ArrayList<>();
+        usuarios.add(criarRequisicaoDoUsuario(new Long(1), "João", "da Silva",
+                "123.456.789-25", "jsilva", "123456"));
+        usuarios.add(criarRequisicaoDoUsuario(new Long(1), "João",
+                "da Silva", "123.456.789-93", "jsilva", "12"));
+        usuarios.add(criarRequisicaoDoUsuario(new Long(1), "João",
+                "da Silva", "123.456.789-93", "jsilva", ""));
+        usuarios.add(criarRequisicaoDoUsuario(new Long(3), "João",
+                "da Silva", "123.456.789-93", "abc", ""));
+        return usuarios;
+    }
+
+    private List<Usuario> bancoDeUsuarios() {
+        this.bancoUsuarios.add(retornarUsuarioMockado(new Long(1), "João", "da Silva",
+                "123.456.789-25", "jsilva", "123456", true));
+        bancoUsuarios.add(retornarUsuarioMockado(new Long(4),
+                "Guilhermina", "da Silva", "654.123.987-85", "guiSilva",
+                "123456", false));
+        return bancoUsuarios;
+    }
+
+    private List<Usuario> filtrarErros() {
+        return usuarios.stream().filter(p -> p != null).collect(Collectors.toList());
+    }
+
+    private RequisicaoDoUsuarioDto criarRequisicaoDoUsuario(Long id, String nome, String sobrenome, String cpf,
+                                                            String usuario, String senha) {
+        return RequisicaoDoUsuarioDto.builder().id(id).nome(nome).sobrenome(sobrenome).cpf(cpf)
+                .usuario(usuario).senha(senha).build();
+    }
+
+    private Usuario retornarUsuarioMockado(Long id, String nome, String sobrenome, String cpf, String usr,
+                                           String senha, Boolean ativo) {
+        Pessoa pessoa = Pessoa.builder().nome(nome).sobrenome(sobrenome).cpf(cpf).id(id).ativo(ativo)
+                .build();
+        Usuario usuario = Usuario.builder().id(id).usuario(usr).ativo(ativo)
+                .senha(senha).pessoa(pessoa).build();
+        return usuario;
+    }
 }

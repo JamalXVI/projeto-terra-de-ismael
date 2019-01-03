@@ -14,7 +14,10 @@ import lombok.Getter;
 @Getter
 public enum EnumExcecaoDto {
     ATRIBUTO_EXISTE(1L, "Atributo Existe"),
-    ATRIBUTOS_VAZIOS(2L, "Atributo Nulo");
+    ATRIBUTOS_VAZIOS(2L, "Atributo Nulo"),
+    NAO_ENCONTRADO(3L, "Não Encontrado"),
+    ATRIBUTOS_VAZIOS_OU_NAO_ENCONTRADO(4L, "Atributo Nulo ou Não Encontrado"),
+    SALVAR(5L, "Erro ao Salvar"),;
 
     Long codigoErro;
     String mensagemErro;

@@ -43,7 +43,7 @@ public class DetalhesDoUsuarioCustomizadoServiceImp implements UserDetailsServic
     public UserDetails loadUserByUsername(String usuario) throws UsernameNotFoundException {
 
         LOGGER.info("Iniciando a pesquisa: "+usuario);
-        Usuario user = usuarioService.findByUsuario(usuario);
+        Usuario user = usuarioService.encontrarPeloNomeDeUsuario(usuario);
         if (user == null) {
             throw new UsernameNotFoundException(String.format("Nenhum usuário foi encontrado com" +
                     " estas credenciais: '%s'.", usuario));

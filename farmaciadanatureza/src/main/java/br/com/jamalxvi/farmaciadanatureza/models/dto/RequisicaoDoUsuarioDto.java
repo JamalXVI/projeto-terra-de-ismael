@@ -2,6 +2,7 @@ package br.com.jamalxvi.farmaciadanatureza.models.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Essa classe é responsável de devolver para o front-end as informações do usuário que está
@@ -18,6 +19,7 @@ import lombok.Data;
  */
 @Data
 @Builder
+@EqualsAndHashCode
 public class RequisicaoDoUsuarioDto {
 
   private Long id;

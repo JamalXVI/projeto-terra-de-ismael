@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.service.impl;
 
+import br.com.jamalxvi.farmaciadanatureza.BaseTest;
 import br.com.jamalxvi.farmaciadanatureza.exception.MensagemExcecao;
 import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.PessoaDto;
@@ -17,7 +18,6 @@ import org.mockito.stubbing.Answer;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.Validation;
-import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,27 +31,18 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringRunner.class)
-public class PessoaServiceImplTest {
+public class PessoaServiceImplTest  extends BaseTest {
     @Mock
     private PessoaRepository pessoaRepository;
-
     private PessoaService pessoaService;
-
-    private Validator validator;
-
     private List<Pessoa> pessoas;
-
     private List<Pessoa> pessoasBanco;
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
         this.pessoas = new ArrayList<>();
         pessoasBanco = new ArrayList<>();
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
         when(pessoaRepository.save(any())).then(new Answer<Pessoa>() {
             @Override
             public Pessoa answer(InvocationOnMock invocationOnMock) throws Throwable {
@@ -116,7 +107,7 @@ public class PessoaServiceImplTest {
         assertPessoaEErros(pessoa, pessoas);
     }
 
-    // region: findAll
+    // region: listarTodos
     @Test
     public void findAll() {
         List<Pessoa> pessoas = pessoaService.findAll();
@@ -126,8 +117,7 @@ public class PessoaServiceImplTest {
     @Test
     public void findAll_Error() {
         this.pessoasBanco.add(Pessoa.builder().nome("Júlio").build());
-        thrown.expect(MensagemExcecao.class);
-        thrown.expectMessage(ERRO_LISTAR_PESSOA_ATRIBUTO_NULO.getMensagem());
+        this.esperarErroGenerico(ERRO_LISTAR_PESSOA_ATRIBUTO_NULO.getMensagem());
         List<Pessoa> pessoas = pessoaService.findAll();
     }
     //endRegion
