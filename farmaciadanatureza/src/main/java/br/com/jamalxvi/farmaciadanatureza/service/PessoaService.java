@@ -19,7 +19,7 @@ public interface PessoaService {
    * @param id da pessoa em questão
    * @return a Pessoa, se encontrada, ou nulo.
    */
-  Pessoa findById(Long id);
+  Pessoa encontrarPeloId(Long id);
 
   /**
    * Encontra a pessoa pelo Cpf
@@ -27,14 +27,14 @@ public interface PessoaService {
    * @param cpf
    * @return a Pessoa, se encontrada, ou nulo
    */
-  Pessoa findByCpf(String cpf);
+  Pessoa encontrarPeloCpf(String cpf);
 
   /**
    * Retorna todas as pessoas
    *
    * @return a Lista com todas as pessoas
    */
-  List<Pessoa> findAll();
+  List<Pessoa> listarTodos();
 
 
   /**
@@ -42,7 +42,7 @@ public interface PessoaService {
    *
    * @return a Lista com todas as pessoas em Dto
    */
-  List<PessoaDto> findAllDto();
+  List<PessoaDto> listarTodosDto();
 
   /**
    * Salva a pessoa no banco
@@ -50,12 +50,12 @@ public interface PessoaService {
    * @param p a pessoa a ser salva
    * @return a Pessoa attached com o JPA
    */
-  Pessoa save(Pessoa p);
+  Pessoa salvar(Pessoa p);
 
   /**
    * Remove a pessoa do banco de dados
    *
    * @param p a pessoa em questão
    */
-  void remove(Pessoa p);
+  void remover(Pessoa p);
 }

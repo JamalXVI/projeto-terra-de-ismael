@@ -20,6 +20,6 @@ public class PessoaController {
   @RequestMapping(method = GET, value = "/")
   @PreAuthorize("hasRole('USUARIO')")
   public List<PessoaDto> list() {
-    return pessoaService.findAllDto();
+    return pessoaService.listarTodosDto();
   }
 }

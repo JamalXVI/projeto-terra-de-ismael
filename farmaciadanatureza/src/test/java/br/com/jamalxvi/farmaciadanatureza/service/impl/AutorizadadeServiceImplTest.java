@@ -36,7 +36,6 @@ public class AutorizadadeServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         when(authRepository.findAll()).thenReturn(bancoDeAutoridade());
         when(authRepository.findById(anyLong())).thenAnswer(new Answer<Optional<Autoridade>>() {
           @Override

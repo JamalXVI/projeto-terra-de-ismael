@@ -27,8 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_INSERIR_USUARIO;
-import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_USUARIO_NAO_ENCONTRADO;
+import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.*;
 
 /**
  * Implementação do Serviço de usuário
@@ -112,17 +111,14 @@ public class UsuarioServiceImpl extends BaseService implements UsuarioService {
         Set<ConstraintViolation<Usuario>> validate = validator.validate(usuario);
         Optional<Usuario> jaTemUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
         if (!validate.isEmpty() || jaTemUsuario.isPresent()) {
-            throw new
-                    MensagemExcecao
-                    (ERRO_INSERIR_USUARIO.getMensagem(),
-                            EnumExcecaoDto.SALVAR);
+            throw new MensagemExcecao(ERRO_INSERIR_PESSOA.getMensagem(), EnumExcecaoDto.SALVAR);
         }
         Pessoa pessoa = Pessoa.builder().cpf(requisicaoDoUsuarioDto.getCpf())
                 .nome(requisicaoDoUsuarioDto.getNome()).sobrenome(requisicaoDoUsuarioDto.getSobrenome())
                 .build();
-        pessoa = pessoaService.save(pessoa);
+        pessoa = pessoaService.salvar(pessoa);
         if (pessoa == null) {
-            return null;
+            throw new MensagemExcecao(ERRO_SALVAR_PESSOA.getMensagem(), EnumExcecaoDto.SALVAR);
         }
         usuario.setPessoa(pessoa);
         List<Autoridade> auth = autoridadeService.findByAutorizacao(
@@ -132,7 +128,7 @@ public class UsuarioServiceImpl extends BaseService implements UsuarioService {
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuario = this.usuarioRepository.save(usuario);
         pessoa.setUsuario(usuario);
-        pessoaService.save(pessoa);
+        pessoaService.salvar(pessoa);
         return usuario;
     }
 

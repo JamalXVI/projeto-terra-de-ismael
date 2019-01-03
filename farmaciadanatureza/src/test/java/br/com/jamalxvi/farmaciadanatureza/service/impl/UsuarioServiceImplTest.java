@@ -21,13 +21,9 @@ import org.mockito.stubbing.Answer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_INSERIR_USUARIO;
 import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_USUARIO_NAO_ENCONTRADO;
@@ -40,7 +36,6 @@ public class UsuarioServiceImplTest extends BaseTest {
 
     List<Usuario> usuarios;
     List<Usuario> bancoUsuarios;
-    private Validator validator;
     @Mock
     private UsuarioRepository usuarioRepository;
     @Mock
@@ -57,8 +52,6 @@ public class UsuarioServiceImplTest extends BaseTest {
         this.usuarioService = new UsuarioServiceImpl(usuarioRepository, passwordEncoder,
                 pessoaService, autoridadeService);
         this.bancoUsuarios = new ArrayList<>();
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
         usuarios = new ArrayList<>();
         when(usuarioRepository.findById(anyLong())).thenAnswer(new Answer<Optional<Usuario>>() {
             @Override
@@ -79,7 +72,7 @@ public class UsuarioServiceImplTest extends BaseTest {
                 return (Usuario) invocationOnMock.getArguments()[0];
             }
         });
-        when(pessoaService.save(any())).thenAnswer(new Answer<Pessoa>() {
+        when(pessoaService.salvar(any())).thenAnswer(new Answer<Pessoa>() {
             @Override
             public Pessoa answer(InvocationOnMock invocationOnMock) throws Throwable {
                 return (Pessoa) invocationOnMock.getArguments()[0];
@@ -232,10 +225,6 @@ public class UsuarioServiceImplTest extends BaseTest {
                 "Guilhermina", "da Silva", "654.123.987-85", "guiSilva",
                 "123456", false));
         return bancoUsuarios;
-    }
-
-    private List<Usuario> filtrarErros() {
-        return usuarios.stream().filter(p -> p != null).collect(Collectors.toList());
     }
 
     private RequisicaoDoUsuarioDto criarRequisicaoDoUsuario(Long id, String nome, String sobrenome, String cpf,

@@ -1,37 +1,32 @@
 package br.com.jamalxvi.farmaciadanatureza.service.impl;
 
 import br.com.jamalxvi.farmaciadanatureza.BaseTest;
-import br.com.jamalxvi.farmaciadanatureza.exception.MensagemExcecao;
 import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.PessoaDto;
 import br.com.jamalxvi.farmaciadanatureza.repository.PessoaRepository;
 import br.com.jamalxvi.farmaciadanatureza.service.PessoaService;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_LISTAR_PESSOA_ATRIBUTO_NULO;
+import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.*;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringRunner.class)
-public class PessoaServiceImplTest  extends BaseTest {
+public class PessoaServiceImplTest extends BaseTest {
     @Mock
     private PessoaRepository pessoaRepository;
     private PessoaService pessoaService;
@@ -42,7 +37,6 @@ public class PessoaServiceImplTest  extends BaseTest {
     public void setUp() throws Exception {
         this.pessoas = new ArrayList<>();
         pessoasBanco = new ArrayList<>();
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         when(pessoaRepository.save(any())).then(new Answer<Pessoa>() {
             @Override
             public Pessoa answer(InvocationOnMock invocationOnMock) throws Throwable {
@@ -53,7 +47,7 @@ public class PessoaServiceImplTest  extends BaseTest {
             @Override
             public Optional<Pessoa> answer(InvocationOnMock invocationOnMock) throws Throwable {
                 final String cpf = (String) invocationOnMock.getArgument(0);
-                Optional<Pessoa> pessoa = bancoFindByCpf(cpf);
+                Optional<Pessoa> pessoa = encontrarPeloCpf(cpf);
                 return pessoa;
             }
         });
@@ -77,40 +71,94 @@ public class PessoaServiceImplTest  extends BaseTest {
 
     }
 
+    //region salvar
     @Test
-    public void save() {
+    public void salvar() {
+        Pessoa pessoa = criarPessoa("012.344.678-90", "João", "da Silva");
+        assertTrue("Pessoa Existe", pessoa != null && pessoa.getCpf().equals("012.344.678-90"));
+    }
+
+    @Test
+    public void salvarSobrenomeInvalido() {
         String palavrao = "";
         for (int i = 0; i < 256; i++) {
             palavrao += "a";
         }
-        Pessoa pessoa = criarPessoa("012.344.678-90", "João", "da Silva");
-        Pessoa erro1 = criarPessoa("01234567890", "João", "da Silva");
-        Pessoa erro2 = criarPessoa("", "João", "da Silva");
-        Pessoa erro3 = criarPessoa("012.345.678-90", "", "da Silva");
-        Pessoa erro4 = criarPessoa("012.345.678-90", "João", "");
-        Pessoa erro5 = criarPessoa("012.345.678-90", "João", null);
-        Pessoa erro6 = criarPessoa(null, "João", "da Silva");
-        Pessoa erro7 = criarPessoa("012.345.678-90", null, "da Silva");
-        Pessoa erro8 = criarPessoa("012.345.678-90", palavrao, "da Silva");
-        Pessoa erro9 = criarPessoa("012.345.678-90", "João", palavrao);
-        assertTrue(pessoa != null && erro1 == null && erro2 == null && erro3 == null && erro4 == null &&
-                erro5 == null && erro6 == null && erro7 == null && erro7 == null && erro8 == null && erro9 == null);
+        this.esperarErroGenerico(ERRO_INSERIR_PESSOA.getMensagem());
+        Pessoa erro = criarPessoa("012.345.678-90", "João", palavrao);
     }
 
     @Test
-    public void bancoFindByCpf() {
-        Pessoa pessoa = this.pessoaService.findByCpf("012.345.678-90");
-        pessoas.add(this.pessoaService.findByCpf(null));
-        pessoas.add(this.pessoaService.findByCpf(""));
-        pessoas.add(this.pessoaService.findByCpf("01234567890"));
-        List<Pessoa> pessoas = filtrarErros();
-        assertPessoaEErros(pessoa, pessoas);
+    public void salvarNomeNulo() {
+        this.esperarErroGenerico(ERRO_INSERIR_PESSOA.getMensagem());
+        Pessoa erro = criarPessoa("012.345.678-90", null, "da Silva");
     }
+
+    @Test
+    public void salvarNomeInvalido() {
+        String palavrao = "";
+        for (int i = 0; i < 256; i++) {
+            palavrao += "a";
+        }
+        this.esperarErroGenerico(ERRO_INSERIR_PESSOA.getMensagem());
+        Pessoa erro = criarPessoa("012.345.678-90", palavrao, "da Silva");
+    }
+
+    @Test
+    public void salvarCpfNulo() {
+        this.esperarErroGenerico(ERRO_INSERIR_PESSOA.getMensagem());
+        Pessoa erro = criarPessoa(null, "João", "da Silva");
+    }
+
+    @Test
+    public void salvarSobrenomeNulo() {
+        this.esperarErroGenerico(ERRO_INSERIR_PESSOA.getMensagem());
+        Pessoa erro = criarPessoa("012.345.678-90", "João", null);
+    }
+
+    @Test
+    public void salvarSobrenomeVazio() {
+        this.esperarErroGenerico(ERRO_INSERIR_PESSOA.getMensagem());
+        Pessoa erro = criarPessoa("012.345.678-90", "João", "");
+    }
+
+    @Test
+    public void salvarCpfInvalido() {
+        this.esperarErroGenerico(ERRO_INSERIR_PESSOA.getMensagem());
+        Pessoa erro = criarPessoa("01234567890", "João", "da Silva");
+    }
+
+    @Test
+    public void salvarCpfVazio() {
+        this.esperarErroGenerico(ERRO_INSERIR_PESSOA.getMensagem());
+        Pessoa erro = criarPessoa("", "João", "da Silva");
+    }
+
+    @Test
+    public void salvarNomeVazio() {
+        this.esperarErroGenerico(ERRO_INSERIR_PESSOA.getMensagem());
+        Pessoa erro = criarPessoa("012.345.678-90", "", "da Silva");
+    }
+
+    //end
+
+    //region encontrarPeloCpf
+    @Test
+    public void encontrarPeloCpf() {
+        Pessoa pessoa = this.pessoaService.encontrarPeloCpf("012.345.678-90");
+        assertTrue("Pessoa Existe", pessoa != null);
+    }
+    @Test
+    public void encontrarPeloCpfErro() {
+        this.esperarErroGenerico(ERRO_LISTAR_PESSOA.getMensagem());
+        Pessoa pessoa = this.pessoaService.encontrarPeloCpf("033.345.678-90");
+    }
+    //end
 
     // region: listarTodos
     @Test
-    public void findAll() {
-        List<Pessoa> pessoas = pessoaService.findAll();
+    public void listarTodos() {
+        List<Pessoa> pessoas = pessoaService.listarTodos();
         assertTrue(pessoas.size() == 1);
     }
 
@@ -118,31 +166,33 @@ public class PessoaServiceImplTest  extends BaseTest {
     public void findAll_Error() {
         this.pessoasBanco.add(Pessoa.builder().nome("Júlio").build());
         this.esperarErroGenerico(ERRO_LISTAR_PESSOA_ATRIBUTO_NULO.getMensagem());
-        List<Pessoa> pessoas = pessoaService.findAll();
+        List<Pessoa> pessoas = pessoaService.listarTodos();
     }
-    //endRegion
+    //end
 
+    // region: listarTodosDto
     @Test
-    public void findAllDto() {
-        List<PessoaDto> pessoas = pessoaService.findAllDto();
+    public void listarTodosDto() {
+        List<PessoaDto> pessoas = pessoaService.listarTodosDto();
         assertTrue(pessoas.size() == 1);
     }
+    //end
 
     @Test
     public void bancoFindById() {
         Pessoa pessoa = criarPessoa("012.345.678-90", "João", "da Silva");
-        pessoa = this.pessoaService.findById(pessoa.getId());
-        pessoas.add(this.pessoaService.findById(new Long(0)));
-        pessoas.add(this.pessoaService.findById(new Long(-1)));
-        pessoas.add(this.pessoaService.findById(new Long(100)));
-        pessoas.add(this.pessoaService.findById(null));
+        pessoa = this.pessoaService.encontrarPeloId(pessoa.getId());
+        pessoas.add(this.pessoaService.encontrarPeloId(new Long(0)));
+        pessoas.add(this.pessoaService.encontrarPeloId(new Long(-1)));
+        pessoas.add(this.pessoaService.encontrarPeloId(new Long(100)));
+        pessoas.add(this.pessoaService.encontrarPeloId(null));
         List<Pessoa> pessoas = filtrarErros();
         assertPessoaEErros(pessoa, pessoas);
     }
 
     private Pessoa criarPessoa(String cpf, String nome, String sobrenome) {
         Pessoa pessoa = Pessoa.builder().cpf(cpf).nome(nome).sobrenome(sobrenome).build();
-        pessoa = this.pessoaService.save(pessoa);
+        pessoa = this.pessoaService.salvar(pessoa);
         return pessoa;
     }
 
@@ -160,7 +210,7 @@ public class PessoaServiceImplTest  extends BaseTest {
                 .findFirst();
     }
 
-    private Optional<Pessoa> bancoFindByCpf(String cpf) {
+    private Optional<Pessoa> encontrarPeloCpf(String cpf) {
         return bancoDePessoas().stream().filter(pessoa -> pessoa.getCpf().equals(cpf))
                 .findFirst();
     }
