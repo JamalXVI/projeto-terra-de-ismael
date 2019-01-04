@@ -13,6 +13,8 @@ import org.junit.rules.ExpectedException;
  */
 public class BaseTest {
 
+
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
