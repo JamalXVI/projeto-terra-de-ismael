@@ -7,10 +7,12 @@ import br.com.jamalxvi.farmaciadanatureza.service.MedicoService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 @NoArgsConstructor
 @AllArgsConstructor
 public class MedicoServiceImpl extends BaseService implements MedicoService {

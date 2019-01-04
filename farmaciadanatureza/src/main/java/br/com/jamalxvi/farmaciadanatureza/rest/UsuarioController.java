@@ -32,28 +32,28 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService userService;
+    private UsuarioService usuarioService;
 
 
     @RequestMapping(method = GET, value = "/user/{userId}")
     public Usuario loadById(@PathVariable Long userId) {
-        return this.userService.encontrarPeloId(userId);
+        return this.usuarioService.encontrarPeloId(userId);
     }
 
     @RequestMapping(method = GET, value = "/user/find")
     @PreAuthorize("hasRole('USUARIO')")
     public UsuarioDto encontrarUsuario(String usuario) {
-        return this.userService.encontrarPeloNomeDeUsuarioDto(usuario);
+        return this.usuarioService.encontrarPeloNomeDeUsuarioDto(usuario);
     }
     @RequestMapping(method = GET, value = "/user/all")
     @PreAuthorize("hasRole('USUARIO')")
     public List<UsuarioDto> loadAll() {
-        return this.userService.listarTodos();
+        return this.usuarioService.listarTodos();
     }
 
     @RequestMapping(method = GET, value = "/user/reset-credentials")
     public ResponseEntity<Map> resetCredentials() {
-        this.userService.resetCredentials();
+        this.usuarioService.resetCredentials();
         Map<String, String> result = new HashMap<>();
         result.put("result", "success");
         return ResponseEntity.accepted().body(result);
@@ -74,12 +74,12 @@ public class UsuarioController {
     public ResponseEntity<?> addUser(@RequestBody RequisicaoDoUsuarioDto requisicaoDoUsuarioDto,
                                      UriComponentsBuilder ucBuilder) {
 
-        Usuario usuarioExiste = this.userService.encontrarPeloNomeDeUsuario(requisicaoDoUsuarioDto.getUsuario());
+        Usuario usuarioExiste = this.usuarioService.encontrarPeloNomeDeUsuario(requisicaoDoUsuarioDto.getUsuario());
         if (usuarioExiste != null) {
             throw new MensagemExcecao("Usuário Já Existe", requisicaoDoUsuarioDto.getId(),
                     EnumExcecaoDto.ATRIBUTO_EXISTE);
         }
-        Usuario user = this.userService.salvar(requisicaoDoUsuarioDto);
+        Usuario user = this.usuarioService.salvar(requisicaoDoUsuarioDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);

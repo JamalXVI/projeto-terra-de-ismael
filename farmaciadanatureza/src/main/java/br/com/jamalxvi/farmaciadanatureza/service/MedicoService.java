@@ -18,5 +18,5 @@ public interface MedicoService {
      *
      * @return a Lista com todas as pessoas em Dto
      */
-    public List<MedicoDto> listarTodosDto();
+     List<MedicoDto> listarTodosDto();
 }
