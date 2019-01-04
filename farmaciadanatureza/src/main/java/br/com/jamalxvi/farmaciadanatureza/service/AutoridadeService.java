@@ -20,7 +20,7 @@ public interface AutoridadeService {
    * @param id o id da autoridade
    * @return a autoridade, se encontrada, ou nulo
    */
-  List<Autoridade> findById(Long id);
+  List<Autoridade> encontrarPeloId(Long id);
 
   /**
    * Econtra a Autorizacao pelo nome, vide {@link EnumAutorizacaoUsuario}
@@ -28,7 +28,7 @@ public interface AutoridadeService {
    * @param autorizacao o nome da autorizacao
    * @return a autorizacao, se encontrada, ou nulo
    */
-  List<Autoridade> findByAutorizacao(String autorizacao);
+  List<Autoridade> encontrarPelaAutorizacao(String autorizacao);
 
   /**
    * Encontra a Autoridade pelo Enum de autorização {@link EnumAutorizacaoUsuario}
@@ -36,7 +36,7 @@ public interface AutoridadeService {
    * @param autorizacao o valor do Enum de autorização em questão
    * @return a lista de autoridades
    */
-  List<Autoridade> findByAutorizacao(EnumAutorizacaoUsuario autorizacao);
+  List<Autoridade> encontrarPelaAutorizacao(EnumAutorizacaoUsuario autorizacao);
 
   /**
    * Cria e salva uma autoridade com base no Enum de autorização {@link EnumAutorizacaoUsuario}
@@ -44,7 +44,7 @@ public interface AutoridadeService {
    * @param autorizacaoUsuario o valor do enum em questão
    * @return a Autoridade no estado attached do jpa.
    */
-  Autoridade save(EnumAutorizacaoUsuario autorizacaoUsuario);
+  Autoridade salvar(EnumAutorizacaoUsuario autorizacaoUsuario);
 
 
   /**
@@ -54,6 +54,6 @@ public interface AutoridadeService {
    * @param autorizacao a autorização a ser encontrada
    * @return a Autoridade no estado attached do jpa.
    */
-  Autoridade save(String autorizacao);
+  Autoridade salvar(String autorizacao);
 
 }

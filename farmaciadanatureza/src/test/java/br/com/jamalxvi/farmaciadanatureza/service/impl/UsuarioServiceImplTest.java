@@ -78,7 +78,7 @@ public class UsuarioServiceImplTest extends BaseTest {
                 return (Pessoa) invocationOnMock.getArguments()[0];
             }
         });
-        when(this.autoridadeService.findByAutorizacao((EnumAutorizacaoUsuario) any()))
+        when(this.autoridadeService.encontrarPelaAutorizacao((EnumAutorizacaoUsuario) any()))
                 .thenAnswer(new Answer<Autoridade>() {
                     @Override
                     public Autoridade answer(InvocationOnMock invocationOnMock) throws Throwable {

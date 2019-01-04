@@ -14,6 +14,8 @@ import lombok.Getter;
 public enum EnumMesagens {
     ERRO_LISTAR_PESSOA_ATRIBUTO_NULO("Alguma pessoa está com atributo Nulo"),
     ERRO_LISTAR_PESSOA("Pessoa não encontrada."),
+    ERRO_BUSCAR_AUTORIDADE("Autoridade não encontrada."),
+    ERRO_IMPOSSIVEL_SALVAR_AUTORIDADE("Impossível Salvar Autoridade Específicada"),
     ERRO_USUARIO_NAO_ENCONTRADO("Usuário não encontrado, ou usuário possuí erros!"),
     ERRO_INSERIR_PESSOA("Os dados inseridos para a pessoa são inválidos ou esta pessoa já " +
             "consta no nosso cadastro."),

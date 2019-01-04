@@ -121,7 +121,7 @@ public class UsuarioServiceImpl extends BaseService implements UsuarioService {
             throw new MensagemExcecao(ERRO_SALVAR_PESSOA.getMensagem(), EnumExcecaoDto.SALVAR);
         }
         usuario.setPessoa(pessoa);
-        List<Autoridade> auth = autoridadeService.findByAutorizacao(
+        List<Autoridade> auth = autoridadeService.encontrarPelaAutorizacao(
                 EnumAutorizacaoUsuario.ROLE_USUARIO.name());
         usuario.setAutoridades(auth);
         usuario.setAtivo(true);
