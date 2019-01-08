@@ -3,6 +3,8 @@ package br.com.jamalxvi.farmaciadanatureza.util;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.ElementoDeListaDto;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.ElementoParaIrNaLista;
 
+import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.pegarMensagemPeloCodigo;
+
 
 /**
  * Classe com Métodos Utilitários
@@ -21,6 +23,6 @@ public class MetodosGenericosUtils {
      * @return o elemento transformado
      */
     public static <K extends ElementoParaIrNaLista> ElementoDeListaDto transformarEnumEmDTO(K item) {
-        return new ElementoDeListaDto(item.getDesc(), item.getId().toString());
+        return new ElementoDeListaDto(item.getDesc(), pegarMensagemPeloCodigo(item.getId().toString()));
     }
 }
