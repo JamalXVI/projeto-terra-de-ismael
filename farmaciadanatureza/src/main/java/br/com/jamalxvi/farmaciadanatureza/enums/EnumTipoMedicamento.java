@@ -1,29 +1,33 @@
 package br.com.jamalxvi.farmaciadanatureza.enums;
 
 import br.com.jamalxvi.farmaciadanatureza.models.*;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.ElementoParaIrNaLista;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * Define os tipos de medicamentos
- * {@link br.com.jamalxvi.farmaciadanatureza.models.Estocavel}
  *
  * @author Jamal XVI <henriquearantest@gmail.com>
  * @version 0.1
  * @since 0.1
  */
 @AllArgsConstructor
-public enum EnumTipoMedicamento {
-    CAPSULA(1, Capsula.class),
-    FLORAL(2, Floral.class),
-    HOMEOPATIA(3, Homeopatia.class),
-    OUTROS_MEDICAMENTOS(4, OutrosMedicamentos.class),
-    PLANTA_DESIDRATADA(5, PlantaDesidratada.class),
-    POMADA(6, Pomada.class),
-    TINTURA(7, Tintura.class);
+public enum EnumTipoMedicamento implements ElementoParaIrNaLista {
+    CAPSULA(1, "capsula", Capsula.class),
+    FLORAL(2, "floral", Floral.class),
+    HOMEOPATIA(3, "homeopatia", Homeopatia.class),
+    OUTROS_MEDICAMENTOS(4, "outrosMedicamentos", OutrosMedicamentos.class),
+    PLANTA_DESIDRATADA(5, "plantaDesidratada", PlantaDesidratada.class),
+    POMADA(6, "pomada", Pomada.class),
+    TINTURA(7, "tintura", Tintura.class);
 
     @Getter
     private Integer id;
+
+    @Getter
+    private String desc;
+
     @Getter
     private Class clazz;
 

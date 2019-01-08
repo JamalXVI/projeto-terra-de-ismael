@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -10,6 +11,7 @@ import lombok.Data;
  * @since 0.1
  */
 @Data
+@AllArgsConstructor
 public class ElementoDeListaDto {
     private String nome;
     private String id;
