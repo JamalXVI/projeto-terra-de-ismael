@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -9,13 +10,10 @@ import lombok.Getter;
  * @version 0.1
  * @since 0.1
  */
+@AllArgsConstructor
 public enum EnumCodigoHashAutenticacao {
     CODIGO_HASH_ANONIMO(7);
 
     @Getter
     private int codigo;
-
-    EnumCodigoHashAutenticacao(int codigo) {
-        this.codigo = codigo;
-    }
 }
