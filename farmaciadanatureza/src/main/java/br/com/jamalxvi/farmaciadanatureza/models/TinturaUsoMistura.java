@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Misturavel;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +26,7 @@ import java.math.BigDecimal;
 })
 @Builder
 @Data
-public class TinturaUsoMistura extends EntidadeBase{
+public class TinturaUsoMistura extends EntidadeBase implements Misturavel<TinturaDosagens> {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TinturaDosagensEstoque.class)
     @JoinColumn(name = "ID_TIN_DOS_USO_EST")
     @JsonBackReference
