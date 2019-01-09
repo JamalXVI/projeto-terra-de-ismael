@@ -29,7 +29,7 @@ import java.util.List;
     @AttributeOverride(name = "id", column = @Column(name = "ID_TIN")),
     @AttributeOverride(name = "versao", column = @Column(name = "VER_TIN")),
     @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_TIN")),
-    @AttributeOverride(name = "nomePopular", column = @Column(name = "NOM_TIN")),
+    @AttributeOverride(name = "nome", column = @Column(name = "NOM_TIN")),
     @AttributeOverride(name = "nomeCientifico", column = @Column(name = "NOM_CIE_TIN")),
 })
 @Builder

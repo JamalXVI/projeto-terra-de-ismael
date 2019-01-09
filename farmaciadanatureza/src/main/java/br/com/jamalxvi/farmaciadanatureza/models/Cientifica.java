@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Medicamento;
 import lombok.Data;
 
 import javax.persistence.MappedSuperclass;
@@ -14,9 +15,9 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @MappedSuperclass
-public abstract class Cientifica extends EntidadeBase {
+public abstract class Cientifica extends EntidadeBase implements Medicamento {
   @NotNull @NotEmpty
-  private String nomePopular;
+  private String nome;
   @NotNull @NotEmpty
   private String nomeCientifico;
 }

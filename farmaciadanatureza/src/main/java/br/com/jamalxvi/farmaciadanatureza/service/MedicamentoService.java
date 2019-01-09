@@ -19,4 +19,14 @@ public interface MedicamentoService {
      * @return A lista de medicamentos encapsuladas em DTOs
      */
     List<ElementoDeListaDto> retornaListaDePossiveisMedicamentos();
+
+
+    /**
+     * Retorna a lista de itens do medicamento
+     *
+     * @return A lista de medicamentos encapsuladas em DTOs
+     */
+    List<ElementoDeListaDto> retornarItensDoMedicamento(Integer tipoMedicamento);
+
+
 }

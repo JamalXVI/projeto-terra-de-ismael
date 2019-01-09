@@ -32,7 +32,7 @@ import java.util.List;
     @AttributeOverride(name = "id", column = @Column(name = "ID_PLT_DES")),
     @AttributeOverride(name = "versao", column = @Column(name = "VER_PLT_DES")),
     @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_PLT_DES")),
-    @AttributeOverride(name = "nomePopular", column = @Column(name = "NOM_PLT_DES")),
+    @AttributeOverride(name = "nome", column = @Column(name = "NOM_PLT_DES")),
     @AttributeOverride(name = "nomeCientifico", column = @Column(name = "NOM_CIE_PLT_DES")),
 })
 @Builder

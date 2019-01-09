@@ -24,4 +24,6 @@ public class MedicamentoController {
     public List<ElementoDeListaDto> list() {
         return medicamentoService.retornaListaDePossiveisMedicamentos();
     }
+
+
 }

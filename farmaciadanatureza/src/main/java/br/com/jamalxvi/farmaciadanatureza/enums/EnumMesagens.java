@@ -15,7 +15,9 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum EnumMesagens {
     ERRO_LISTAR_PESSOA_ATRIBUTO_NULO("", "Alguma pessoa está com atributo Nulo"),
-    ERRO_LISTAR_PESSOA("", "Pessoa não encontrada."),
+    ERRO_LISTAR_PESSOA("pessoaNaoEncontrada", "Pessoa não encontrada."),
+    ERRO_BUSCAR_TIPO_MEDICAMENTO("medicamentoNaoEncontrado", "O tipo de medicamento não foi " +
+            "encontrado!"),
     ERRO_BUSCAR_AUTORIDADE("", "Autoridade não encontrada."),
     ERRO_IMPOSSIVEL_SALVAR_AUTORIDADE("", "Impossível Salvar Autoridade Específicada"),
     ERRO_USUARIO_NAO_ENCONTRADO("", "Usuário não encontrado, ou usuário possuí erros!"),

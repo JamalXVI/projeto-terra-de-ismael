@@ -34,7 +34,7 @@ import java.util.List;
     @AttributeOverride(name = "id", column = @Column(name = "ID_CAP")),
     @AttributeOverride(name = "versao", column = @Column(name = "VER_CAP")),
     @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_CAP")),
-    @AttributeOverride(name = "nomePopular", column = @Column(name = "NOM_CAP")),
+    @AttributeOverride(name = "nome", column = @Column(name = "NOM_CAP")),
     @AttributeOverride(name = "nomeCientifico", column = @Column(name = "NOM_CIE_CAP")),
 })
 @Builder

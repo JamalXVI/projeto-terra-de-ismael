@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Medicamento;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,6 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * Esta classe é a controlodadora de florais. <b>Não existe um controle de saída de florais</b>,
  * apenas um consta a existência deste no sistema.
+ *
  * @author Jamal XVI <henriquearantest@gmail.com>
  * @version 0.1
  * @since 0.1
@@ -24,16 +25,16 @@ import java.util.List;
 @Entity
 @Table(name = "FLORAL")
 @AttributeOverrides(value = {
-    @AttributeOverride(name = "id", column = @Column(name = "ID_FLO")),
-    @AttributeOverride(name = "versao", column = @Column(name = "VER_FLO")),
-    @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_FLO")),
+        @AttributeOverride(name = "id", column = @Column(name = "ID_FLO")),
+        @AttributeOverride(name = "versao", column = @Column(name = "VER_FLO")),
+        @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_FLO")),
 })
 @Builder
 @Data
-public class Floral extends EntidadeBase {
-  @Column(name = "NOM_FLO")
-  private String nome;
-  @OneToMany(fetch = FetchType.LAZY, targetEntity = FloralUso.class, mappedBy = "origem")
-  @JsonManagedReference
-  private List<FloralUso> usos;
+public class Floral extends EntidadeBase implements Medicamento {
+    @Column(name = "NOM_FLO")
+    private String nome;
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = FloralUso.class, mappedBy = "origem")
+    @JsonManagedReference
+    private List<FloralUso> usos;
 }
