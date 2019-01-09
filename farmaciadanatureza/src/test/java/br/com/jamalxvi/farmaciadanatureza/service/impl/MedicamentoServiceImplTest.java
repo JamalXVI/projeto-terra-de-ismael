@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.service.impl;
 
+import br.com.jamalxvi.farmaciadanatureza.BaseTest;
 import br.com.jamalxvi.farmaciadanatureza.models.Capsula;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.ElementoDeListaDto;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Medicamento;
@@ -20,11 +21,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_BUSCAR_TIPO_MEDICAMENTO;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-public class MedicamentoServiceImplTest {
+public class MedicamentoServiceImplTest extends BaseTest {
 
     @Mock
     private CapsulaRepository capsulaRepository;
@@ -63,6 +65,11 @@ public class MedicamentoServiceImplTest {
         assertTrue("O tamanho da lista deve ser 2!", lista.size() == 2);
     }
 
+    @Test
+    public void retornarItensDoMedicamentoFalha() {
+        esperarErroGenerico(ERRO_BUSCAR_TIPO_MEDICAMENTO.getMensagem());
+        List<ElementoDeListaDto> lista = medicamentoService.retornarItensDoMedicamento(99);
+    }
     private <T extends Medicamento> List<T> criarMedicamentoGenerico() {
         List<T> medicamentos = new ArrayList<>();
         Medicamento medicamentoUm = new Medicamento() {
