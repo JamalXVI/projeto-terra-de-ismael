@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * @since 0.1
  * @author Jamal XVI <henriquearantest@gmail.com>
  */
-public interface Misturavel<T extends Diluivel> {
+public interface Misturavel<T> {
     T getDosagem();
     BigDecimal getProporcao();
 }

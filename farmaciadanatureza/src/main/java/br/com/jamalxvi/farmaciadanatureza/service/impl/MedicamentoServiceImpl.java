@@ -4,10 +4,13 @@ import br.com.jamalxvi.farmaciadanatureza.enums.EnumExcecaoDto;
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumTipoMedicamento;
 import br.com.jamalxvi.farmaciadanatureza.exception.MensagemExcecao;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.ElementoDeListaDto;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.RetornoDosMedicamentosDto;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.input.ReceberMedicamentosDto;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Medicamento;
 import br.com.jamalxvi.farmaciadanatureza.repository.CapsulaRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.FloralRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.HomeopatiaRepository;
+import br.com.jamalxvi.farmaciadanatureza.repository.MedicamentoRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.OutrosMedicamentosRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.PlantaDesidratadaRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.PomadaRepository;
@@ -24,6 +27,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_BUSCAR_TIPO_MEDICAMENTO;
+import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_CAMPO_MEDICAMENTO_NAO_ENCONTRADO;
+import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_MEDICAMENTO_ACESSO_INVALIDO;
 import static br.com.jamalxvi.farmaciadanatureza.util.MetodosGenericosUtils.transformarEnumEmDTO;
 
 @Service
@@ -45,6 +50,8 @@ public class MedicamentoServiceImpl implements MedicamentoService {
     private PomadaRepository pomadaRepository;
     @Autowired
     private TinturaRepository tinturaRepository;
+    @Autowired
+    private MedicamentoRepository medicamentoRepository;
 
     @Override
     public List<ElementoDeListaDto> retornaListaDePossiveisMedicamentos() {
@@ -54,20 +61,62 @@ public class MedicamentoServiceImpl implements MedicamentoService {
 
     @Override
     public List<ElementoDeListaDto> retornarItensDoMedicamento(Integer tipoMedicamento) {
-        EnumTipoMedicamento medicamento = EnumTipoMedicamento.encontrarPeloId(tipoMedicamento).orElseThrow(() ->
+//        final JpaRepository<? extends Medicamento, Long> repository = getRepositoryById(tipoMedicamento);
+        EnumTipoMedicamento tipo = this.getEnumTipoMedicamento(tipoMedicamento);
+        List<? extends Medicamento> medicamentos = medicamentoRepository.findItens(tipo.getClazz());
+        return  medicamentos.stream().map(m -> new ElementoDeListaDto( m.getNome(),  m.getId()
+                    .toString()))
+                    .collect(Collectors.toList());
+    }
+
+    @Override
+    public RetornoDosMedicamentosDto retornarInformacoesDoMedicamento(ReceberMedicamentosDto receberMedicamentosDto) {
+        final JpaRepository<? extends Medicamento, Long> repository = getRepositoryById
+                (receberMedicamentosDto.getTipo());
+
+        return null;
+    }
+
+    /**
+     * Retorna o repositório pelo Id do tipo do Medicamento
+     * @param tipoMedicamento
+     * @returno repositório do Medicamento
+     */
+    private JpaRepository<? extends Medicamento, Long> getRepositoryById(Integer tipoMedicamento) {
+        final EnumTipoMedicamento medicamento = getEnumTipoMedicamento(tipoMedicamento);
+        return getRepository(medicamento);
+    }
+
+    /**
+     * Retorna o tipo do Medicamento
+     * @param tipoMedicamento o id do tipo do medicamento
+     * @return o enum do medicamento em questão
+     * @throws MensagemExcecao exceção na busca: Não Encontrado
+     */
+    private EnumTipoMedicamento getEnumTipoMedicamento(Integer tipoMedicamento) {
+        return EnumTipoMedicamento.encontrarPeloId(tipoMedicamento).orElseThrow(() ->
                 new MensagemExcecao(ERRO_BUSCAR_TIPO_MEDICAMENTO.getMensagem(),
                         EnumExcecaoDto.NAO_ENCONTRADO)
         );
+    }
+
+    /**
+     * Retorna o repositório do tipo do medicamento escolhido.
+     *
+     * @param medicamento o enum do medicamento
+     * @return o repositório do medicamento em questão
+     * @throws MensagemExcecao exceção na busca de repositórios
+     */
+    private JpaRepository<? extends Medicamento, Long> getRepository(EnumTipoMedicamento medicamento) {
         try {
-            JpaRepository<? extends Medicamento, Long> repository = (JpaRepository<? extends
+            return (JpaRepository<? extends
                     Medicamento, Long>) this.getClass().getDeclaredField(medicamento.getClazz()
                     .getSimpleName().toLowerCase() + "Repository").get(this);
-            List<? extends Medicamento> medicamentos = repository.findAll();
-            return  medicamentos.stream().map(m -> new ElementoDeListaDto( m.getNome(),  m.getId()
-                    .toString()))
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new MensagemExcecao(ERRO_BUSCAR_TIPO_MEDICAMENTO.getMensagem(),
+        } catch (IllegalAccessException e) {
+            throw new MensagemExcecao(ERRO_MEDICAMENTO_ACESSO_INVALIDO.getMensagem(),
+                    EnumExcecaoDto.NAO_ENCONTRADO);
+        } catch (NoSuchFieldException e) {
+            throw new MensagemExcecao(ERRO_CAMPO_MEDICAMENTO_NAO_ENCONTRADO.getMensagem(),
                     EnumExcecaoDto.NAO_ENCONTRADO);
         }
     }

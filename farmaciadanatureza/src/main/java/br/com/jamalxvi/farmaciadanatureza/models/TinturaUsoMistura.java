@@ -5,14 +5,23 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
+
 /**
  * Esta classe representa quando há mistura de tintura, a classe que faz a ligação do
  * uso da tintura com sua proporção. Seus atributos são:<br/>
  * -Entidade Base;
  * -Qual é a Dosagem de Tintura Escolhida
  * -Qual é a proporção a se usar
+ *
  * @author Jamal XVI <henriquearantest@gmail.com>
  * @version 0.1
  * @since 0.1
@@ -26,7 +35,7 @@ import java.math.BigDecimal;
 })
 @Builder
 @Data
-public class TinturaUsoMistura extends EntidadeBase implements Misturavel<TinturaDosagens> {
+public class TinturaUsoMistura extends EntidadeBase implements Misturavel<TinturaDosagensUsoEstoque> {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TinturaDosagensEstoque.class)
     @JoinColumn(name = "ID_TIN_DOS_USO_EST")
     @JsonBackReference

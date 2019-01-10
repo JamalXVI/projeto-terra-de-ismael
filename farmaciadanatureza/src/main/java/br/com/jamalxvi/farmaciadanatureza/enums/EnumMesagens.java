@@ -33,7 +33,11 @@ public enum EnumMesagens {
     PLANTA_DESIDRATADA("plantaDesidratada", "Plantas Desidratadas"),
     POMADA("pomada", "Pomada"),
     TINTURA("tintura", "Tintura"),
-    NAO_ENCONTRADA("naoEncontrado", "Descrição não encontrada."),;
+    NAO_ENCONTRADA("naoEncontrado", "Descrição não encontrada."),
+    ERRO_CAMPO_MEDICAMENTO_NAO_ENCONTRADO("campoMedicamentoNaoEncontrado","O campo do " +
+            "Medicamento não foi encontrado!"),
+    ERRO_MEDICAMENTO_ACESSO_INVALIDO("erroMedicamentoArgumentoInvalido",
+            "Acesso Inválido para o medicamento."),;
 
     @Getter
     private String codigo;
