@@ -1,5 +1,9 @@
 package br.com.jamalxvi.farmaciadanatureza.models.interfaces;
 
+import org.springframework.data.annotation.Id;
+
+import java.util.UUID;
+
 /**
  * Esta interface representa todos os medicados
  *
@@ -8,7 +12,6 @@ package br.com.jamalxvi.farmaciadanatureza.models.interfaces;
  * @since 0.1
  */
 public interface Medicamento {
-
     public String getNome();
 
     public Long getId();

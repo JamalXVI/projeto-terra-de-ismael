@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.TipoDosagem;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
@@ -34,9 +35,9 @@ import java.util.List;
 })
 @Builder
 @Data
-public class Tintura extends Cientifica {
+public class Tintura extends Cientifica implements TipoDosagem<TinturaDosagens> {
   @OneToMany(mappedBy="tintura", targetEntity = TinturaDosagens.class, fetch = FetchType.LAZY)
   @JsonManagedReference
-  private List<TinturaDosagens> dosagens;
+  public List<TinturaDosagens> dosagens;
 
 }

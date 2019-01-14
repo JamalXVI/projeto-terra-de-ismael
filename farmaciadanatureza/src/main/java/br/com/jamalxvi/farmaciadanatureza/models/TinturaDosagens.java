@@ -3,6 +3,7 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumTipoDiluicao;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Diluivel;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.DuracaoLotavel;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.TipoEstoque;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
@@ -30,6 +31,7 @@ import java.util.List;
  * -Diluição<br/>
  * -Duração máxima de um lote.
  * <p>Unidade Padrão da Dosagem de Homeopatia: ml</p>
+ *
  * @author Jamal XVI <henriquearantest@gmail.com>
  * @version 0.1
  * @since 0.1
@@ -37,26 +39,26 @@ import java.util.List;
 @Entity
 @Table(name = "TINTURA_DOSAGEM")
 @AttributeOverrides(value = {
-    @AttributeOverride(name = "id", column = @Column(name = "ID_TIN_DOS")),
-    @AttributeOverride(name = "versao", column = @Column(name = "VER_TIN_DOS")),
-    @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_TIN_DOS")),
+        @AttributeOverride(name = "id", column = @Column(name = "ID_TIN_DOS")),
+        @AttributeOverride(name = "versao", column = @Column(name = "VER_TIN_DOS")),
+        @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_TIN_DOS")),
 })
 @Builder
 @Data
-public class TinturaDosagens extends EntidadeBase implements Diluivel, DuracaoLotavel {
-  @Enumerated(value = EnumType.STRING)
-  @Column(name = "TIP_DIL_TIN_DOS", columnDefinition = "enum('CH','DH')")
-  private EnumTipoDiluicao tipoDiluicao;
-  @Column(name = "DIL_TIN_DOS")
-  private Integer diluicao;
-  @Column(name = "DUR_LOT_TIN_DOS")
-  private Long duracaoLote;
-  @ManyToOne
-  @JoinColumn(name = "ID_TIN")
-  @JsonBackReference
-  private Homeopatia tintura;
-  @OneToMany(targetEntity = TinturaDosagensEstoque.class, fetch = FetchType.LAZY,
-  mappedBy = "tinturaDosagens")
-  @JsonManagedReference
-  private List<TinturaDosagensEstoque> tinturaDosagensEstoques;
+public class TinturaDosagens extends EntidadeBase implements Diluivel, DuracaoLotavel, TipoEstoque {
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "TIP_DIL_TIN_DOS", columnDefinition = "enum('CH','DH')")
+    private EnumTipoDiluicao tipoDiluicao;
+    @Column(name = "DIL_TIN_DOS")
+    private Integer diluicao;
+    @Column(name = "DUR_LOT_TIN_DOS")
+    private Long duracaoLote;
+    @ManyToOne
+    @JoinColumn(name = "ID_TIN")
+    @JsonBackReference
+    private Homeopatia tintura;
+    @OneToMany(targetEntity = TinturaDosagensEstoque.class, fetch = FetchType.LAZY,
+            mappedBy = "tinturaDosagens")
+    @JsonManagedReference
+    private List<TinturaDosagensEstoque> estoque;
 }

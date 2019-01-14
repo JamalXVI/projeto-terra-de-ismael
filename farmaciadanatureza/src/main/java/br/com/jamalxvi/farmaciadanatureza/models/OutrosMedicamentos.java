@@ -2,6 +2,7 @@ package br.com.jamalxvi.farmaciadanatureza.models;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumOutrosMedicamentos;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Medicamento;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.TipoEstoque;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
@@ -44,7 +45,7 @@ import java.util.List;
 })
 @Builder
 @Data
-public class OutrosMedicamentos extends EntidadeBase implements Medicamento {
+public class OutrosMedicamentos extends EntidadeBase implements Medicamento, TipoEstoque {
   @Column(name = "NOM_OUT_MED")
   @NotNull
   @NotEmpty
