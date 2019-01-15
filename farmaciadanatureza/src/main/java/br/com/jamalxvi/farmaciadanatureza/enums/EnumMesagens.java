@@ -37,7 +37,13 @@ public enum EnumMesagens {
     ERRO_CAMPO_MEDICAMENTO_NAO_ENCONTRADO("campoMedicamentoNaoEncontrado","O campo do " +
             "Medicamento não foi encontrado!"),
     ERRO_MEDICAMENTO_ACESSO_INVALIDO("erroMedicamentoArgumentoInvalido",
-            "Acesso Inválido para o medicamento."),;
+            "Acesso Inválido para o medicamento."),
+    ERRO_METODO_NAO_EXISTE("erroMetodoNaoExiste", "Erro, método não existe: "),
+    ERRO_ALVO_INVOCACAO_INVALIDO("erroAlvoInvocacaoInvalido", "Erro, alvo de invocação inválido: "),
+    ERRO_AO_INSTANCIAR("erroAoInstanciar", "Erro, ao instanciar: "),
+    ERRO_ACESSO_METODO_NAO_PERMITIDO("erroAcessoMetodoNaoPermitido", "Erro, acesso ao método não " +
+            "permitido: "),
+    ERRO_DESCONHECIDO("erroDesconhecido", "Erro Desconhecido. Por favor entre em contato a TI.");
 
     @Getter
     private String codigo;
