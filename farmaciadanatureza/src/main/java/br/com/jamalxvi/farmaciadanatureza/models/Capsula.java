@@ -50,5 +50,5 @@ public class Capsula extends Cientifica implements DuracaoLotavel, TipoEstoque {
     private Long duracaoLote;
     @OneToMany(targetEntity = CapsulaEstoque.class, fetch = FetchType.LAZY, mappedBy = "capsula")
     @JsonManagedReference
-    private List<CapsulaEstoque> estoque;
+    public List<CapsulaEstoque> estoque;
 }

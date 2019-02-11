@@ -44,9 +44,8 @@ public class PomadaEstoque extends EntidadeBase implements Estocavel {
   @JoinColumn(name = "ID_POM")
   private Pomada pomada;
   @OneToMany(fetch = FetchType.LAZY, targetEntity = PomadaUsoEstoque.class, mappedBy = "estoque")
-  private List<PomadaUsoEstoque> usoEstoque;
-  @Override
-  public EnumUnidadesMetricas getUnidade() {
+  private List<PomadaUsoEstoque> usoEstoques;
+  public static EnumUnidadesMetricas getUnidade() {
     return EnumUnidadesMetricas.UNIDADES;
   }
 }

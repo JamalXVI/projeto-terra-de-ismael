@@ -7,10 +7,10 @@ import br.com.jamalxvi.farmaciadanatureza.models.dto.ElementoDeListaDto;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.RetornoDosMedicamentosDto;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.input.ReceberMedicamentosDto;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Medicamento;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.TipoDosagem;
 import br.com.jamalxvi.farmaciadanatureza.repository.CapsulaRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.FloralRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.HomeopatiaRepository;
-import br.com.jamalxvi.farmaciadanatureza.repository.MedicamentoRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.OutrosMedicamentosRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.PlantaDesidratadaRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.PomadaRepository;
@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ClassUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,8 +51,6 @@ public class MedicamentoServiceImpl implements MedicamentoService {
     private PomadaRepository pomadaRepository;
     @Autowired
     private TinturaRepository tinturaRepository;
-    @Autowired
-    private MedicamentoRepository medicamentoRepository;
 
     @Override
     public List<ElementoDeListaDto> retornaListaDePossiveisMedicamentos() {
@@ -61,19 +60,30 @@ public class MedicamentoServiceImpl implements MedicamentoService {
 
     @Override
     public List<ElementoDeListaDto> retornarItensDoMedicamento(Integer tipoMedicamento) {
-//        final JpaRepository<? extends Medicamento, Long> repository = getRepositoryById(tipoMedicamento);
-        EnumTipoMedicamento tipo = this.getEnumTipoMedicamento(tipoMedicamento);
-        List<? extends Medicamento> medicamentos = medicamentoRepository.findItens(tipo.getClazz());
+        final JpaRepository<? extends Medicamento, Long> repository =
+                getRepositoryById(tipoMedicamento);
+        List<? extends Medicamento> medicamentos = repository.findAll();
         return  medicamentos.stream().map(m -> new ElementoDeListaDto( m.getNome(),  m.getId()
                     .toString()))
                     .collect(Collectors.toList());
     }
 
     @Override
-    public RetornoDosMedicamentosDto retornarInformacoesDoMedicamento(ReceberMedicamentosDto receberMedicamentosDto) {
-        final JpaRepository<? extends Medicamento, Long> repository = getRepositoryById
+    public RetornoDosMedicamentosDto retornarInformacoesDoMedicamento(
+            ReceberMedicamentosDto receberMedicamentosDto) {
+        final EnumTipoMedicamento enumTipoMedicamento = getEnumTipoMedicamento
                 (receberMedicamentosDto.getTipo());
+        final JpaRepository<? extends Medicamento, Long> repository =
+                getRepository(enumTipoMedicamento);
+        final Medicamento medicamento = repository.findById(receberMedicamentosDto.getId())
+                .orElseThrow(() -> new MensagemExcecao(ERRO_BUSCAR_TIPO_MEDICAMENTO.getMensagem(),
+                        EnumExcecaoDto.NAO_ENCONTRADO));
+        ClassUtils.getAllInterfacesForClassAsSet(enumTipoMedicamento.getClazz()).forEach(inter ->
+        {
+            if (inter == TipoDosagem.class){
 
+            }
+        });
         return null;
     }
 

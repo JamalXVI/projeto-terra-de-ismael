@@ -17,7 +17,8 @@ public enum EnumExcecaoDto {
     ATRIBUTOS_VAZIOS(2L, "Atributo Nulo"),
     NAO_ENCONTRADO(3L, "Não Encontrado"),
     ATRIBUTOS_VAZIOS_OU_NAO_ENCONTRADO(4L, "Atributo Nulo ou Não Encontrado"),
-    SALVAR(5L, "Erro ao Salvar"),;
+    SALVAR(5L, "Erro ao Salvar"),
+    DESCONHECIDO(6L, "Erro Desconhecido"),;
 
     Long codigoErro;
     String mensagemErro;

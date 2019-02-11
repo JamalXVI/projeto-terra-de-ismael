@@ -59,8 +59,8 @@ public class CapsulaEstoque extends EntidadeBase implements Estocavel, Lotavel {
   @OneToMany(fetch = FetchType.LAZY, targetEntity = CapsulaUsoEstoque.class, mappedBy = "estoque")
   @JsonManagedReference
   private List<CapsulaUsoEstoque> usoEstoques;
-  @Override
-  public EnumUnidadesMetricas getUnidade() {
+
+  public static EnumUnidadesMetricas getUnidade() {
     return EnumUnidadesMetricas.GRAMAS;
   }
 }

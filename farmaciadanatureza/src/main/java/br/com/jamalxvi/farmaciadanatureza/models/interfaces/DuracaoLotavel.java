@@ -1,5 +1,9 @@
 package br.com.jamalxvi.farmaciadanatureza.models.interfaces;
 
+import br.com.jamalxvi.farmaciadanatureza.models.CapsulaEstoque;
+
+import java.util.List;
+
 /**
  * Classe que especifíca a duração do lote (em dias). A utilização dessa interfaces obriga
  * a implementação da interfaces Lotável na classe de estoque, pois é utilizado esta interfaces
@@ -9,5 +13,6 @@ package br.com.jamalxvi.farmaciadanatureza.models.interfaces;
  * @author Jamal XVI <henriquearantest@gmail.com>
  */
 public interface DuracaoLotavel {
-  public Long getDuracaoLote();
+  Long getDuracaoLote();
+  <K extends Lotavel> List<K> getEstoque();
 }

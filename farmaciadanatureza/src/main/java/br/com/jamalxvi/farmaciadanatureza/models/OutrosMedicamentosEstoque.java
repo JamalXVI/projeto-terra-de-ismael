@@ -51,7 +51,7 @@ public class OutrosMedicamentosEstoque extends EntidadeBase implements Estocavel
     @OneToMany(mappedBy = "estoque", targetEntity = OutrosMedicamentosUsoEstoque.class,
             fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<OutrosMedicamentosUsoEstoque> usoEstoque;
+    private List<OutrosMedicamentosUsoEstoque> usoEstoques;
     @Column(name = "LOT_OUT_MED_EST")
     private Long lote;
     @Column(name = "DAT_CRI_LOT_OUT_MED_EST")
@@ -59,8 +59,7 @@ public class OutrosMedicamentosEstoque extends EntidadeBase implements Estocavel
     @Column(name = "DAT_VEN_LOT_OUT_MED_EST")
     private LocalDate dataVencimentoLote;
 
-    @Override
-    public EnumUnidadesMetricas getUnidade() {
+    public static EnumUnidadesMetricas getUnidade() {
         return EnumUnidadesMetricas.UNIDADES;
     }
 }

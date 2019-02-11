@@ -43,7 +43,9 @@ public enum EnumMesagens {
     ERRO_AO_INSTANCIAR("erroAoInstanciar", "Erro, ao instanciar: "),
     ERRO_ACESSO_METODO_NAO_PERMITIDO("erroAcessoMetodoNaoPermitido", "Erro, acesso ao método não " +
             "permitido: "),
-    ERRO_DESCONHECIDO("erroDesconhecido", "Erro Desconhecido. Por favor entre em contato a TI.");
+    ERRO_DESCONHECIDO("erroDesconhecido", "Erro Desconhecido. Por favor entre em contato a TI."),
+    ERRO_SEM_MECAMENTO_VALIDO("erroSemMedicamentoValido", "Não existem medicamentos Válidos no " +
+        "estoque, por favor verifique os estoques.");
 
     @Getter
     private String codigo;

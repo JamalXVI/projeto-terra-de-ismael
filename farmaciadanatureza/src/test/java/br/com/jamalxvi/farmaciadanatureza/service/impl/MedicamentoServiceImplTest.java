@@ -1,13 +1,11 @@
 package br.com.jamalxvi.farmaciadanatureza.service.impl;
 
 import br.com.jamalxvi.farmaciadanatureza.BaseTest;
-import br.com.jamalxvi.farmaciadanatureza.models.Capsula;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.ElementoDeListaDto;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Medicamento;
 import br.com.jamalxvi.farmaciadanatureza.repository.CapsulaRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.FloralRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.HomeopatiaRepository;
-import br.com.jamalxvi.farmaciadanatureza.repository.MedicamentoRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.OutrosMedicamentosRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.PlantaDesidratadaRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.PomadaRepository;
@@ -44,9 +42,6 @@ public class MedicamentoServiceImplTest extends BaseTest {
     @Mock
     private TinturaRepository tinturaRepository;
 
-    @Mock
-    private MedicamentoRepository medicamentoRepository;
-
     private MedicamentoService medicamentoService;
 
     @Before
@@ -58,10 +53,9 @@ public class MedicamentoServiceImplTest extends BaseTest {
         when(plantaDesidratadaRepository.findAll()).thenReturn(criarMedicamentoGenerico());
         when(pomadaRepository.findAll()).thenReturn(criarMedicamentoGenerico());
         when(tinturaRepository.findAll()).thenReturn(criarMedicamentoGenerico());
-        when(medicamentoRepository.findAll()).thenReturn(criarMedicamentoGenerico());
         medicamentoService = new MedicamentoServiceImpl(capsulaRepository, floralRepository,
                 homeopatiaRepository, outrosMedicamentosRepository, plantaDesidratadaRepository,
-                pomadaRepository, tinturaRepository, medicamentoRepository);
+                pomadaRepository, tinturaRepository);
     }
 
     @Test

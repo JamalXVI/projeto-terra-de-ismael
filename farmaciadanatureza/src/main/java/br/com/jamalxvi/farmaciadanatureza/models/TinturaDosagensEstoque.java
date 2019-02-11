@@ -55,9 +55,9 @@ public class TinturaDosagensEstoque extends EntidadeBase implements Estocavel, L
   private LocalDate dataVencimentoLote;
   @OneToMany(mappedBy = "estoque", fetch = FetchType.LAZY,
       targetEntity = TinturaDosagensUsoEstoque.class)
-  private List<TinturaDosagensUsoEstoque> usoEstoque;
-  @Override
-  public EnumUnidadesMetricas getUnidade() {
+  private List<TinturaDosagensUsoEstoque> usoEstoques;
+
+  public static EnumUnidadesMetricas getUnidade() {
     return EnumUnidadesMetricas.MILILITROS;
   }
 }

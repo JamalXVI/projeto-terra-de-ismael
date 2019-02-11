@@ -1,11 +1,8 @@
 package br.com.jamalxvi.farmaciadanatureza.models;
 
-import br.com.jamalxvi.farmaciadanatureza.enums.EnumUnidadesMetricas;
-import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Estocavel;
-import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Lotavel;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Builder;
-import lombok.Data;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -16,32 +13,43 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.math.BigDecimal;
-import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import br.com.jamalxvi.farmaciadanatureza.enums.EnumUnidadesMetricas;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Estocavel;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Lotavel;
+import lombok.Builder;
+import lombok.Data;
 
 /**
- * Esta classe é responsável por controlar o estoque das plantas desidratas.
- * Este estoque apresenta:<br/>
+ * Esta classe é responsável por controlar o estoque das plantas desidratas. Este estoque
+ * apresenta:<br/>
  * -Entidade Base.<br/>
  * -Lote (Lotável).<br/>
  * -A Planta Desidratada de Origem.<br/>
  * -Data de criação do lote.<br/>
  * -Duração máxima de um lote.<br/>
- * <p>Unidade Padrão da planta desidratada: sacos.</p>
+ * <p>
+ * Unidade Padrão da planta desidratada: sacos.
+ * </p>
+ *
  * @author Jamal XVI <henriquearantest@gmail.com>
  * @version 0.1
  * @since 0.1
  */
 @Entity
 @Table(name = "PLANTA_DESIDRATADA_ESTOQUE")
-@AttributeOverrides(value = {
-    @AttributeOverride(name = "id", column = @Column(name = "ID_PLT_DES_EST")),
-    @AttributeOverride(name = "versao", column = @Column(name = "VER_PLT_DES_EST")),
-    @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_PLT_DES_EST"))
-})
+@AttributeOverrides(
+    value = {@AttributeOverride(name = "id", column = @Column(name = "ID_PLT_DES_EST")),
+        @AttributeOverride(name = "versao", column = @Column(name = "VER_PLT_DES_EST")),
+        @AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_PLT_DES_EST"))})
 @Builder
 @Data
 public class PlantaDesidratadaEstoque extends EntidadeBase implements Estocavel, Lotavel {
+  @OneToMany(fetch = FetchType.LAZY, targetEntity = PlantaDesidratadaUsoEstoque.class,
+      mappedBy = "estoque")
+  List<PlantaDesidratadaUsoEstoque> usoEstoques;
   @Column(name = "QTD_PLT_DES_EST")
   private BigDecimal quantidade;
   @Column(name = "LOT_PLT_DES_EST")
@@ -54,10 +62,8 @@ public class PlantaDesidratadaEstoque extends EntidadeBase implements Estocavel,
   @JoinColumn(name = "ID_PLT_DES")
   @JsonBackReference
   private PlantaDesidratada plantaDesidratada;
-  @OneToMany(fetch = FetchType.LAZY, targetEntity = PlantaDesidratadaUsoEstoque.class,
-  mappedBy = "estoque")
-  @Override
-  public EnumUnidadesMetricas getUnidade() {
+
+  public static EnumUnidadesMetricas getUnidade() {
     return EnumUnidadesMetricas.GRAMAS;
   }
 }

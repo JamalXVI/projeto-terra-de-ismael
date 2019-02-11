@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 /**
@@ -18,12 +17,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @SpringBootApplication
 @EntityScan(
-    basePackageClasses = {FarmaciadanaturezaApplication.class, Jsr310JpaConverters.class}
+        basePackageClasses = {FarmaciadanaturezaApplication.class, Jsr310JpaConverters.class}
 )
 @ComponentScan({"br.com.jamalxvi.farmaciadanatureza", "br.com.jamalxvi.farmaciadanatureza.security"})
 public class FarmaciadanaturezaApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(FarmaciadanaturezaApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(FarmaciadanaturezaApplication.class, args);
+    }
 }
