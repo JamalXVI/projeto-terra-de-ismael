@@ -3,6 +3,7 @@ package br.com.jamalxvi.farmaciadanatureza.util;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,8 +22,8 @@ public class ProcessaMedicamentoUtilsTest {
     CapsulaUsoEstoque estoque2 = CapsulaUsoEstoque.builder().quantidade(new BigDecimal(1)).build();
     List<CapsulaUsoEstoque> usoEstoques =
         Arrays.asList(new CapsulaUsoEstoque[] {estoque1, estoque2});
-    CapsulaEstoque estoque =
-        CapsulaEstoque.builder().usoEstoques(usoEstoques).quantidade(new BigDecimal(10)).build();
+    CapsulaEstoque estoque = CapsulaEstoque.builder().usoEstoques(usoEstoques)
+        .dataVencimentoLote(LocalDate.now().plusDays(1)).quantidade(new BigDecimal(10)).build();
     List<CapsulaEstoque> estoques = Arrays.asList(new CapsulaEstoque[] {estoque});
     Capsula capsula = Capsula.builder().pesoMinimo(new BigDecimal(1)).pesoMaximo(new BigDecimal(2))
         .duracaoLote(6L).estoque(estoques).build();

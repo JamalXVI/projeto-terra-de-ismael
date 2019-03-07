@@ -5,6 +5,7 @@ import br.com.jamalxvi.farmaciadanatureza.enums.EnumUnidadesMetricas;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Essa classe é responsável por retornar informações de um medicamento escolhido
@@ -26,7 +27,6 @@ public class RetornoDosMedicamentosDto {
     private String nomeCientifico;
     /** O nome científico do medicamento */
     private String estoqueComVencimentoMaisProximo;
-    private List<>
     /** O id do Medicamento */
     private Long id;
 

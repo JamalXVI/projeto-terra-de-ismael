@@ -12,8 +12,9 @@ import java.util.List;
  * @since 0.1
  */
 public interface Estocavel {
-
-  public BigDecimal getQuantidade();
+  Long getId();
+  
+  BigDecimal getQuantidade();
 
   <K extends PodeUsarEstoque> List<K> getUsoEstoques();
 }

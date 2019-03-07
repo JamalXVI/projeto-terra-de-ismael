@@ -4,7 +4,8 @@ import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_SEM_MEC
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumExcecaoDto;
 import br.com.jamalxvi.farmaciadanatureza.exception.MensagemExcecao;
@@ -35,6 +36,12 @@ public class ProcessaMedicamentoUtils {
       RetornoDosMedicamentosDto dto, K medicamento) {
     if (medicamento instanceof DuracaoLotavel) {
       processarLote(dto, (DuracaoLotavel) medicamento);
+    } else if (medicamento instanceof TipoEstoque) {
+      processarEstoque(dto, (TipoEstoque) medicamento);
+    }
+
+    if (medicamento instanceof Cientifica) {
+      processarCientifica(dto, (Cientifica) medicamento);
     }
     dto.setNome(medicamento.getNome());
     dto.setId(medicamento.getId());
@@ -54,18 +61,19 @@ public class ProcessaMedicamentoUtils {
 
     // Pegar medicamentos que ainda estão válidos
     LocalDate diaAtual = LocalDate.now();
-    Stream<Lotavel> medicamentosAindaNaoVencidos = medicamento.getEstoque().stream()
-        .filter(est -> diaAtual.isBefore(est.getDataVencimentoLote()));
+    List<Lotavel> medicamentosAindaNaoVencidos = medicamento.getEstoque().stream()
+        .filter(est -> est != null && est.getDataVencimentoLote() != null
+            && diaAtual.isBefore(est.getDataVencimentoLote()))
+        .collect(Collectors.toList());
 
-    // Retornar a menor data de vencimento
-    LocalDate data = medicamentosAindaNaoVencidos.map(est -> est.getDataVencimentoLote())
+    // Retornar a a data de vencimento mais próxima
+    LocalDate data = medicamentosAindaNaoVencidos.stream().map(est -> est.getDataVencimentoLote())
         .min(LocalDate::compareTo)
         .orElseThrow(() -> new MensagemExcecao(ERRO_SEM_MECAMENTO_VALIDO.getMensagem(),
             EnumExcecaoDto.NAO_ENCONTRADO));
     dto.setEstoqueComVencimentoMaisProximo(AjudandeDeData.localDateParaString(data));
-
-    if (medicamento instanceof TipoEstoque) {
-      processarEstoque(dto, (TipoEstoque) medicamento);
+    if (medicamentosAindaNaoVencidos instanceof TipoEstoque) {
+      processarEstoque(dto, (TipoEstoque) medicamentosAindaNaoVencidos);
     }
   }
 
@@ -85,8 +93,7 @@ public class ProcessaMedicamentoUtils {
    * @param dto o dto para ser preenchido
    * @param medicamento o medicamento com a interface de TipoEstoque
    */
-  private static <K extends TipoEstoque, L> void processarEstoque(
-      RetornoDosMedicamentosDto dto, TipoEstoque medicamento) {
+  private static void processarEstoque(RetornoDosMedicamentosDto dto, TipoEstoque medicamento) {
     BigDecimal quantidade = medicamento.getEstoque().stream()
         .map(est -> est.getQuantidade()
             .subtract(est.getUsoEstoques().stream().map(qtd -> qtd.getQuantidade())

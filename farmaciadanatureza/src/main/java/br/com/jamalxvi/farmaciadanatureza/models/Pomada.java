@@ -43,7 +43,7 @@ public class Pomada extends Cientifica implements DuracaoLotavel, TipoEstoque {
     @Column(name = "DUR_LOT_POM")
     private Long duracaoLote;
     @OneToMany(mappedBy = "pomada", fetch = FetchType.LAZY,
-            targetEntity = PlantaDesidratadaEstoque.class)
+            targetEntity = PomadaEstoque.class)
     @JsonManagedReference
     private List<PomadaEstoque> estoque;
 }

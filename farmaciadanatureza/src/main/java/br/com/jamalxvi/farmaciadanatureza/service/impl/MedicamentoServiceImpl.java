@@ -15,6 +15,7 @@ import br.com.jamalxvi.farmaciadanatureza.repository.OutrosMedicamentosRepositor
 import br.com.jamalxvi.farmaciadanatureza.repository.PlantaDesidratadaRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.PomadaRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.TinturaRepository;
+import br.com.jamalxvi.farmaciadanatureza.service.CapsulaService;
 import br.com.jamalxvi.farmaciadanatureza.service.MedicamentoService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -118,10 +119,26 @@ public class MedicamentoServiceImpl implements MedicamentoService {
      * @throws MensagemExcecao exceção na busca de repositórios
      */
     private JpaRepository<? extends Medicamento, Long> getRepository(EnumTipoMedicamento medicamento) {
+        final String tipo = "Repository";
+        return getVariavelDeMedicamento(medicamento, tipo);
+    }
+
+    /**
+     * Retorna o serviço do tipo do medicamento escolhido.
+     *
+     * @param medicamento o enum do medicamento
+     * @return o repositório do medicamento em questão
+     * @throws MensagemExcecao exceção na busca de repositórios
+     */
+    private JpaRepository<? extends Medicamento, Long> getServico(EnumTipoMedicamento medicamento) {
+        final String tipo = "Service";
+        return getVariavelDeMedicamento(medicamento, tipo);
+    }
+    private JpaRepository<? extends Medicamento, Long> getVariavelDeMedicamento(EnumTipoMedicamento medicamento, String tipo) {
         try {
             return (JpaRepository<? extends
                     Medicamento, Long>) this.getClass().getDeclaredField(medicamento.getClazz()
-                    .getSimpleName().toLowerCase() + "Repository").get(this);
+                    .getSimpleName().toLowerCase() + tipo).get(this);
         } catch (IllegalAccessException e) {
             throw new MensagemExcecao(ERRO_MEDICAMENTO_ACESSO_INVALIDO.getMensagem(),
                     EnumExcecaoDto.NAO_ENCONTRADO);
