@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { User } from './user.model';
-import { AbstractUserService } from './abstract-user-service.model';
+import { AbstractUserService } from './abstract-user.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { UserUrl } from '../const/user-url.enum';
 import { map } from 'rxjs/operators';

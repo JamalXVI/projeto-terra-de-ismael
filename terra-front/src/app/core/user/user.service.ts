@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 
 import { User } from './user.model';
-import { AbstractUserService } from './abstract-user-service.model';
+import { AbstractUserService } from './abstract-user.service';
 import { UserFactoryService } from './user-factory.service';
 import { ErrorsService } from '../errors/errors.service';
 

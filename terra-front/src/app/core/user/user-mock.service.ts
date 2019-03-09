@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs';
 
 import { User } from './user.model';
-import { AbstractUserService } from './abstract-user-service.model';
+import { AbstractUserService } from './abstract-user.service';
 import { ErrorsService } from '../errors/errors.service';
 
 @Injectable({ providedIn: 'root', })
