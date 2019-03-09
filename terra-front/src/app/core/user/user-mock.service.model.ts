@@ -1,14 +1,23 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs';
 
 import { User } from './user.model';
 import { AbstractUserService } from './abstract-user-service.model';
+import { ErrorsService } from '../errors/errors.service';
 
 @Injectable({ providedIn: 'root', })
 export class UserMockService extends AbstractUserService {
     private users: User[];
+    constructor(
+        protected router: Router,
+        protected http: HttpClient,
+        protected errorService: ErrorsService){
+        super(router, http, errorService);
+    }
     getUsers(): Observable<User[]> {
         if (!this.users) {
             this.users = this.fillList();
