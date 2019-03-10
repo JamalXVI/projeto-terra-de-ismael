@@ -19,7 +19,7 @@ export class UserWebService extends AbstractUserService {
         super(router, http, errorService);
     }
     getUsers(): Observable<User[]> {
-        return this.http.get(UserUrl.GETLIST).pipe(map(users => <User[]>users));
+        return this.http.get('/api/users/all').pipe(map(users => <User[]>users));
     }
     addUser(user: User) {
         //TODO: Implement Back-end Connection

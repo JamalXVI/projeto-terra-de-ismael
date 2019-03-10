@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +14,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LayoutModule } from '@angular/cdk/layout';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
@@ -31,13 +33,18 @@ import {
   MatTableModule, MatPaginatorModule, MatSortModule, MatSelectModule, MatSidenavModule, MatListModule,
   MatExpansionModule, MatStepperModule
 } from '@angular/material';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoginInterceptor } from './core/interceptors/login.interceptor';
 import { MainNavComponent } from './main-nav/main-nav.component';
-import { LayoutModule } from '@angular/cdk/layout';
 import { BotaoHamburgerComponent } from './botao-hamburger/botao-hamburger.component';
 import { GeradorReceitaComponent } from './gerador-receita/gerador-receita.component';
+import { RouterModule } from '@angular/router';
+import { MedicamentoMockService } from './core/medicamento/medicamento-mock.service';
+import { MedicamentoService } from './core/medicamento/medicamento.service';
+import { MedicamentoWebService } from './core/medicamento/medicamento-web.service';
+import { PessoaService } from './core/pessoa/pessoa.service';
+import { PessoaMockService } from './core/pessoa/pessoa-mock.service';
+import { PessoaWebService } from './core/pessoa/pessoa-web.service';
 
 library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
   faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf);
@@ -67,7 +74,7 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
     MatInputModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpModule,
+    RouterModule,
     MatSnackBarModule,
     MatIconModule,
     MatMenuModule,
@@ -95,7 +102,13 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
       provide: HTTP_INTERCEPTORS,
       useClass: LoginInterceptor,
       multi: true
-    }
+    },
+    MedicamentoMockService,
+    MedicamentoWebService,
+    MedicamentoService,
+    PessoaMockService,
+    PessoaWebService,
+    PessoaService,
   ],
   bootstrap: [AppComponent]
 })

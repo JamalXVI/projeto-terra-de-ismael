@@ -1,11 +1,31 @@
 <mat-card>
   <mat-card-header>
-      <mat-card-title>Nova Receita</mat-card-title>
+    <mat-card-title>Nova Receita</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-horizontal-stepper [linear]="true" #stepper>
-        <form [formGroup]="firstFormGroup">
+      <mat-step [stepControl]="firstForm">
+        <ng-template matStepLabel>Escolha o Tipo de Medicamento</ng-template>
+        <form [formGroup]="firstForm">
+          <div fxLayout="column" fxLayoutWrap fxLayoutGap="0%" fxLayoutAlign="center center">
+            <div fxFlex="25%" fxFlex.xs="100%">
+              <h4>Selecione um Tipo Medicamento</h4>
+              <mat-form-field *ngIf="medicamentos">
+                <mat-select placeholder="Medicamento" name="medicamento">
+                  <mat-option *ngFor="let medicamento of medicamentos" [value]="medicamento.id">
+                    {{medicamento.nome}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="column" fxLayoutWrap fxLayoutGap="0%" fxLayoutAlign="end end">
+            <div fxFlex="25%" fxFlex.xs="100%">
+              <button mat-raised-button color="primary">Primary</button>
+            </div>
+          </div>
         </form>
+      </mat-step>
     </mat-horizontal-stepper>
   </mat-card-content>
   <mat-card-actions>
