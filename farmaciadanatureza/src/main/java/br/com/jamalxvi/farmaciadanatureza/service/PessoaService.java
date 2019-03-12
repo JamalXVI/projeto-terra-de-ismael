@@ -1,9 +1,9 @@
 package br.com.jamalxvi.farmaciadanatureza.service;
 
+import java.util.List;
+
 import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.PessoaDto;
-
-import java.util.List;
 
 /**
  * Interface do Serviço de Usuário
@@ -58,4 +58,12 @@ public interface PessoaService {
    * @param p a pessoa em questão
    */
   void remover(Pessoa p);
+
+  /**
+   * Retorna uma lista de pessoas de acordo com a pesquisa
+   * @param pesquisa o que foi digitado, em string
+   * @param limite o limite de resultados
+   * @return a lista de pessoas conforme os resultados
+   */
+  List<PessoaDto> pesquisar(String pesquisa, Integer limite);
 }

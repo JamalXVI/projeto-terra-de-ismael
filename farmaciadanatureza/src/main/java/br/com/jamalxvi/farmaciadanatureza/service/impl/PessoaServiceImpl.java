@@ -70,10 +70,7 @@ public class PessoaServiceImpl extends BaseService implements PessoaService {
     @Override
     public List<PessoaDto> listarTodosDto() {
         List<Pessoa> pessoas = pessoaRepository.findAll();
-        return pessoas.stream().filter(p -> p.getAtivo()).map(p ->
-                PessoaDto.builder().ativo(
-                        p.getAtivo()).cpf(p.getCpf()).nome(p.getNome()).sobrenome(
-                        p.getSobrenome()).build()).collect(Collectors.toList());
+        return ConstruirPessoasDto(pessoas);
     }
 
     @Override
@@ -100,5 +97,18 @@ public class PessoaServiceImpl extends BaseService implements PessoaService {
     @Override
     public void remover(Pessoa p) {
         this.pessoaRepository.delete(p);
+    }
+
+    @Override
+    public List<PessoaDto> pesquisar(String pesquisa, Integer limite) {
+        List<Pessoa> pessoas = pessoaRepository.findByPesquisa(pesquisa, limite);
+        return ConstruirPessoasDto(pessoas);
+    }
+
+    private List<PessoaDto> ConstruirPessoasDto(List<Pessoa> pessoas) {
+        return pessoas.stream().filter(p -> p.getAtivo()).map(p ->
+                PessoaDto.builder().ativo(
+                        p.getAtivo()).cpf(p.getCpf()).nome(p.getNome()).sobrenome(
+                        p.getSobrenome()).build()).collect(Collectors.toList());
     }
 }
