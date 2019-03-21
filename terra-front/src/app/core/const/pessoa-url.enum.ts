@@ -1,3 +1,4 @@
 export enum PessoaUrl {
-    GETLIST = '/api/medicines/'
+    GETLIST = '/api/medicines/',
+    GETSEARCHLIST = '/api/pessoa/listaPesquisa',
 };

@@ -24,4 +24,7 @@ export class PessoaService extends AbstractPessoaService {
     public get(): Observable<Pessoa[]> {
         return this.pessoaService.get();
     }
+    public listaPesquisa(pesquisa: string, limite?: number): Observable<Pessoa[]> {
+        return this.pessoaService.listaPesquisa(pesquisa, limite);
+    }
 }

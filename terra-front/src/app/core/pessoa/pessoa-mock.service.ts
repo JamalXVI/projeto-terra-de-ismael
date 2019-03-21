@@ -20,6 +20,9 @@ export class PessoaMockService extends AbstractPessoaService {
     public get(): Observable<Pessoa[]> {
         return this._fillList();
     }
+    public listaPesquisa(pesquisa: string, limite?: number): Observable<Pessoa[]> {
+        return this._fillList();
+    }
     private _fillList(): Observable<Pessoa[]> {
         return of([
             new Pessoa({

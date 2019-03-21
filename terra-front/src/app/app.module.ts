@@ -18,7 +18,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
-  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf
+  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight
 } from '@fortawesome/free-solid-svg-icons';
 
 import { LoginComponent } from './login/login.component';
@@ -31,7 +31,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { TabelaComponent } from './tabela/tabela.component';
 import {
   MatTableModule, MatPaginatorModule, MatSortModule, MatSelectModule, MatSidenavModule, MatListModule,
-  MatExpansionModule, MatStepperModule
+  MatExpansionModule, MatStepperModule, MatAutocompleteModule, MatProgressSpinnerModule, MatTooltipModule
 } from '@angular/material';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoginInterceptor } from './core/interceptors/login.interceptor';
@@ -47,7 +47,7 @@ import { PessoaMockService } from './core/pessoa/pessoa-mock.service';
 import { PessoaWebService } from './core/pessoa/pessoa-web.service';
 
 library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
-  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf);
+  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight);
 
 @NgModule({
   declarations: [
@@ -72,6 +72,9 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
     MatButtonModule,
     MatToolbarModule,
     MatInputModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    MatAutocompleteModule,
     ReactiveFormsModule,
     FormsModule,
     RouterModule,
@@ -110,6 +113,7 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
     PessoaWebService,
     PessoaService,
   ],
+  schemas: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

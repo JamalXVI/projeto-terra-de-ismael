@@ -6,6 +6,7 @@ export const DEFAULT_LOGIN_NAME = 'tokenDeAcesso';
 export const DEFAULT_USER_STORE = 'usuario';
 export const PAGE_SIZE_OPTIONS = [5, 10, 15, 20];
 export const DEFAULT_PAGE_SIZE_OPTION = 10;
+export const DEFAULT_SEARCH_TERMS_VALUE = 3;
 
 export function UserFilter(user: User, filters: any): boolean {
     const role = user.role === 0 ? 'Usuário' : 'Adminstrador';

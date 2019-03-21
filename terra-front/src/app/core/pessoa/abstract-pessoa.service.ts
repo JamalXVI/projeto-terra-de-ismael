@@ -16,4 +16,5 @@ export abstract class AbstractPessoaService {
     ) {
     }
     public abstract get(): Observable<Pessoa[]>;
+    public abstract listaPesquisa(pesquisa: string, limite?: number): Observable<Pessoa[]>;
 }

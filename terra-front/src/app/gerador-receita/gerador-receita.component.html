@@ -4,9 +4,52 @@
   </mat-card-header>
   <mat-card-content>
     <mat-horizontal-stepper [linear]="true" #stepper>
-      <mat-step [stepControl]="firstForm">
+      <mat-step [stepControl]="informationForm">
+        <ng-template matStepLabel>Informações Iniciais</ng-template>
+        <form [formGroup]="informationForm">
+          <div fxLayout="row" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center center">
+            <div fxFlex="100%" fxFlex.xs="100%">
+              <h4>Selecione um Cliente</h4>
+              <mat-form-field>
+                <input type="text" placeholder="Selecione um Cliente" matInput formControlName="pessoa"
+                  [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <ng-container *ngIf="carregando" class="esta-carregando">
+                    <span>
+                      <mat-spinner diameter="50"></mat-spinner>
+                    </span>
+                  </ng-container>
+                  <ng-container *ngIf="!carregando">
+                    <mat-option *ngFor="let p of pessoas" [value]="p">
+                      <span>{{p.getNome()}}</span>
+                      <small> | CPF: {{p.cpf}}</small>
+                    </mat-option>
+                  </ng-container>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row" fxLayoutWrap fxLayoutGap="0%" fxLayoutAlign="left left">
+            <div fxFlex="25%" fxFlex.xs="100%">
+              <button mat-raised-button matTooltip="Adicionar um novo Paciente">
+                <fa-icon [icon]="['fas', 'user-plus']"></fa-icon>
+              </button>
+            </div>
+            <div fxFlex="50%" fxFlex.xs="0%">
+            </div>
+            <div fxFlex="25%" fxFlex.xs="100%">
+              <div fxLayout="row" fxLayoutWrap fxLayoutGap="0%" fxLayoutAlign="end end">
+                <button mat-raised-button color="primary" matTooltip="Prosseguir para a Próxima Etapa" [disabled]="!informationForm.valid">
+                  <fa-icon [icon]="['fas', 'arrow-right']"></fa-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="medicineForm">
         <ng-template matStepLabel>Escolha o Tipo de Medicamento</ng-template>
-        <form [formGroup]="firstForm">
+        <form [formGroup]="medicineForm">
           <div fxLayout="column" fxLayoutWrap fxLayoutGap="0%" fxLayoutAlign="center center">
             <div fxFlex="25%" fxFlex.xs="100%">
               <h4>Selecione um Tipo Medicamento</h4>
