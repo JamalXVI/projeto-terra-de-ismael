@@ -14,6 +14,7 @@ import lombok.Data;
 @Data
 @Builder
 public class PessoaDto {
+    private Long codigo;
     private String nome;
     private String sobrenome;
     private String cpf;

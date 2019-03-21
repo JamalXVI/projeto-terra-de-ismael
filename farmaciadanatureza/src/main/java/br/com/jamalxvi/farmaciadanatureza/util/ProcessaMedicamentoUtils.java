@@ -1,6 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.util;
 
-import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_SEM_MECAMENTO_VALIDO;
+import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_SEM_MEDICAMENTO_VALIDO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -69,7 +69,7 @@ public class ProcessaMedicamentoUtils {
     // Retornar a a data de vencimento mais próxima
     LocalDate data = medicamentosAindaNaoVencidos.stream().map(est -> est.getDataVencimentoLote())
         .min(LocalDate::compareTo)
-        .orElseThrow(() -> new MensagemExcecao(ERRO_SEM_MECAMENTO_VALIDO.getMensagem(),
+        .orElseThrow(() -> new MensagemExcecao(ERRO_SEM_MEDICAMENTO_VALIDO.getMensagem(),
             EnumExcecaoDto.NAO_ENCONTRADO));
     dto.setEstoqueComVencimentoMaisProximo(AjudandeDeData.localDateParaString(data));
     if (medicamentosAindaNaoVencidos instanceof TipoEstoque) {

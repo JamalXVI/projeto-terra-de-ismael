@@ -109,6 +109,6 @@ public class PessoaServiceImpl extends BaseService implements PessoaService {
         return pessoas.stream().filter(p -> p.getAtivo()).map(p ->
                 PessoaDto.builder().ativo(
                         p.getAtivo()).cpf(p.getCpf()).nome(p.getNome()).sobrenome(
-                        p.getSobrenome()).build()).collect(Collectors.toList());
+                        p.getSobrenome()).codigo(p.getId()).build()).collect(Collectors.toList());
     }
 }
