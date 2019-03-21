@@ -45,6 +45,7 @@ import { MedicamentoWebService } from './core/medicamento/medicamento-web.servic
 import { PessoaService } from './core/pessoa/pessoa.service';
 import { PessoaMockService } from './core/pessoa/pessoa-mock.service';
 import { PessoaWebService } from './core/pessoa/pessoa-web.service';
+import { UnauthorizedInterceptor } from './core/interceptors/unauthorized.interceptor';
 
 library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
   faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight);
@@ -104,6 +105,11 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoginInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
       multi: true
     },
     MedicamentoMockService,

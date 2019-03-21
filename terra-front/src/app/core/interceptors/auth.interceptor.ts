@@ -1,4 +1,4 @@
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http/';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse } from '@angular/common/http/';
 import { Injectable, Inject } from '@angular/core';
 import { Router } from '../../../../node_modules/@angular/router';
 
@@ -9,6 +9,7 @@ import { DEFAULT_LOGIN_NAME } from '../const/constants';
 import { authHeaders } from '../const/custom-headers.const';
 import { EstadoToken } from '../security/estado-token.model';
 import { OpenUrl } from '../const/open-url.enum';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
