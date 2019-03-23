@@ -8,16 +8,22 @@ import { map } from 'rxjs/operators';
 import { User } from './user.model';
 import { ErrorsService } from '../errors/errors.service';
 import { UserUrl } from '../const/user-url.enum';
+import { UserFactoryService } from './user-factory.service';
+import { AbstractUserService } from './abstract-user.service';
 
 @Injectable({ providedIn: 'root', })
-export class UserService {
+export class UserService extends AbstractUserService {
+    userService: AbstractUserService;
     constructor(
         protected router: Router,
         protected http: HttpClient,
-        protected errorService: ErrorsService) {
+        protected errorService: ErrorsService,
+        protected userFactoryService: UserFactoryService) {
+            super(router, http, errorService);
+            this.userService = this.userFactoryService.getService();
     }
     getUsers(): Observable<User[]> {
-        return this.http.get(UserUrl.GETLIST).pipe(map(users => <User[]>users));
+        return this.userService.getUsers();
     }
     addUser(user: User) {
         //TODO: Implement Back-end Connection
