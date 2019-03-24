@@ -7,6 +7,7 @@ import { PessoaService } from '../core/pessoa/pessoa.service';
 import { forkJoin } from 'rxjs';
 import { Pessoa } from '../core/pessoa/pessoa.model';
 import { debounce, debounceTime, switchMap, tap, finalize } from 'rxjs/operators';
+import { CustomErrorStateMatcher } from '../core/CustomErrorStateMatcher.model';
 
 @Component({
   selector: 'app-gerador-receita',
@@ -19,6 +20,7 @@ export class GeradorReceitaComponent implements OnInit {
   medicamentos: ElementoDaListaDto[] = [];
   pessoas: Pessoa[] = [];
   carregando: boolean = false;
+  protected matcher = new CustomErrorStateMatcher();
   constructor(private _formBuilder: FormBuilder,
     private _medicamentoService: MedicamentoService,
     private _pessoaService: PessoaService) {
@@ -38,10 +40,31 @@ export class GeradorReceitaComponent implements OnInit {
     });
     this.informationForm.get('pessoa').valueChanges.pipe(debounceTime(300), tap(() => this.carregando = true),
       switchMap(value => this._pessoaService.listaPesquisa(value).pipe(finalize(() => this.carregando = false))))
-      .subscribe(pessoas =>  this.pessoas = pessoas);
+      .subscribe(pessoas => this.pessoas = pessoas);
   }
 
   ngOnInit() {
   }
+  /**
+   * Finaliza o Formulário de Informações do cliente
+   */
+  finalizarInformacoesDoPaciente($event): void {
+    if (this.verificaPessoaValida()) {
 
+    }
+  }
+  verificaPessoaValida(): boolean {
+    let pessoaValida = false;
+    const pessoa = this.informationForm.get('pessoa').value;
+    if (pessoa instanceof Pessoa) {
+      pessoaValida = true;
+    }
+    if (!pessoaValida) {
+      this.informationForm.get('pessoa').setErrors({
+        naoExiste: true
+      })
+      return false;
+    }
+    return true;
+  }
 }
