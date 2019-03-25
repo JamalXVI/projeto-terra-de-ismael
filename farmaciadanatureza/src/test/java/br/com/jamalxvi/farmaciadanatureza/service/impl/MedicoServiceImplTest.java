@@ -4,20 +4,27 @@ import br.com.jamalxvi.farmaciadanatureza.BaseTest;
 import br.com.jamalxvi.farmaciadanatureza.models.Medico;
 import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.MedicoDto;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.PessoaDto;
 import br.com.jamalxvi.farmaciadanatureza.repository.MedicoRepository;
 import br.com.jamalxvi.farmaciadanatureza.service.MedicoService;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -31,6 +38,15 @@ public class MedicoServiceImplTest extends BaseTest {
     @Before
     public void setUp() throws Exception {
         this.medicoService = new MedicoServiceImpl(medicoRepository);
+        List<Medico> medicos = criarMedicos();
+        when(medicoRepository.findByPesquisa(anyString(), anyInt())).thenAnswer(new Answer<List<Medico>>() {
+            @Override
+            public List<Medico> answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return medicos.stream().limit((int)invocationOnMock.getArgument(1))
+                        .collect(Collectors.toList());
+            }
+        });
+        when(medicoRepository.findAll()).thenReturn(medicos);
     }
 
     @After
@@ -41,7 +57,6 @@ public class MedicoServiceImplTest extends BaseTest {
     @Test
     public void listarTodosDto() {
         List<Medico> medicos = criarMedicos();
-        when(medicoRepository.findAll()).thenReturn(medicos);
         List<MedicoDto> medicoDtos = this.medicoService.listarTodosDto();
         assertTrue("A lista não deve ser nula.", medicoDtos != null);
         assertTrue("A lista deve ter o tamanho original", medicoDtos.size() == medicos.size());
@@ -68,6 +83,34 @@ public class MedicoServiceImplTest extends BaseTest {
                 .sobrenome
                         ("Da silva").cpf("456.789.012-34").ativo(true).id(2L).dataCriacao(LocalDate.now())
                 .build()).build());
+        medicos.add(Medico.builder().crm("145136").pessoa(Pessoa.builder().nome("Jorge")
+                .sobrenome
+                        ("Da silva").cpf("156.789.012-34").ativo(true).id(2L).dataCriacao(LocalDate.now())
+                .build()).build());
         return medicos;
+    }
+    // region: BuscarPorFiltro
+    @Test
+    public void buscarPorFiltroCorretoTresResultados() {
+        String pesquisa = "da Silva";
+        Integer limite = 3;
+        List<MedicoDto> medicoDtos = this.medicoService.pesquisar(pesquisa, limite);
+        Assert.assertTrue("O tamanho da lista deve ser 3", medicoDtos.size() == limite);
+    }
+
+    @Test
+    public void buscarPorFiltroCorretoDoisResultados() {
+        String pesquisa = "da Silva";
+        Integer limite = 2;
+        List<MedicoDto> medicoDtos = this.medicoService.pesquisar(pesquisa, limite);
+        Assert.assertTrue("O tamanho da lista deve ser 2", medicoDtos.size() == limite);
+    }
+
+    @Test
+    public void buscarPorFiltroSemPesquisaTresResultados() {
+        String pesquisa = "";
+        Integer limite = 3;
+        List<MedicoDto> medicoDtos = this.medicoService.pesquisar(pesquisa, limite);
+        Assert.assertTrue("O tamanho da lista deve ser 3", medicoDtos.size() == limite);
     }
 }

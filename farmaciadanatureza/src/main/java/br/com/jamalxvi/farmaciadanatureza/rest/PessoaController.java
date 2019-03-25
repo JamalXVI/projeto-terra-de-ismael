@@ -21,18 +21,17 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RequestMapping(value = "/api/pessoa", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 @NoArgsConstructor
+@PreAuthorize("hasRole('USUARIO')")
 public class PessoaController {
   @Autowired
   private PessoaService pessoaService;
 
   @RequestMapping(method = GET, value = "/")
-  @PreAuthorize("hasRole('USUARIO')")
   public List<PessoaDto> list() {
     return pessoaService.listarTodosDto();
   }
 
   @RequestMapping(method = GET, value = "/listaPesquisa")
-  @PreAuthorize("hasRole('USUARIO')")
   public List<PessoaDto> pesquisar(String pesquisa, Integer limite) {
     if (pesquisa == null || limite == null){
       throw new MensagemExcecao(ERRO_PESQUISA_INVALIDA.getMensagem(),

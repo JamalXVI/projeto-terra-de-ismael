@@ -14,6 +14,7 @@ import lombok.Data;
 @Data
 @Builder
 public class MedicoDto {
+    private Long codigo;
     private String crm;
     private String nome;
     private String sobrenome;
