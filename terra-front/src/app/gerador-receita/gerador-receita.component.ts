@@ -8,6 +8,8 @@ import { forkJoin } from 'rxjs';
 import { Pessoa } from '../core/pessoa/pessoa.model';
 import { debounce, debounceTime, switchMap, tap, finalize } from 'rxjs/operators';
 import { CustomErrorStateMatcher } from '../core/CustomErrorStateMatcher.model';
+import { Medico } from '../core/medico/medico.model';
+import { MedicoService } from '../core/medico/medico.service';
 
 @Component({
   selector: 'app-gerador-receita',
@@ -19,21 +21,25 @@ export class GeradorReceitaComponent implements OnInit {
   informationForm: FormGroup;
   medicamentos: ElementoDaListaDto[] = [];
   pessoas: Pessoa[] = [];
+  medicos: Medico[] = [];
   carregando: boolean = false;
   protected matcher = new CustomErrorStateMatcher();
   constructor(private _formBuilder: FormBuilder,
     private _medicamentoService: MedicamentoService,
-    private _pessoaService: PessoaService) {
+    private _pessoaService: PessoaService,
+    private _medicoService: MedicoService) {
     this.medicineForm = this._formBuilder.group({
       medicamento: new FormControl('', Validators.required)
     });
     this.informationForm = this._formBuilder.group({
-      pessoa: new FormControl('', Validators.required)
+      pessoa: new FormControl('', Validators.required),
+      medico: new FormControl('', Validators.required)
     });
-    forkJoin([this._medicamentoService.get(), this._pessoaService.listaPesquisa('')])
+    forkJoin([this._medicamentoService.get(), this._pessoaService.listaPesquisa(''), this._medicoService.get()])
       .subscribe((res: any[]) => {
         this.medicamentos = res[0];
         this.pessoas = res[1];
+        this.medicos = res[2];
       })
     this._medicamentoService.get().subscribe(medicamentos => {
       this.medicamentos = medicamentos;

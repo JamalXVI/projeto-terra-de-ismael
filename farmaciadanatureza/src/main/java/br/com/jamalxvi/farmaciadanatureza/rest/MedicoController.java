@@ -17,7 +17,7 @@ import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_PESQUIS
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
-@RequestMapping(value = "/api/doctor", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/medico", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasRole('USUARIO')")
 public class MedicoController {
 

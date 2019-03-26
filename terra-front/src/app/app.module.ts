@@ -18,7 +18,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
-  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight
+  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse
 } from '@fortawesome/free-solid-svg-icons';
 
 import { LoginComponent } from './login/login.component';
@@ -46,9 +46,12 @@ import { PessoaService } from './core/pessoa/pessoa.service';
 import { PessoaMockService } from './core/pessoa/pessoa-mock.service';
 import { PessoaWebService } from './core/pessoa/pessoa-web.service';
 import { UnauthorizedInterceptor } from './core/interceptors/unauthorized.interceptor';
+import { MedicoWebService } from './core/medico/medico-web.service';
+import { MedicoMockService } from './core/medico/medico-mock.service';
+import { MedicoService } from './core/medico/medico.service';
 
 library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
-  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight);
+  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse);
 
 @NgModule({
   declarations: [
@@ -118,6 +121,9 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
     PessoaMockService,
     PessoaWebService,
     PessoaService,
+    MedicoMockService,
+    MedicoWebService,
+    MedicoService,
   ],
   schemas: [],
   bootstrap: [AppComponent]
