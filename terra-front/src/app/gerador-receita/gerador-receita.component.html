@@ -4,9 +4,9 @@
   </mat-card-header>
   <mat-card-content>
     <mat-horizontal-stepper [linear]="true" #stepper>
-      <mat-step [stepControl]="informationForm">
+      <mat-step [stepControl]="informationForm" #step>
         <ng-template matStepLabel>Informações Iniciais</ng-template>
-        <form [formGroup]="informationForm" (submit)="finalizarInformacoesDoPaciente($event)">
+        <form [formGroup]="informationForm" (submit)="finalizarInformacoesDoPaciente($event, step)">
           <div fxLayout="row" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center center">
             <div fxFlex="100%" fxFlex.xs="100%">
               <h4>Selecione um Cliente</h4>
@@ -45,6 +45,14 @@
                 <mat-error *ngIf="informationForm.controls['medico'].hasError('required')">
                   Nossa! Médico Invisível, esse não conheço não!
                 </mat-error>
+                <mat-error *ngIf="!informationForm.controls['medico'].hasError('required') && informationForm.controls['medico'].hasError('naoExiste')">
+                  Minha pergunta é: Como aconteceu esse erro?
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Escolha uma Data">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
             </div>
           </div>

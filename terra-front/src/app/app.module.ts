@@ -31,7 +31,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { TabelaComponent } from './tabela/tabela.component';
 import {
   MatTableModule, MatPaginatorModule, MatSortModule, MatSelectModule, MatSidenavModule, MatListModule,
-  MatExpansionModule, MatStepperModule, MatAutocompleteModule, MatProgressSpinnerModule, MatTooltipModule
+  MatExpansionModule, MatStepperModule, MatAutocompleteModule, MatProgressSpinnerModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE, DateAdapter
 } from '@angular/material';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoginInterceptor } from './core/interceptors/login.interceptor';
@@ -79,6 +79,8 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
     FormsModule,
     RouterModule,
@@ -115,6 +117,7 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
       useClass: UnauthorizedInterceptor,
       multi: true
     },
+    { provide: MAT_DATE_LOCALE, useValue: 'br' },
     MedicamentoMockService,
     MedicamentoWebService,
     MedicamentoService,
@@ -128,4 +131,10 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
   schemas: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+
+  constructor(private dateAdapter: DateAdapter<Date>) {
+    dateAdapter.setLocale('en-in');
+  }
+}
