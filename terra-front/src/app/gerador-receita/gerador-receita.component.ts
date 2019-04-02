@@ -41,7 +41,8 @@ export class GeradorReceitaComponent implements OnInit {
     });
     this.informationForm = this._formBuilder.group({
       pessoa: new FormControl('', Validators.required),
-      medico: new FormControl('', Validators.required)
+      medico: new FormControl('', Validators.required),
+      dataReceita: new FormControl('', [Validators.required]),
     });
     forkJoin([this._medicamentoService.get(), this._pessoaService.listaPesquisa(''), this._medicoService.get()])
       .subscribe((res: any[]) => {
@@ -63,9 +64,10 @@ export class GeradorReceitaComponent implements OnInit {
    * Finaliza o Formulário de Informações do cliente
    */
   finalizarInformacoesDoPaciente($event, step: MatStepper): void {
-    if (this.verificaPessoaValida() && this.verificaMedicoValido()) {
+    if (this.verificaPessoaValida() && this.verificaMedicoValido() && this.informationForm.get('dataReceita') instanceof Date) {
       const paciente: Pessoa = this.informationForm.get('pessoa').value;
       const medico: Medico = this.informationForm.get('medico').value;
+      console.log(this.informationForm.get('dataReceita').value);
       this.formulario.paciente = paciente.codigo;
       this.formulario.medico = medico.codigo;
       step.next;
