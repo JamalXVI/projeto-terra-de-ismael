@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject } from '@angular/core';
 
 import { map } from 'rxjs/operators';
@@ -21,5 +21,8 @@ export class MedicamentoWebService extends AbstractMedicamentoService {
     }
     public get(): Observable<ElementoDaListaDto[]> {
         return this.http.get(MedicamentoUrl.GETLIST).pipe(map(medicines => (<any[]>medicines).map(med => new ElementoDaListaDto(med))));
+    }
+    public getDetails(id: number): Observable<ElementoDaListaDto[]> {
+        return this.http.get(MedicamentoUrl.GETLIST+id).pipe(map(medicines => (<any[]>medicines).map(med => new ElementoDaListaDto(med))));
     }
 }

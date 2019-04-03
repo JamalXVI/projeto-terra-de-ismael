@@ -26,4 +26,7 @@ export class MedicamentoService extends AbstractMedicamentoService {
     public get(): Observable<ElementoDaListaDto[]> {
         return this._medicamentoService.get();
     }
+    public getDetails(id: number): Observable<ElementoDaListaDto[]> {
+        return this._medicamentoService.getDetails(id);
+    }
 }

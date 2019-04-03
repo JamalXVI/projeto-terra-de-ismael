@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { MedicamentoService } from '../core/medicamento/medicamento.service';
@@ -11,7 +11,7 @@ import { CustomErrorStateMatcher } from '../core/CustomErrorStateMatcher.model';
 import { Medico } from '../core/medico/medico.model';
 import { MedicoService } from '../core/medico/medico.service';
 import { FormularioReceita } from '../core/receita/formulario-receita.model';
-import {MatStepper, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
+import { MatStepper, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
 import { FORMATOS } from '../core/const/constants';
 
 @Component({
@@ -19,20 +19,23 @@ import { FORMATOS } from '../core/const/constants';
   templateUrl: './gerador-receita.component.html',
   styleUrls: ['./gerador-receita.component.scss'],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'br'},
-    {provide: MAT_DATE_FORMATS, useValue: FORMATOS }
+    { provide: MAT_DATE_LOCALE, useValue: 'br' },
+    { provide: MAT_DATE_FORMATS, useValue: FORMATOS }
   ],
 })
 export class GeradorReceitaComponent implements OnInit {
   medicineForm: FormGroup;
   informationForm: FormGroup;
   medicamentos: ElementoDaListaDto[] = [];
+  // Lista de Itens de um Medicamento, contendo todos as misturas válidas daquele tipo
+  itensDoMedicamento: ElementoDaListaDto[] = [];
   pessoas: Pessoa[] = [];
   medicos: Medico[] = [];
   carregando: boolean = false;
   formulario: FormularioReceita = new FormularioReceita();
   protected matcher = new CustomErrorStateMatcher();
   constructor(private _formBuilder: FormBuilder,
+    private changeDetectionRef: ChangeDetectorRef,
     private _medicamentoService: MedicamentoService,
     private _pessoaService: PessoaService,
     private _medicoService: MedicoService) {
@@ -64,13 +67,12 @@ export class GeradorReceitaComponent implements OnInit {
    * Finaliza o Formulário de Informações do cliente
    */
   finalizarInformacoesDoPaciente($event, step: MatStepper): void {
-    if (this.verificaPessoaValida() && this.verificaMedicoValido() && this.informationForm.get('dataReceita') instanceof Date) {
+    if (this.verificaPessoaValida() && this.verificaMedicoValido() && this.informationForm.get('dataReceita').value instanceof Date && !this.carregando) {
       const paciente: Pessoa = this.informationForm.get('pessoa').value;
       const medico: Medico = this.informationForm.get('medico').value;
-      console.log(this.informationForm.get('dataReceita').value);
       this.formulario.paciente = paciente.codigo;
       this.formulario.medico = medico.codigo;
-      step.next;
+      step.next();
     }
   }
   /**
@@ -106,5 +108,23 @@ export class GeradorReceitaComponent implements OnInit {
       return false;
     }
     return true;
+  }
+  /**
+   * Verifica se a pesquisa está inválida
+   */
+  verificarPesquisaInvalida() {
+    return this.medicineForm.get('medicamento').invalid;
+  }
+  /**
+   * Faz a pesquisa de medicamentos
+   */
+  fazerPesquisa() {
+    const id: number = this.medicineForm.get('medicamento').value;
+    this.carregando = true;
+    this._medicamentoService.getDetails(id)
+      .subscribe(medicamentos => {
+        this.itensDoMedicamento = medicamentos;
+        this.carregando = false;
+      });
   }
 }

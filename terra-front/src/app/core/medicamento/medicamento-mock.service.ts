@@ -20,6 +20,9 @@ export class MedicamentoMockService extends AbstractMedicamentoService {
     public get(): Observable<ElementoDaListaDto[]> {
         return this._fillList();
     }
+    public getDetails(id: number): Observable<ElementoDaListaDto[]> {
+        return this._fillList();
+    }
     private _fillList(): Observable<ElementoDaListaDto[]>{
         return of([new ElementoDaListaDto({id: 0, nome:'Cápsula'})]);
     }

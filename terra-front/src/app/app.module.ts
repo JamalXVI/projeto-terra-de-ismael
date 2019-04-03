@@ -18,7 +18,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
-  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse
+  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse, faSearch
 } from '@fortawesome/free-solid-svg-icons';
 
 import { LoginComponent } from './login/login.component';
@@ -51,7 +51,7 @@ import { MedicoMockService } from './core/medico/medico-mock.service';
 import { MedicoService } from './core/medico/medico.service';
 
 library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
-  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse);
+  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse, faSearch);
 
 @NgModule({
   declarations: [

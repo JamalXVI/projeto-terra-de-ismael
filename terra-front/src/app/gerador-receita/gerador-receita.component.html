@@ -6,10 +6,11 @@
     <mat-horizontal-stepper [linear]="true" #stepper>
       <mat-step [stepControl]="informationForm" #step>
         <ng-template matStepLabel>Informações Iniciais</ng-template>
-        <form [formGroup]="informationForm" (submit)="finalizarInformacoesDoPaciente($event, step)">
+        <form [formGroup]="informationForm" (submit)="finalizarInformacoesDoPaciente($event, stepper)">
 
-          <div fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxFlexFill fxLayoutGap="0.0" fxLayoutWrap fxLayoutGap="0.5" fxLayoutAlign="center center">
-            <div fxFlex="99.5" fxFlex.md="99.5" fxFlex.xl="39.5"  fxFlex.xs="100" >
+          <div fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxFlexFill fxLayoutGap="0.0" fxLayoutWrap
+            fxLayoutGap="0.5" fxLayoutAlign="center center">
+            <div fxFlex="99.5" fxFlex.md="99.5" fxFlex.xl="39.5" fxFlex.xs="100">
               <mat-form-field>
                 <input type="text" placeholder="Selecione um Cliente" matInput formControlName="pessoa"
                   [matAutocomplete]="auto">
@@ -35,7 +36,7 @@
                 </mat-autocomplete>
               </mat-form-field>
             </div>
-            <div fxFlex="99.5" fxFlex.xl="39.5" fxFlex.md="99.5"  fxFlex.xs="100"  >
+            <div fxFlex="99.5" fxFlex.xl="39.5" fxFlex.md="99.5" fxFlex.xs="100">
               <mat-form-field>
                 <mat-label>Selecione um Médico</mat-label>
                 <mat-select formControlName="medico">
@@ -53,7 +54,7 @@
                 </mat-error>
               </mat-form-field>
             </div>
-            <div fxFlex="99.5" fxFlex.md="99.5" fxFlex.xl="19.5"  fxFlex.xs="100" >
+            <div fxFlex="99.5" fxFlex.md="99.5" fxFlex.xl="19.5" fxFlex.xs="100">
               <mat-form-field>
                 <input matInput [matDatepicker]="picker" placeholder="Escolha uma Data" formControlName="dataReceita"
                   disabled>
@@ -65,7 +66,7 @@
               </mat-form-field>
             </div>
           </div>
-          <div fxLayout="row" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="left left">
+          <div fxLayout="row" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="left left" class="espacamento">
             <div fxFlex="20" fxFlex.xs="100">
               <button mat-raised-button matTooltip="Adicionar um novo Paciente">
                 <fa-icon [icon]="['fas', 'user-plus']"></fa-icon>
@@ -94,15 +95,35 @@
         <form [formGroup]="medicineForm">
           <div fxLayout="column" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="center center">
             <div fxFlex="25" fxFlex.xs="100">
-              <h4>Selecione um Tipo Medicamento</h4>
-              <mat-form-field *ngIf="medicamentos">
-                <mat-select placeholder="Medicamento" name="medicamento">
-                  <mat-option *ngFor="let medicamento of medicamentos" [value]="medicamento.id">
-                    {{medicamento.nome}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+              <div fxLayout="row" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="center left">
+                <div fxFlex="85" fxFlex.xs="80">
+                  <mat-form-field *ngIf="medicamentos">
+                    <mat-select placeholder="Selecione um Medicamento" formControlName="medicamento">
+                      <mat-option *ngFor="let medicamento of medicamentos" [value]="medicamento.id">
+                        {{medicamento.nome}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="15" fxFlex.xs="20">
+                  <button mat-stroked-button style="margin-top: 5px" [disabled]='verificarPesquisaInvalida()'
+                    (click)="fazerPesquisa()">
+                    <fa-icon [icon]="['fas', 'search']"></fa-icon>
+                  </button>
+                </div>
+              </div>
             </div>
+            <div fxFlex="75" fxFlex.xs="100">
+              <ng-container *ngIf="!!carregando">
+                <div fxLayout="row" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="center center">
+                  <mat-spinner></mat-spinner>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="!carregando">
+                {{itensDoMedicamento}}
+              </ng-container>
+            </div>
+
           </div>
           <div fxLayout="column" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="end end">
             <div fxFlex="25" fxFlex.xs="100">
