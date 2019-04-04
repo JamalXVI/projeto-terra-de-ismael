@@ -98,7 +98,7 @@
               <div fxLayout="row" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="center left">
                 <div fxFlex="85" fxFlex.xs="80">
                   <mat-form-field *ngIf="medicamentos">
-                    <mat-select placeholder="Selecione um Medicamento" formControlName="medicamento">
+                    <mat-select placeholder="Selecione um Tipo de Medicamento" formControlName="medicamento">
                       <mat-option *ngFor="let medicamento of medicamentos" [value]="medicamento.id">
                         {{medicamento.nome}}
                       </mat-option>
@@ -119,8 +119,25 @@
                   <mat-spinner></mat-spinner>
                 </div>
               </ng-container>
-              <ng-container *ngIf="!carregando">
-                {{itensDoMedicamento}}
+              <ng-container *ngIf="!carregando && iniciouPesquisa">
+                <div fxLayout="row" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="center left">
+                  <div fxFlex="85" fxFlex.xs="80">
+                    <mat-form-field *ngIf="itensDoMedicamento">
+                      <mat-select placeholder="Selecione um Medicamento" formControlName="medicamentoEscolhido">
+                        <mat-option *ngFor="let medicamento of itensDoMedicamento" [value]="medicamento.id">
+                          {{medicamento.nome}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="15" fxFlex.xs="20">
+                      <button mat-stroked-button style="margin-top: 5px" [disabled]='verificarPesquisaInvalida()'
+                        (click)="fazerPesquisa()">
+                        <fa-icon [icon]="['fas', 'search']"></fa-icon>
+                      </button>
+                  </div>
+                </div>
+
               </ng-container>
             </div>
 

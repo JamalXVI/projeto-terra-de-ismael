@@ -1,20 +1,14 @@
 package br.com.jamalxvi.farmaciadanatureza.util;
 
-import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_SEM_MEDICAMENTO_VALIDO;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.jamalxvi.farmaciadanatureza.enums.EnumExcecaoDto;
-import br.com.jamalxvi.farmaciadanatureza.exception.MensagemExcecao;
 import br.com.jamalxvi.farmaciadanatureza.models.Cientifica;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.MedicamentoEmEstoqueDto;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.RetornoDosMedicamentosDto;
-import br.com.jamalxvi.farmaciadanatureza.models.interfaces.DuracaoLotavel;
-import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Lotavel;
-import br.com.jamalxvi.farmaciadanatureza.models.interfaces.Medicamento;
-import br.com.jamalxvi.farmaciadanatureza.models.interfaces.TipoEstoque;
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.*;
 
 /**
  * Classe responsável por definir atributos dos medicamentos para o dto com base em interfaces
@@ -34,12 +28,12 @@ public class ProcessaMedicamentoUtils {
    */
   public static <K extends Medicamento> RetornoDosMedicamentosDto processar(
       RetornoDosMedicamentosDto dto, K medicamento) {
-    if (medicamento instanceof DuracaoLotavel) {
-      processarLote(dto, (DuracaoLotavel) medicamento);
-    } else if (medicamento instanceof TipoEstoque) {
-      processarEstoque(dto, (TipoEstoque) medicamento);
+    if (medicamento instanceof TipoEstoque) {
+      dto.setExisteEstoque(Boolean.TRUE);
+      processaEstoque(dto, (TipoEstoque) medicamento);
+    } else {
+      dto.setExisteEstoque(Boolean.FALSE);
     }
-
     if (medicamento instanceof Cientifica) {
       processarCientifica(dto, (Cientifica) medicamento);
     }
@@ -49,32 +43,47 @@ public class ProcessaMedicamentoUtils {
   }
 
   /**
-   * Preenche o Dto com base no lote do medicamento {@link DuracaoLotavel}
+   * Preenche o Dto com base no estoque do medicamento {@link DuracaoLotavel}
    *
    * @param dto o dto para ser preenchido
    * @param medicamento o medicamento com a interface de DuracaoLotavel
    */
-  private static void processarLote(RetornoDosMedicamentosDto dto, DuracaoLotavel medicamento) {
+  private static void processaEstoque(RetornoDosMedicamentosDto dto, TipoEstoque medicamento) {
+    List<MedicamentoEmEstoqueDto> estoqueDtos =
+        medicamento.getEstoque().parallelStream().filter(med -> {
+          if (med instanceof Lotavel) {
+            if (((Lotavel) med).getDataVencimentoLote().isBefore(LocalDate.now())) {
+              return false;
+            }
+          }
+          if (retornarTotalEmEstoque(med).compareTo(BigDecimal.ZERO) <= 0) {
+            return false;
+          }
+          return true;
+        }).map(med -> {
+          MedicamentoEmEstoqueDto medicamentoEmEstoqueDto = new MedicamentoEmEstoqueDto();
+          medicamentoEmEstoqueDto.setId(med.getId());
+          medicamentoEmEstoqueDto.setQuantidade(retornarTotalEmEstoque(med));
+          if (med instanceof Lotavel) {
+            LocalDate dataVencimento = ((Lotavel) med).getDataVencimentoLote();
+            medicamentoEmEstoqueDto.setDataVencimento(dataVencimento);
+          }
+          return medicamentoEmEstoqueDto;
+        }).collect(Collectors.toList());
+    dto.setEstoques(estoqueDtos);
+    dto.setQuantidade(estoqueDtos.stream().map(est -> est.getQuantidade()).reduce(BigDecimal.ZERO,
+        BigDecimal::add));
+  }
 
-    dto.setValidadeLote(AjudandeDeData
-        .localDateParaString(LocalDate.now().plusMonths(medicamento.getDuracaoLote())));
-
-    // Pegar medicamentos que ainda estão válidos
-    LocalDate diaAtual = LocalDate.now();
-    List<Lotavel> medicamentosAindaNaoVencidos = medicamento.getEstoque().stream()
-        .filter(est -> est != null && est.getDataVencimentoLote() != null
-            && diaAtual.isBefore(est.getDataVencimentoLote()))
-        .collect(Collectors.toList());
-
-    // Retornar a a data de vencimento mais próxima
-    LocalDate data = medicamentosAindaNaoVencidos.stream().map(est -> est.getDataVencimentoLote())
-        .min(LocalDate::compareTo)
-        .orElseThrow(() -> new MensagemExcecao(ERRO_SEM_MEDICAMENTO_VALIDO.getMensagem(),
-            EnumExcecaoDto.NAO_ENCONTRADO));
-    dto.setEstoqueComVencimentoMaisProximo(AjudandeDeData.localDateParaString(data));
-    if (medicamentosAindaNaoVencidos instanceof TipoEstoque) {
-      processarEstoque(dto, (TipoEstoque) medicamentosAindaNaoVencidos);
-    }
+  /**
+   * Retorna a quantidade ainda em estoque do Medicamento
+   * 
+   * @param med o estoque do medicamento em questão
+   * @return o total
+   */
+  private static BigDecimal retornarTotalEmEstoque(Estocavel med) {
+    return med.getQuantidade().subtract(med.getUsoEstoques().stream()
+        .map(est -> est.getQuantidade()).reduce(BigDecimal.ZERO, BigDecimal::add));
   }
 
   /**
@@ -87,18 +96,4 @@ public class ProcessaMedicamentoUtils {
     dto.setNomeCientifico(medicamento.getNomeCientifico());
   }
 
-  /**
-   * Preenche o Dto com base no estoque do medicamento {@link TipoEstoque}
-   *
-   * @param dto o dto para ser preenchido
-   * @param medicamento o medicamento com a interface de TipoEstoque
-   */
-  private static void processarEstoque(RetornoDosMedicamentosDto dto, TipoEstoque medicamento) {
-    BigDecimal quantidade = medicamento.getEstoque().stream()
-        .map(est -> est.getQuantidade()
-            .subtract(est.getUsoEstoques().stream().map(qtd -> qtd.getQuantidade())
-                .reduce(BigDecimal.ZERO, BigDecimal::add)))
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
-    dto.setQuantidade(quantidade);
-  }
 }

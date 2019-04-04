@@ -5,11 +5,14 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import br.com.jamalxvi.farmaciadanatureza.models.interfaces.TipoEstoque;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.DuracaoLotavel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Esta classe é responsável por controlar os tipos de capsulas criadas. Toda cápsula
@@ -36,6 +39,8 @@ import lombok.Data;
     @AttributeOverride(name = "nomeCientifico", column = @Column(name = "NOM_CIE_CAP")),})
 @Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Capsula extends Cientifica implements DuracaoLotavel {
   @Column(name = "PES_MIN_CAP", precision = 4)
   private BigDecimal pesoMinimo;

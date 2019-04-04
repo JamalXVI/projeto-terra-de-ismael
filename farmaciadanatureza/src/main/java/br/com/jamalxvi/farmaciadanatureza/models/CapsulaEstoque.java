@@ -43,7 +43,7 @@ import java.util.List;
 })
 @Builder
 @Data
-public class CapsulaEstoque extends EntidadeBase implements Estocavel, Lotavel {
+public class CapsulaEstoque extends EntidadeBase implements Lotavel {
   @Column(name = "QTD_CAP_EST")
   private BigDecimal quantidade;
   @Column(name = "LOT_CAP_EST")

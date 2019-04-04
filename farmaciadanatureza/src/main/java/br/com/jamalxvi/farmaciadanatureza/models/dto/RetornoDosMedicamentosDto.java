@@ -19,15 +19,14 @@ public class RetornoDosMedicamentosDto {
     private BigDecimal quantidade;
     /** A unidade de medida do medicamento */
     private String unidade;
-    /** A vlidade sugerida do medicamento */
-    private String validadeLote;
     /** O nome popular do medicamento */
     private String nome;
     /** O nome científico do medicamento */
     private String nomeCientifico;
-    /** O nome científico do medicamento */
-    private String estoqueComVencimentoMaisProximo;
     /** O id do Medicamento */
     private Long id;
-
+    /** Lista de Estoques do Medicamento */
+    List<MedicamentoEmEstoqueDto> estoques;
+    /** Verifica se Existe Estoque */
+    private Boolean existeEstoque;
 }

@@ -9,7 +9,7 @@ import java.time.LocalDate;
  * @version 0.1
  * @since 0.1
  */
-public interface Lotavel {
+public interface Lotavel extends Estocavel{
   public Long getLote();
   public LocalDate getDataCriacaoLote();
   public LocalDate getDataVencimentoLote();

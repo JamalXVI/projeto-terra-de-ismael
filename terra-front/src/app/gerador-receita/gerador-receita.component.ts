@@ -28,10 +28,11 @@ export class GeradorReceitaComponent implements OnInit {
   informationForm: FormGroup;
   medicamentos: ElementoDaListaDto[] = [];
   // Lista de Itens de um Medicamento, contendo todos as misturas válidas daquele tipo
-  itensDoMedicamento: ElementoDaListaDto[] = [];
+  itensDoMedicamento: ElementoDaListaDto[];
   pessoas: Pessoa[] = [];
   medicos: Medico[] = [];
   carregando: boolean = false;
+  iniciouPesquisa: boolean = false;
   formulario: FormularioReceita = new FormularioReceita();
   protected matcher = new CustomErrorStateMatcher();
   constructor(private _formBuilder: FormBuilder,
@@ -40,7 +41,8 @@ export class GeradorReceitaComponent implements OnInit {
     private _pessoaService: PessoaService,
     private _medicoService: MedicoService) {
     this.medicineForm = this._formBuilder.group({
-      medicamento: new FormControl('', Validators.required)
+      medicamento: new FormControl('', Validators.required),
+      medicamentoEscolhido: new FormControl('', Validators.required)
     });
     this.informationForm = this._formBuilder.group({
       pessoa: new FormControl('', Validators.required),
@@ -121,6 +123,7 @@ export class GeradorReceitaComponent implements OnInit {
   fazerPesquisa() {
     const id: number = this.medicineForm.get('medicamento').value;
     this.carregando = true;
+    this.iniciouPesquisa = true;
     this._medicamentoService.getDetails(id)
       .subscribe(medicamentos => {
         this.itensDoMedicamento = medicamentos;
