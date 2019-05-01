@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 
 import { ErrorsService } from '../errors/errors.service';
 import { ElementoDaListaDto } from '../models/elemento-da-lista-dto.model';
-import { MedicamentoUrl } from '../const/medicamento-url.enum';
 import { AbstractMedicamentoService } from './abstract-medicamento.service';
 import { MedicamentoFactoryService } from './medicamento-factory.service';
 
@@ -23,10 +22,13 @@ export class MedicamentoService extends AbstractMedicamentoService {
         super(router, http, errorService);
         this._medicamentoService = medicamentoFactory.getService();
     }
+
     public get(): Observable<ElementoDaListaDto[]> {
         return this._medicamentoService.get();
     }
-    public getDetails(id: number): Observable<ElementoDaListaDto[]> {
-        return this._medicamentoService.getDetails(id);
+
+    public getPrincipioAtivo(pesquisa: string, limite?: number): Observable<ElementoDaListaDto[]> {
+        return this._medicamentoService.getPrincipioAtivo(pesquisa, limite);
     }
+
 }

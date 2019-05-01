@@ -39,86 +39,28 @@ import java.util.List;
 @Builder
 @Data
 public class Receita extends EntidadeBase {
+
   @ManyToOne(targetEntity = Medico.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "ID_MED")
   @JsonBackReference
   private Medico medico;
+
   @ManyToOne(targetEntity = Usuario.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "ID_USR")
   @JsonBackReference
   private Usuario usuario;
+
   @ManyToOne(targetEntity = Pessoa.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "ID_PES")
   @JsonBackReference
   private Pessoa pessoa;
+
   @Column(name = "VAL_REC")
   @JsonBackReference
   private LocalDate validadeReceita;
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "RECEITA_TINTURA",
-      joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
-      inverseJoinColumns = @JoinColumn(name = "ID_TIN_DOS_USO_EST",
-          referencedColumnName = "ID_TIN_DOS_USO_EST"))
-  @JsonBackReference
-  private List<TinturaDosagensUsoEstoque> usoTintura;
-  @OneToMany(mappedBy = "receita", fetch = FetchType.LAZY,
-      targetEntity = TinturaUsoMisturaReceita.class)
-  private List<TinturaUsoMisturaReceita> usoMistura;
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "RECEITA_POMADA",
-      joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
-      inverseJoinColumns = @JoinColumn(name = "ID_POM_USO_EST",
-          referencedColumnName = "ID_POM_USO_EST"))
-  @JsonBackReference
-  private List<PomadaUsoEstoque> usoPomada;
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "RECEITA_POMADA_SEM_CONTROLE",
-      joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
-      inverseJoinColumns = @JoinColumn(name = "ID_POM_SEM_CTL",
-          referencedColumnName = "ID_POM_SEM_CTL"))
-  @JsonBackReference
-  private List<PomadaSemControle> usoPomadaSemControle;
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "RECEITA_PLANTA_DESIDRATADA",
-      joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
-      inverseJoinColumns = @JoinColumn(name = "ID_PLT_DES_USO_EST",
-          referencedColumnName = "ID_PLT_DES_USO_EST"))
-  @JsonBackReference
-  private List<PlantaDesidratadaUsoEstoque> usoPlantaDesidratada;
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "RECEITA_HOMEOPATIA",
-      joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
-      inverseJoinColumns = @JoinColumn(name = "ID_HOM_DOS_USO",
-          referencedColumnName = "ID_HOM_DOS_USO"))
-  @JsonBackReference
-  private List<HomeopatiaDosagensUso> usoHomeopatia;
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "RECEITA_FLORAL",
-      joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
-      inverseJoinColumns = @JoinColumn(name = "ID_FLO_USO",
-          referencedColumnName = "ID_FLO_USO"))
-  @JsonBackReference
-  private List<FloralUso> usoFloral;
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "RECEITA_MULTIMISTURA",
-      joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
-      inverseJoinColumns = @JoinColumn(name = "ID_MUM_USO",
-          referencedColumnName = "ID_MUM_USO"))
-  @JsonBackReference
-  private List<MultiMisturaUso> usoMultimistura;
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "RECEITA_CAPSULA",
-      joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
-      inverseJoinColumns = @JoinColumn(name = "ID_CAP_USO_EST",
-          referencedColumnName = "ID_CAP_USO_EST"))
-  @JsonBackReference
-  private List<CapsulaUsoEstoque> usoCapsula;
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "RECEITA_OUTROS_MEDICAMENTOS",
-      joinColumns = @JoinColumn(name = "ID_REC", referencedColumnName = "ID_REC"),
-      inverseJoinColumns = @JoinColumn(name = "ID_OUT_MED_USO_EST",
-          referencedColumnName = "ID_OUT_MED_USO_EST"))
-  @JsonBackReference
-  private List<OutrosMedicamentosUsoEstoque> usoOutrosMedicamentos;
+
+  @OneToMany(targetEntity = ReceitaMedicamento.class, fetch = FetchType.LAZY,
+          mappedBy = "receita")
+  private List<ReceitaMedicamento> receita;
 
 }

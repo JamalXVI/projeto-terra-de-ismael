@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 
 import { MedicamentoService } from '../core/medicamento/medicamento.service';
 import { ElementoDaListaDto } from '../core/models/elemento-da-lista-dto.model';
@@ -13,6 +13,7 @@ import { MedicoService } from '../core/medico/medico.service';
 import { FormularioReceita } from '../core/receita/formulario-receita.model';
 import { MatStepper, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
 import { FORMATOS } from '../core/const/constants';
+import { MedicamentoPrincipioAtivo } from '../core/medicamento/medicamento-principio-ativo.model';
 
 @Component({
   selector: 'app-gerador-receita',
@@ -25,16 +26,22 @@ import { FORMATOS } from '../core/const/constants';
 })
 export class GeradorReceitaComponent implements OnInit {
   medicineForm: FormGroup;
+  medicamentoForm: FormGroup;
   informationForm: FormGroup;
-  medicamentos: ElementoDaListaDto[] = [];
+  tipoMedicamentos: ElementoDaListaDto[] = [];
+  principioAtivo: ElementoDaListaDto[] = [];
+  itensCarregando: boolean[] = [];
   // Lista de Itens de um Medicamento, contendo todos as misturas válidas daquele tipo
   itensDoMedicamento: ElementoDaListaDto[];
   pessoas: Pessoa[] = [];
   medicos: Medico[] = [];
+  medicamentoPrincipioAtivos: MedicamentoPrincipioAtivo[] = [];
   carregando: boolean = false;
   iniciouPesquisa: boolean = false;
+  iniciouPesquisaDetalhe: boolean = false;
   formulario: FormularioReceita = new FormularioReceita();
   protected matcher = new CustomErrorStateMatcher();
+
   constructor(private _formBuilder: FormBuilder,
     private changeDetectionRef: ChangeDetectorRef,
     private _medicamentoService: MedicamentoService,
@@ -47,20 +54,39 @@ export class GeradorReceitaComponent implements OnInit {
     this.informationForm = this._formBuilder.group({
       pessoa: new FormControl('', Validators.required),
       medico: new FormControl('', Validators.required),
-      dataReceita: new FormControl('', [Validators.required]),
+      dataReceita: new FormControl('', [Validators.required])
     });
-    forkJoin([this._medicamentoService.get(), this._pessoaService.listaPesquisa(''), this._medicoService.get()])
+    this.medicamentoForm = this._formBuilder.group({
+      quantidade: new FormControl('', Validators.required),
+      items: this._formBuilder.array([this.createPrincipioAtivo()])
+    });
+    forkJoin([this._medicamentoService.get(), this._medicamentoService.getPrincipioAtivo(''), this._pessoaService.listaPesquisa(''), this._medicoService.get()])
       .subscribe((res: any[]) => {
-        this.medicamentos = res[0];
-        this.pessoas = res[1];
-        this.medicos = res[2];
-      })
-    this._medicamentoService.get().subscribe(medicamentos => {
-      this.medicamentos = medicamentos;
-    });
+        this.tipoMedicamentos = res[0];
+        this.principioAtivo = res[1];
+        this.pessoas = res[2];
+        this.medicos = res[3];
+      });
     this.informationForm.get('pessoa').valueChanges.pipe(debounceTime(300), tap(() => this.carregando = true),
       switchMap(value => this._pessoaService.listaPesquisa(value).pipe(finalize(() => this.carregando = false))))
       .subscribe(pessoas => this.pessoas = pessoas);
+    (<FormArray>this.medicamentoForm.get('items')).controls.forEach((c, i) => {
+      c.get('id').valueChanges.pipe(debounceTime(300), tap(() => this.itensCarregando[i] = true),
+        switchMap(value => this._medicamentoService.getPrincipioAtivo(value).pipe(finalize(() => this.itensCarregando[i] = false))))
+        .subscribe(principioAtivos => this.principioAtivo = principioAtivos)
+    });
+  }
+
+  createPrincipioAtivo(): FormGroup {
+    return this._formBuilder.group({
+      id: new FormControl('', [Validators.required, Validators.pattern('/\d+/')]),
+      proporcao: new FormControl('', [Validators.required, Validators.pattern('/\d+/')])
+    });
+  }
+
+  adicionarItem(): void {
+    const items: FormArray = this.medicamentoForm.get('items') as FormArray;
+    items.push(this.createPrincipioAtivo());
   }
 
   ngOnInit() {
@@ -77,6 +103,11 @@ export class GeradorReceitaComponent implements OnInit {
       step.next();
     }
   }
+
+  reiniciarPrincipioAtivo(): void {
+    this.medicamentoPrincipioAtivos = [new MedicamentoPrincipioAtivo()];
+  }
+
   /**
    * Verifica se o Médico é Valído  
    */
@@ -112,22 +143,22 @@ export class GeradorReceitaComponent implements OnInit {
     return true;
   }
   /**
-   * Verifica se a pesquisa está inválida
+   * verifica se o item está carregando
+   * @param i o indíce do formulário
    */
-  verificarPesquisaInvalida() {
-    return this.medicineForm.get('medicamento').invalid;
+  verificarCarregando(i: number): boolean {
+    if (!this.itensCarregando[i]) {
+      this.itensCarregando[i] = false;
+    }
+    return this.itensCarregando[i];
   }
+
   /**
-   * Faz a pesquisa de medicamentos
+   * Muda o estado do item a ser carregado
+   * @param i o indice do item
+   * @param estado o novo estado dele
    */
-  fazerPesquisa() {
-    const id: number = this.medicineForm.get('medicamento').value;
-    this.carregando = true;
-    this.iniciouPesquisa = true;
-    this._medicamentoService.getDetails(id)
-      .subscribe(medicamentos => {
-        this.itensDoMedicamento = medicamentos;
-        this.carregando = false;
-      });
+  mudarEstadoCarregando(i: number, estado: boolean): void {
+    this.itensCarregando[i] = estado;
   }
 }

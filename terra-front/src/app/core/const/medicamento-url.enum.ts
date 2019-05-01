@@ -1,4 +1,4 @@
 export enum MedicamentoUrl {
     GETLIST = '/api/medicines/',
-    GETDETAILS = '/api/medicines/'
+    GETACTIVE = '/api/medicines/active',
 };

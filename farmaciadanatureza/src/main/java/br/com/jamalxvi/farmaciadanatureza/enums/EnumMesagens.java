@@ -35,7 +35,7 @@ public enum EnumMesagens {
     TINTURA("tintura", "Tintura"),
     NAO_ENCONTRADA("naoEncontrado", "Descrição não encontrada."),
     ERRO_CAMPO_MEDICAMENTO_NAO_ENCONTRADO("campoMedicamentoNaoEncontrado","O campo do " +
-            "Medicamento não foi encontrado!"),
+            "PrincipioAtivo não foi encontrado!"),
     ERRO_MEDICAMENTO_ACESSO_INVALIDO("erroMedicamentoArgumentoInvalido",
             "Acesso Inválido para o medicamento."),
     ERRO_METODO_NAO_EXISTE("erroMetodoNaoExiste", "Erro, método não existe: "),

@@ -5,7 +5,6 @@ import br.com.jamalxvi.farmaciadanatureza.service.MedicamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,13 +22,15 @@ public class MedicamentoController {
     @RequestMapping(method = GET, value = "/")
     @PreAuthorize("hasRole('USUARIO')")
     public List<ElementoDeListaDto> list() {
-        return medicamentoService.retornaListaDePossiveisMedicamentos();
+        return medicamentoService.retornaListaDeTipoDeMedicamento();
     }
 
-    @RequestMapping(method = GET, value = "/{id}")
+
+
+    @RequestMapping(method = GET, value = "/active")
     @PreAuthorize("hasRole('USUARIO')")
-    public List<ElementoDeListaDto> listOfCertainMedicine(@PathVariable Integer id) {
-        return medicamentoService.retornarItensDoMedicamento(id);
+    public List<ElementoDeListaDto> detailsOfMedicine(String pesquisa, Integer limite) {
+        return medicamentoService.retonarListaPrincipioAtivo(pesquisa, limite);
     }
 
 }

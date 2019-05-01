@@ -18,4 +18,7 @@ public class MedicamentoEmEstoqueDto {
     private BigDecimal quantidade;
     @JsonFormat(pattern="dd/MM/yyyy")
     private LocalDate dataVencimento;
+    public MedicamentoEmEstoqueDto(){
+        this.quantidade = BigDecimal.ZERO;
+    }
 }

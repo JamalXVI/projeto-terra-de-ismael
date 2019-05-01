@@ -95,52 +95,14 @@
         <form [formGroup]="medicineForm">
           <div fxLayout="column" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="center center">
             <div fxFlex="25" fxFlex.xs="100">
-              <div fxLayout="row" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="center left">
-                <div fxFlex="85" fxFlex.xs="80">
-                  <mat-form-field *ngIf="medicamentos">
-                    <mat-select placeholder="Selecione um Tipo de Medicamento" formControlName="medicamento">
-                      <mat-option *ngFor="let medicamento of medicamentos" [value]="medicamento.id">
-                        {{medicamento.nome}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div fxFlex="15" fxFlex.xs="20">
-                  <button mat-stroked-button style="margin-top: 5px" [disabled]='verificarPesquisaInvalida()'
-                    (click)="fazerPesquisa()">
-                    <fa-icon [icon]="['fas', 'search']"></fa-icon>
-                  </button>
-                </div>
-              </div>
+              <mat-form-field *ngIf="tipoMedicamentos">
+                <mat-select placeholder="Selecione um Tipo de Medicamento" formControlName="tipoMedicamentos">
+                  <mat-option *ngFor="let tipoMedicamento of tipoMedicamentos" [value]="tipoMedicamento.id">
+                    {{tipoMedicamento.nome}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
-            <div fxFlex="75" fxFlex.xs="100">
-              <ng-container *ngIf="!!carregando">
-                <div fxLayout="row" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="center center">
-                  <mat-spinner></mat-spinner>
-                </div>
-              </ng-container>
-              <ng-container *ngIf="!carregando && iniciouPesquisa">
-                <div fxLayout="row" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="center left">
-                  <div fxFlex="85" fxFlex.xs="80">
-                    <mat-form-field *ngIf="itensDoMedicamento">
-                      <mat-select placeholder="Selecione um Medicamento" formControlName="medicamentoEscolhido">
-                        <mat-option *ngFor="let medicamento of itensDoMedicamento" [value]="medicamento.id">
-                          {{medicamento.nome}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                  <div fxFlex="15" fxFlex.xs="20">
-                      <button mat-stroked-button style="margin-top: 5px" [disabled]='verificarPesquisaInvalida()'
-                        (click)="fazerPesquisa()">
-                        <fa-icon [icon]="['fas', 'search']"></fa-icon>
-                      </button>
-                  </div>
-                </div>
-
-              </ng-container>
-            </div>
-
           </div>
           <div fxLayout="column" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="end end">
             <div fxFlex="25" fxFlex.xs="100">
@@ -148,6 +110,61 @@
             </div>
           </div>
         </form>
+        <mat-card class="card">
+          <mat-card-header>
+            <mat-card-title>PRINCÍPIOS ATIVOS</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <form [formGroup]="medicamentoForm">
+              <mat-list formArrayName="items" *ngFor="let item of medicamentoForm.get('items').controls; let i = index">
+                <div [formGroupName]="i" fxFlex="100">
+
+                  <div fxLayout="column" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="left left">
+                    <div fxFlex="100">
+                      <h3 class="mat-body">PRINCÍPIO ATIVO {{i+1}}</h3>
+                    </div>
+                    <div fxFlex="100">
+                      <div fxLayout="row" fxLayoutWrap fxLayoutGap="1" fxLayoutAlign="left left">
+                        <div fxFlex="40">
+                          <mat-form-field>
+                            <input type="text" placeholder="Selecione um Princípio Ativo" matInput formControlName="id"
+                              [matAutocomplete]="auto">
+                            <mat-hint *ngIf="medicamentoForm.get('items').controls[i].get('id').pristine">Pesquise por
+                              um Paciente
+                            </mat-hint>
+                            <mat-error *ngIf="medicamentoForm.get('items').controls[i].get('id').hasError('required')">
+                              Não sou advinha, digita alguma coisa que eu te ajudo!
+                            </mat-error>
+                            <mat-error *ngIf="medicamentoForm.get('items').controls[i].get('id').hasError('naoExiste')">
+                              Oxi! Encontrei esse cabra aqui não!
+                            </mat-error>
+                            <mat-autocomplete #auto="matAutocomplete">
+                              <ng-container *ngIf="verificarCarregando(i)" class="esta-carregando">
+                                <span>
+                                  <mat-spinner diameter="50"></mat-spinner>
+                                </span>
+                              </ng-container>
+                              <ng-container *ngIf="!verificarCarregando(i)">
+                                <mat-option *ngFor="let m of principioAtivo" [value]="m">
+                                  <span>{{m.nome}}</span>
+                                </mat-option>
+                              </ng-container>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </div>
+                        <div fxFlex="40">
+                          <mat-form-field>
+                            <input matInput type="number" placeholder="Proporção" formControlName="proporcao" />
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-list>
+            </form>
+          </mat-card-content>
+        </mat-card>
       </mat-step>
     </mat-horizontal-stepper>
   </mat-card-content>

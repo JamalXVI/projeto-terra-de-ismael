@@ -5,4 +5,8 @@ export class ElementoDaListaDto {
         this.id = obj && +obj.id || 0;
         this.nome = obj && obj.nome || "";
     }
+
+    public toString(){
+        return this.nome;
+    }
 }

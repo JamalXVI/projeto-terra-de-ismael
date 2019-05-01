@@ -2,7 +2,6 @@ package br.com.jamalxvi.farmaciadanatureza.service;
 
 import br.com.jamalxvi.farmaciadanatureza.models.dto.ElementoDeListaDto;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.RetornoDosMedicamentosDto;
-import br.com.jamalxvi.farmaciadanatureza.models.dto.input.ReceberMedicamentosDto;
 
 import java.util.List;
 
@@ -20,21 +19,7 @@ public interface MedicamentoService {
      *
      * @return A lista de medicamentos encapsuladas em DTOs
      */
-    List<ElementoDeListaDto> retornaListaDePossiveisMedicamentos();
+    List<ElementoDeListaDto> retornaListaDeTipoDeMedicamento();
 
-
-    /**
-     * Retorna a lista de itens do medicamento
-     *
-     * @return A lista de medicamentos encapsuladas em DTOs
-     */
-    List<ElementoDeListaDto> retornarItensDoMedicamento(Integer tipoMedicamento);
-
-
-    /**
-     * Retorna as informações de preenchimento de um medicamento específico
-     *
-     * @return As informações de um medicamento
-     */
-    RetornoDosMedicamentosDto retornarInformacoesDoMedicamento(ReceberMedicamentosDto receberMedicamentosDto);
+    List<ElementoDeListaDto> retonarListaPrincipioAtivo(String pesquisa, Integer limite);
 }

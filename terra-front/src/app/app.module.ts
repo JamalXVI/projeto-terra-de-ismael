@@ -31,7 +31,8 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { TabelaComponent } from './tabela/tabela.component';
 import {
   MatTableModule, MatPaginatorModule, MatSortModule, MatSelectModule, MatSidenavModule, MatListModule,
-  MatExpansionModule, MatStepperModule, MatAutocompleteModule, MatProgressSpinnerModule, MatTooltipModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE, DateAdapter
+  MatExpansionModule, MatStepperModule, MatAutocompleteModule, MatProgressSpinnerModule, MatTooltipModule, 
+  MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE, DateAdapter, MatDividerModule
 } from '@angular/material';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoginInterceptor } from './core/interceptors/login.interceptor';
@@ -93,6 +94,7 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
     MatSelectModule,
     MatStepperModule,
     MatExpansionModule,
+    MatDividerModule,
     LayoutModule,
     MatSidenavModule,
     MatListModule,

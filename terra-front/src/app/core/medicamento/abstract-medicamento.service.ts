@@ -16,5 +16,6 @@ export abstract class AbstractMedicamentoService {
     ) {
     }
     public abstract get(): Observable<ElementoDaListaDto[]>;
-    public abstract getDetails(id: number): Observable<ElementoDaListaDto[]>;
+
+    public abstract getPrincipioAtivo(pesquisa: string, limite?: number): Observable<ElementoDaListaDto[]>;
 }
