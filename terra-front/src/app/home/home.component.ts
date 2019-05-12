@@ -11,7 +11,7 @@ import { AuthService } from '../core/auth/auth-service.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  private isAdmin: Boolean = false;
+  public isAdmin: Boolean = false;
   constructor(private authService: AuthService,
     private router: Router) {
     this.authService.isAdmin().pipe(take(1), map(authState => !!authState)).subscribe(value => {

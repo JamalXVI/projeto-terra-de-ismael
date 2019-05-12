@@ -1,25 +1,25 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Nova Receita</mat-card-title>
+    <mat-card-title>{{'NOVA_RECEITA' | frases}}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-horizontal-stepper [linear]="true" #stepper>
       <mat-step [stepControl]="informationForm" #step>
-        <ng-template matStepLabel>Informações Iniciais</ng-template>
+        <ng-template matStepLabel>{{'INFORMACOES_INICIAIS' | frases}}</ng-template>
         <form [formGroup]="informationForm" (submit)="finalizarInformacoesDoPaciente($event, stepper)">
 
           <div fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxFlexFill fxLayoutGap="0.0" fxLayoutWrap
-            fxLayoutGap="0.5" fxLayoutAlign="center center">
-            <div fxFlex="99.5" fxFlex.md="99.5" fxFlex.xl="39.5" fxFlex.xs="100">
+            fxLayoutGap="0.5%" fxLayoutAlign="center center">
+            <div fxFlex="99.5%" fxFlex.md="99.5%" fxFlex.xl="39.5%" fxFlex.xs="100%">
               <mat-form-field>
                 <input type="text" placeholder="Selecione um Cliente" matInput formControlName="pessoa"
                   [matAutocomplete]="auto">
-                <mat-hint *ngIf="informationForm.controls['pessoa'].pristine">Pesquise por um Paciente</mat-hint>
+                <mat-hint *ngIf="informationForm.controls['pessoa'].pristine">{{'PESQUISA_PACIENTE' | frases}}</mat-hint>
                 <mat-error *ngIf="informationForm.controls['pessoa'].hasError('required')">
-                  Não sou advinha, digita alguma coisa que eu te ajudo!
+                  {{'ERRO_VAZIO' | frases}}
                 </mat-error>
                 <mat-error *ngIf="informationForm.controls['pessoa'].hasError('naoExiste')">
-                  Oxi! Encontrei esse cabra aqui não!
+                  {{'ERRO_PESSOA_NAO_ENCONTRADA' | frases}}
                 </mat-error>
                 <mat-autocomplete #auto="matAutocomplete">
                   <ng-container *ngIf="carregando" class="esta-carregando">
@@ -36,9 +36,9 @@
                 </mat-autocomplete>
               </mat-form-field>
             </div>
-            <div fxFlex="99.5" fxFlex.xl="39.5" fxFlex.md="99.5" fxFlex.xs="100">
+            <div fxFlex="99.5%" fxFlex.xl="39.5%" fxFlex.md="99.5%" fxFlex.xs="100%">
               <mat-form-field>
-                <mat-label>Selecione um Médico</mat-label>
+                <mat-label>{{'SELECIONE_MEDICO' | frases}}</mat-label>
                 <mat-select formControlName="medico">
                   <mat-option *ngFor="let medico of medicos" [value]="medico">
                     <span>{{medico.toString()}}</span>
@@ -46,40 +46,40 @@
                   </mat-option>
                 </mat-select>
                 <mat-error *ngIf="informationForm.controls['medico'].hasError('required')">
-                  Nossa! Médico Invisível, esse não conheço não!
+                  {{'ERRO_MEDICO_VAZIO' | frases}}
                 </mat-error>
                 <mat-error
                   *ngIf="!informationForm.controls['medico'].hasError('required') && informationForm.controls['medico'].hasError('naoExiste')">
-                  Minha pergunta é: Como aconteceu esse erro?
+                  {{'ERRO_INESPERADO' | frases}}
                 </mat-error>
               </mat-form-field>
             </div>
-            <div fxFlex="99.5" fxFlex.md="99.5" fxFlex.xl="19.5" fxFlex.xs="100">
+            <div fxFlex="99.5%" fxFlex.md="99.5%" fxFlex.xl="19.5%" fxFlex.xs="100%">
               <mat-form-field>
                 <input matInput [matDatepicker]="picker" placeholder="Escolha uma Data" formControlName="dataReceita"
                   disabled>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker disabled="false"></mat-datepicker>
                 <mat-error *ngIf="informationForm.controls['dataReceita'].invalid">
-                  Você digitou algo errado aí talkei?
+                  {{'ERRO_ENTRADA_INVALIDA' | frases}}
                 </mat-error>
               </mat-form-field>
             </div>
           </div>
           <div fxLayout="row" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="left left" class="espacamento">
-            <div fxFlex="20" fxFlex.xs="100">
+            <div fxFlex="20%" fxFlex.xs="100%">
               <button mat-raised-button matTooltip="Adicionar um novo Paciente">
                 <fa-icon [icon]="['fas', 'user-plus']"></fa-icon>
               </button>
             </div>
-            <div fxFlex="20" fxFlex.xs="100">
+            <div fxFlex="20%" fxFlex.xs="100%">
               <button mat-raised-button matTooltip="Adicionar um novo Médico">
                 <fa-icon [icon]="['fas', 'user-nurse']"></fa-icon>
               </button>
             </div>
-            <div fxFlex="40" fxFlex.xs="0">
+            <div fxFlex="40%" fxFlex.xs="0%">
             </div>
-            <div fxFlex="20" fxFlex.xs="100">
+            <div fxFlex="20%" fxFlex.xs="100%">
               <div fxLayout="row" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="end end">
                 <button mat-raised-button color="primary" matTooltip="Prosseguir para a Próxima Etapa"
                   [disabled]="!informationForm.valid">
@@ -91,10 +91,10 @@
         </form>
       </mat-step>
       <mat-step [stepControl]="medicineForm">
-        <ng-template matStepLabel>Escolha o Tipo de Medicamento</ng-template>
+        <ng-template matStepLabel>{{'SELECIONE_TIPO_MEDICAMENTO' | frases}}</ng-template>
         <form [formGroup]="medicineForm">
           <div fxLayout="column" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="center center">
-            <div fxFlex="25" fxFlex.xs="100">
+            <div fxFlex="25%" fxFlex.xs="100%">
               <mat-form-field *ngIf="tipoMedicamentos">
                 <mat-select placeholder="Selecione um Tipo de Medicamento" formControlName="tipoMedicamentos">
                   <mat-option *ngFor="let tipoMedicamento of tipoMedicamentos" [value]="tipoMedicamento.id">
@@ -105,38 +105,76 @@
             </div>
           </div>
           <div fxLayout="column" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="end end">
-            <div fxFlex="25" fxFlex.xs="100">
+            <div fxFlex="25%" fxFlex.xs="100%">
               <button mat-raised-button color="primary">Primary</button>
             </div>
           </div>
         </form>
         <mat-card class="card">
           <mat-card-header>
-            <mat-card-title>PRINCÍPIOS ATIVOS</mat-card-title>
+            <mat-card-title>{{'DETALHES_MEDICAMENTO' | frases}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <form [formGroup]="medicamentoForm">
-              <mat-list formArrayName="items" *ngFor="let item of medicamentoForm.get('items').controls; let i = index">
-                <div [formGroupName]="i" fxFlex="100">
-
-                  <div fxLayout="column" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="left left">
-                    <div fxFlex="100">
-                      <h3 class="mat-body">PRINCÍPIO ATIVO {{i+1}}</h3>
+              <div fxLayout="column" fxLayoutWrap fxLayoutAlign="left left">
+                <div fxFlex="100%">
+                  <div fxLayout="row warp" fxLayoutGap="1%" fxLayoutAlign="left left">
+                    <div fxFlex="99%" fxFlex.md="99%" fxFlex.xl="19%" fxFlex.xs="99%">
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="validadeMedicamentoPicker"
+                          placeholder="Validade do Medicamento" formControlName="validadeReceita" disabled>
+                        <mat-datepicker-toggle matSuffix [for]="validadeMedicamentoPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #validadeMedicamentoPicker disabled="false"></mat-datepicker>
+                        <mat-error *ngIf="medicamentoForm.controls['validadeReceita'].invalid">
+                          {{'ERRO_ENTRADA_INVALIDA' | frases}}
+                        </mat-error>
+                      </mat-form-field>
                     </div>
-                    <div fxFlex="100">
-                      <div fxLayout="row" fxLayoutWrap fxLayoutGap="1" fxLayoutAlign="left left">
-                        <div fxFlex="40">
+                    <div fxFlex="99%" fxFlex.md="99%" fxFlex.xl="19%" fxFlex.xs="99%">
+                      <mat-form-field>
+                        <input matInput type="number" placeholder="Peso" formControlname="quantidade" />
+                        <mat-error *ngIf="medicamentoForm.controls['quantidade'].invalid">
+                          {{'ERRO_ENTRADA_INVALIDA' | frases}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="29%" fxFlex.xs="99%">
+                      <button mat-raised-button color="accent">{{'ADICIONAR_MEDICAMENTO' | frases}}</button>
+                    </div>
+                    <div fxFlex="99%">
+                      <mat-form-field>
+                        <input matInput type="text" placeholder="Posologia" formControlname="posologia" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div fxFlex="100%">
+                    <h2 class="mat-body">{{'PRINCIPIOS_ATIVOS' | frases}} <button mat-icon-button color="accent"
+                      (click)="adicionarPrincipioAtivo()">
+                      <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+                    </button></h2>
+                  </div>
+              </div>
+              <mat-list formArrayName="items" *ngFor="let item of medicamentoForm.get('items').controls; let i = index">
+                <div [formGroupName]="i" fxFlex="100%">
+                  <div fxLayout="column" fxLayoutWrap fxLayoutAlign="left left">
+                    <div fxFlex="100%">
+                      <h3 class="mat-body">{{'PRINCIPIO_ATIVO' | frases}} {{i+1}}</h3>
+                    </div>
+                    <div fxFlex="100%">
+                      <div fxLayout="row wrap" fxLayoutGap="0.5%" fxLayoutAlign="center center">
+                        <div fxFlex="49.5%" fxFlex.xs="99.5%">
                           <mat-form-field>
                             <input type="text" placeholder="Selecione um Princípio Ativo" matInput formControlName="id"
                               [matAutocomplete]="auto">
-                            <mat-hint *ngIf="medicamentoForm.get('items').controls[i].get('id').pristine">Pesquise por
-                              um Paciente
+                            <mat-hint *ngIf="medicamentoForm.get('items').controls[i].get('id').pristine">
+                              {{'PESQUISE_PRINCIPIO_ATIVO' | frases}}
                             </mat-hint>
                             <mat-error *ngIf="medicamentoForm.get('items').controls[i].get('id').hasError('required')">
-                              Não sou advinha, digita alguma coisa que eu te ajudo!
+                              {{'ERRO_VAZIO' | frases}}
                             </mat-error>
                             <mat-error *ngIf="medicamentoForm.get('items').controls[i].get('id').hasError('naoExiste')">
-                              Oxi! Encontrei esse cabra aqui não!
+                              {{'ERRO_ENTRADA_INVALIDA' | frases}}
                             </mat-error>
                             <mat-autocomplete #auto="matAutocomplete">
                               <ng-container *ngIf="verificarCarregando(i)" class="esta-carregando">
@@ -152,10 +190,21 @@
                             </mat-autocomplete>
                           </mat-form-field>
                         </div>
-                        <div fxFlex="40">
+                        <div fxFlex="20%"  fxFlex.xs="79%">
                           <mat-form-field>
                             <input matInput type="number" placeholder="Proporção" formControlName="proporcao" />
+                            <mat-error
+                              *ngIf="medicamentoForm.get('items').controls[i].get('proporcao').hasError('required')">
+                              {{'ERRO_ENTRADA_INVALIDA' | frases}}
+                            </mat-error>
+                            <mat-error
+                              *ngIf="medicamentoForm.get('items').controls[i].get('proporcao').hasError('pattern')">
+                              {{'ERRO_PROPORCAO' | frases}}
+                            </mat-error>
                           </mat-form-field>
+                        </div>
+                        <div fxFlex="20%"  fxFlex.xs="20.5%">
+                          <button mat-icon-button color="primary" (click)="removerPrincipioAtivo(i)">X</button>
                         </div>
                       </div>
                     </div>

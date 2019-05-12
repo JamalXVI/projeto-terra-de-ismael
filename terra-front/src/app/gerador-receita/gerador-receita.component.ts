@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray, AbstractControl } from '@angular/forms';
 
 import { MedicamentoService } from '../core/medicamento/medicamento.service';
 import { ElementoDaListaDto } from '../core/models/elemento-da-lista-dto.model';
@@ -11,9 +11,10 @@ import { CustomErrorStateMatcher } from '../core/CustomErrorStateMatcher.model';
 import { Medico } from '../core/medico/medico.model';
 import { MedicoService } from '../core/medico/medico.service';
 import { FormularioReceita } from '../core/receita/formulario-receita.model';
-import { MatStepper, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
+import { MatStepper, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatSnackBar } from '@angular/material';
 import { FORMATOS } from '../core/const/constants';
 import { MedicamentoPrincipioAtivo } from '../core/medicamento/medicamento-principio-ativo.model';
+import { FrasesService } from '../core/pipes/frases.service';
 
 @Component({
   selector: 'app-gerador-receita',
@@ -46,7 +47,9 @@ export class GeradorReceitaComponent implements OnInit {
     private changeDetectionRef: ChangeDetectorRef,
     private _medicamentoService: MedicamentoService,
     private _pessoaService: PessoaService,
-    private _medicoService: MedicoService) {
+    private _medicoService: MedicoService,
+    private _frases: FrasesService,
+    private snackBar: MatSnackBar) {
     this.medicineForm = this._formBuilder.group({
       medicamento: new FormControl('', Validators.required),
       medicamentoEscolhido: new FormControl('', Validators.required)
@@ -57,7 +60,9 @@ export class GeradorReceitaComponent implements OnInit {
       dataReceita: new FormControl('', [Validators.required])
     });
     this.medicamentoForm = this._formBuilder.group({
-      quantidade: new FormControl('', Validators.required),
+      quantidade: new FormControl('', [Validators.required, Validators.pattern('\\d+(\.\\d+)?')]),
+      posologia: new FormControl(''),
+      validadeReceita: new FormControl('', Validators.required),
       items: this._formBuilder.array([this.createPrincipioAtivo()])
     });
     forkJoin([this._medicamentoService.get(), this._medicamentoService.getPrincipioAtivo(''), this._pessoaService.listaPesquisa(''), this._medicoService.get()])
@@ -70,6 +75,9 @@ export class GeradorReceitaComponent implements OnInit {
     this.informationForm.get('pessoa').valueChanges.pipe(debounceTime(300), tap(() => this.carregando = true),
       switchMap(value => this._pessoaService.listaPesquisa(value).pipe(finalize(() => this.carregando = false))))
       .subscribe(pessoas => this.pessoas = pessoas);
+    this.ativarNotificacaoInput();
+  }
+  ativarNotificacaoInput(): void {
     (<FormArray>this.medicamentoForm.get('items')).controls.forEach((c, i) => {
       c.get('id').valueChanges.pipe(debounceTime(300), tap(() => this.itensCarregando[i] = true),
         switchMap(value => this._medicamentoService.getPrincipioAtivo(value).pipe(finalize(() => this.itensCarregando[i] = false))))
@@ -79,8 +87,8 @@ export class GeradorReceitaComponent implements OnInit {
 
   createPrincipioAtivo(): FormGroup {
     return this._formBuilder.group({
-      id: new FormControl('', [Validators.required, Validators.pattern('/\d+/')]),
-      proporcao: new FormControl('', [Validators.required, Validators.pattern('/\d+/')])
+      id: new FormControl('', [Validators.required]),
+      proporcao: new FormControl('', [Validators.required, Validators.pattern('\\d{1,2}')])
     });
   }
 
@@ -160,5 +168,48 @@ export class GeradorReceitaComponent implements OnInit {
    */
   mudarEstadoCarregando(i: number, estado: boolean): void {
     this.itensCarregando[i] = estado;
+  }
+  /**
+   * Adiciona Princípio Ativo na Lista
+   */
+  adicionarPrincipioAtivo() {
+    if (this.verificarPrincipiosAtivos()) {
+      this.adicionarItem();
+      this.ativarNotificacaoInput();
+    }
+  }
+
+  /**
+   * Verifica se os princípios ativos estão corretos
+   */
+  verificarPrincipiosAtivos(): boolean {
+    let resultado: boolean = true;
+    (<FormArray>this.medicamentoForm.get('items')).controls.forEach((c, i) => {
+      const principio: ElementoDaListaDto = <ElementoDaListaDto>c.get('id').value;
+      let existe: boolean = false;
+      this.principioAtivo.forEach((p: ElementoDaListaDto) => {
+        if (p.id == principio.id) {
+          existe = true;
+        }
+      });
+      if(c.get('proporcao').hasError && !!c.get('proporcao').errors){
+        resultado = false;
+      }
+      if (!existe) {
+        c.get('id').setErrors({
+          naoExiste: true
+        })
+        resultado = false;
+      }
+    });
+    return resultado;
+  }
+  removerPrincipioAtivo(i: number): void{
+    let controles: AbstractControl[] = (<FormArray>this.medicamentoForm.get('items')).controls;
+    if(controles.length > 1){
+      controles.splice(i, 1);
+    }else{
+      this.snackBar.open(this._frases.converter('ERRO_PELO_MENOS_UM_PRINCIPIO'), '', {duration: 1000});
+    }
   }
 }

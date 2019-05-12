@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CustomErrorStateMatcher } from '../core/CustomErrorStateMatcher.model';
 import { AuthService } from '../core/auth/auth-service.service';
+import { FrasesService } from '../core/pipes/frases.service';
 
 @Component({
   selector: 'app-login',
@@ -15,23 +16,24 @@ import { AuthService } from '../core/auth/auth-service.service';
 export class LoginComponent implements OnInit {
   siginForm: FormGroup;
 
-  private matcher = new CustomErrorStateMatcher();
+  public matcher = new CustomErrorStateMatcher();
   constructor(private authService: AuthService,
     private router: Router,
     private activedRoute: ActivatedRoute,
+    private frasesService: FrasesService,
     private snackBar: MatSnackBar) {
     this.activedRoute.queryParams.subscribe(params => {
       const mensagem = params['mensagem'];
       if (mensagem) {
         switch (mensagem) {
           case 'deslogado':
-            const snackBarRef = this.snackBar.open('Então é assim? Então vai! *cries*', 'Pedir Desculpas', { duration: 2500 });
-            snackBarRef.onAction().subscribe(act => this.snackBar.open('Desculpado, mas não quero me magoar novamente, ta?', '',
+            const snackBarRef = this.snackBar.open(this.frasesService.converter('SAIR_MENSAGEM'), this.frasesService.converter('SAIR_BOTAO'), { duration: 2500 });
+            snackBarRef.onAction().subscribe(act => this.snackBar.open(this.frasesService.converter('SAIR_MENSAGEM_RETORNO'), '',
               { duration: 2000 }));
             break;
 
           default:
-            this.snackBar.open('Aha! Parece que alguém estava tentando acessar sem estar logado, né?', '', { duration: 2500 });
+            this.snackBar.open(this.frasesService.converter('ERRO_ACESSO_INVALIDO'), '', { duration: 2500 });
             break;
         }
       }
@@ -53,14 +55,14 @@ export class LoginComponent implements OnInit {
   public sendForm() {
     if (this.siginForm.valid) {
       this.authService.logIn(this.siginForm.get('user').value, this.siginForm.get('pwd').value)
-      .subscribe(vlr => {
-        this.openSnackBar('Quem procura acha né homi?');
-        this.router.navigate(['/home']);
+        .subscribe(vlr => {
+          this.openSnackBar('Quem procura acha né homi?');
+          this.router.navigate(['/home']);
 
-      }, err => {
-        this.openSnackBar('Oxi, encontrei foi não! Tem certeza que está certo ai?');
+        }, err => {
+          this.openSnackBar('Oxi, encontrei foi não! Tem certeza que está certo ai?');
 
-      });
+        });
     }
   }
   openSnackBar(message: string) {

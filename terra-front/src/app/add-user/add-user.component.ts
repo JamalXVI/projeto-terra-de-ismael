@@ -16,8 +16,8 @@ import { User } from '../core/user/user.model';
 })
 export class AddUserComponent implements OnInit {
   form: FormGroup;
-  private matcher = new CustomErrorStateMatcher();
-  private roles = [
+  public matcher = new CustomErrorStateMatcher();
+  public roles = [
     {
       name: 'Usuário',
       role: 0

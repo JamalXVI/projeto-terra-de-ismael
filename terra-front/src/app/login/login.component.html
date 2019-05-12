@@ -1,7 +1,7 @@
 <div class="main-content">
   <div class="navbar">
     <mat-toolbar>
-      <img class="logo" src="../../assets/images/logo-normal.png" height="40px" />Farmácia Terra de Ismael</mat-toolbar>
+      <img class="logo" src="../../assets/images/logo-normal.png" height="40px" />{{'NOME_APLICACAO' | frases}}</mat-toolbar>
   </div>
 
 
@@ -10,29 +10,29 @@
       <mat-card>
         <mat-card-title>
           <img src="../../assets/images/terra-de-ismael.png" width="100px">
-          <p>Reencarne Aqui</p>
+          <p>{{'LOGIN_SISTEMA' | frases}}</p>
         </mat-card-title>
         <mat-card-content>
           <mat-form-field>
             <input matInput placeholder="Usuário" formControlName="user" [errorStateMatcher]="matcher" />
             <mat-icon matPrefix>account_circle</mat-icon>
-            <mat-hint *ngIf="siginForm.controls['user'].pristine">Digite seu usuário jovem!</mat-hint>
+            <mat-hint *ngIf="siginForm.controls['user'].pristine">{{'MENSAGEM_USUARIO' | frases}}</mat-hint>
             <mat-error *ngIf="siginForm.controls['user'].hasError('minlength') && !siginForm.controls['user'].hasError('required')">
-              Me ajude a te ajudar, é só digitar um usuário válido.
+              {{'ERRO_USUARIO_INVALIDO' | frases}}
             </mat-error>
             <mat-error *ngIf="siginForm.controls['user'].hasError('required')">
-              Não tem como você entrar sem digitar um usuário!
+              {{'ERRO_USUARIO_VAZIO' | frases}}
             </mat-error>
           </mat-form-field>
           <mat-form-field>
             <input matInput placeholder="Senha" formControlName="pwd" [errorStateMatcher]="matcher" type="password" />
             <mat-icon matPrefix>lock</mat-icon>
-            <mat-hint *ngIf="!siginForm.controls['user'].pristine && siginForm.controls['pwd'].pristine">Agora só falta a senha, rs</mat-hint>
+            <mat-hint *ngIf="!siginForm.controls['user'].pristine && siginForm.controls['pwd'].pristine">{{MENSAGEM_SENHA | frases}}</mat-hint>
             <mat-error *ngIf="siginForm.controls['pwd'].hasError('minlength') && !siginForm.controls['pwd'].hasError('required')">
-              Ninguém coloca uma senha de 3 dígitos, né?
+              {{'ERRO_SENHA_INVALIDA' | frases}}
             </mat-error>
             <mat-error *ngIf="siginForm.controls['pwd'].hasError('required')">
-              Não vou nem comentar, sério? Sem senha?
+              {{'ERRO_SENHA_VAZIA' | frases}}
             </mat-error>
           </mat-form-field>
         </mat-card-content>
