@@ -56,11 +56,11 @@ export class LoginComponent implements OnInit {
     if (this.siginForm.valid) {
       this.authService.logIn(this.siginForm.get('user').value, this.siginForm.get('pwd').value)
         .subscribe(vlr => {
-          this.openSnackBar('Quem procura acha né homi?');
+          this.openSnackBar(this.frasesService.converter('LOGIN_SUCESSO'));
           this.router.navigate(['/home']);
 
         }, err => {
-          this.openSnackBar('Oxi, encontrei foi não! Tem certeza que está certo ai?');
+          this.openSnackBar(this.frasesService.converter('LOGIN_FALHA'));
 
         });
     }

@@ -1,0 +1,51 @@
+<table mat-table [dataSource]="_dataSource.data" class="mat-elevation-z8" multiTemplateDataRows>
+
+  <ng-container matColumnDef="tipo">
+    <th mat-header-cell *matHeaderCellDef> {{'TIPO' | frases | uppercase}} </th>
+    <td mat-cell *matCellDef="let medicamento"> {{medicamento.nome}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="quantidade">
+    <th mat-header-cell *matHeaderCellDef> {{'QUANTIDADE' | frases | uppercase}} </th>
+    <td mat-cell *matCellDef="let medicamento"> {{medicamento.quantidade}}</td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="detalheExpandido">
+    <td mat-cell *matCellDef="let medicamento" [attr.colspan]="colunas.length">
+      <div [@detalhesExpansao]="medicamento == detalheExpansao ? 'expandido' : 'colapsado'" class="detalhe-medicamento">
+        <mat-divider></mat-divider>
+        <div fxLayout="column" fxLayoutWrap fxLayoutAlign="left left" class="conteudo">
+          <div fxFlex="100%">
+            <p>{{'POSOLOGIA' | frases | uppercase}}: {{posologia(medicamento) | frases }}</p>
+          </div>
+          <div fxFlex="100%">
+            <table mat-table [dataSource]="medicamento.principioAtivos">
+              <ng-container matColumnDef="{{colunaPrincipio}}" *ngFor="let colunaPrincipio of colunasPrincipio">
+                <th mat-header-cell *matHeaderCellDef> {{colunaPrincipio | uppercase}} </th>
+                <td mat-cell *matCellDef="let principio"> {{principio[colunaPrincipio]}} </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="colunasPrincipio"></tr>
+              <tr mat-row *matRowDef="let row; columns: colunasPrincipio;"></tr>
+            </table>
+          </div>
+          <div fxFlex="100%">
+            <div fxLayout="column" fxLayoutAlign="right right">
+              <button mat-raised-button color="warn" matTooltip="Remover Medicamento" (click)="removerItem(medicamento.id)" class="botao-remover">
+                <fa-icon [icon]="['fas', 'trash-alt']">
+                </fa-icon>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+  <tr mat-row *matRowDef="let linha; columns: colunas;" class="linha"
+    [class.elemento-expandido]="detalheExpansao === linha" (click)="expandir(linha)">
+  </tr>
+  <tr mat-row *matRowDef="let linha; columns: ['detalheExpandido'];" class="detalhe-expandido"></tr>
+</table>

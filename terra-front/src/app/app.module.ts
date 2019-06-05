@@ -18,7 +18,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
-  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse, faSearch, faPlus
+  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse, faSearch, faPlus, faTrashAlt
 } from '@fortawesome/free-solid-svg-icons';
 
 import { LoginComponent } from './login/login.component';
@@ -51,9 +51,10 @@ import { MedicoWebService } from './core/medico/medico-web.service';
 import { MedicoMockService } from './core/medico/medico-mock.service';
 import { MedicoService } from './core/medico/medico.service';
 import { FrasesPipe } from './core/pipes/frases.pipe';
+import { TabelaReceitaComponent } from './tabela-receita/tabela-receita.component';
 
 library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
-  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse, faSearch, faPlus);
+  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse, faSearch, faPlus, faTrashAlt);
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
     MainNavComponent,
     BotaoHamburgerComponent,
     GeradorReceitaComponent,
-    FrasesPipe
+    FrasesPipe,
+    TabelaReceitaComponent
   ],
   imports: [
     HttpClientModule,

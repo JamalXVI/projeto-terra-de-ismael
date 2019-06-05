@@ -15,6 +15,7 @@ import { MatStepper, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatSnackBar } from '@ang
 import { FORMATOS } from '../core/const/constants';
 import { MedicamentoPrincipioAtivo } from '../core/medicamento/medicamento-principio-ativo.model';
 import { FrasesService } from '../core/pipes/frases.service';
+import { ReceitaMedicamento } from '../core/medicamento/receita-medicamento.model';
 
 @Component({
   selector: 'app-gerador-receita',
@@ -30,7 +31,7 @@ export class GeradorReceitaComponent implements OnInit {
   medicamentoForm: FormGroup;
   informationForm: FormGroup;
   tipoMedicamentos: ElementoDaListaDto[] = [];
-  principioAtivo: ElementoDaListaDto[] = [];
+  listaNoMomentoMedicamento: ElementoDaListaDto[][] = [];
   itensCarregando: boolean[] = [];
   // Lista de Itens de um Medicamento, contendo todos as misturas válidas daquele tipo
   itensDoMedicamento: ElementoDaListaDto[];
@@ -41,6 +42,9 @@ export class GeradorReceitaComponent implements OnInit {
   iniciouPesquisa: boolean = false;
   iniciouPesquisaDetalhe: boolean = false;
   formulario: FormularioReceita = new FormularioReceita();
+
+  private medicamentos: ReceitaMedicamento[] = [];
+  private _medicamentos: ReceitaMedicamento[] = [];
   protected matcher = new CustomErrorStateMatcher();
 
   constructor(private _formBuilder: FormBuilder,
@@ -62,13 +66,14 @@ export class GeradorReceitaComponent implements OnInit {
     this.medicamentoForm = this._formBuilder.group({
       quantidade: new FormControl('', [Validators.required, Validators.pattern('\\d+(\.\\d+)?')]),
       posologia: new FormControl(''),
-      validadeReceita: new FormControl('', Validators.required),
+      validade: new FormControl('', Validators.required),
+      tipo: new FormControl('', Validators.required),
       items: this._formBuilder.array([this.createPrincipioAtivo()])
     });
     forkJoin([this._medicamentoService.get(), this._medicamentoService.getPrincipioAtivo(''), this._pessoaService.listaPesquisa(''), this._medicoService.get()])
       .subscribe((res: any[]) => {
         this.tipoMedicamentos = res[0];
-        this.principioAtivo = res[1];
+        this.listaNoMomentoMedicamento[0] = res[1];
         this.pessoas = res[2];
         this.medicos = res[3];
       });
@@ -81,7 +86,9 @@ export class GeradorReceitaComponent implements OnInit {
     (<FormArray>this.medicamentoForm.get('items')).controls.forEach((c, i) => {
       c.get('id').valueChanges.pipe(debounceTime(300), tap(() => this.itensCarregando[i] = true),
         switchMap(value => this._medicamentoService.getPrincipioAtivo(value).pipe(finalize(() => this.itensCarregando[i] = false))))
-        .subscribe(principioAtivos => this.principioAtivo = principioAtivos)
+        .subscribe(principioAtivos => {
+          this.listaNoMomentoMedicamento[i] = principioAtivos;
+        });
     });
   }
 
@@ -187,12 +194,12 @@ export class GeradorReceitaComponent implements OnInit {
     (<FormArray>this.medicamentoForm.get('items')).controls.forEach((c, i) => {
       const principio: ElementoDaListaDto = <ElementoDaListaDto>c.get('id').value;
       let existe: boolean = false;
-      this.principioAtivo.forEach((p: ElementoDaListaDto) => {
+      this.listaNoMomentoMedicamento[i].forEach((p: ElementoDaListaDto) => {
         if (p.id == principio.id) {
           existe = true;
         }
       });
-      if(c.get('proporcao').hasError && !!c.get('proporcao').errors){
+      if (c.get('proporcao').hasError && !!c.get('proporcao').errors) {
         resultado = false;
       }
       if (!existe) {
@@ -204,12 +211,60 @@ export class GeradorReceitaComponent implements OnInit {
     });
     return resultado;
   }
-  removerPrincipioAtivo(i: number): void{
+  removerPrincipioAtivo(i: number): void {
     let controles: AbstractControl[] = (<FormArray>this.medicamentoForm.get('items')).controls;
-    if(controles.length > 1){
+    if (controles.length > 1) {
       controles.splice(i, 1);
-    }else{
-      this.snackBar.open(this._frases.converter('ERRO_PELO_MENOS_UM_PRINCIPIO'), '', {duration: 1000});
+    } else {
+      this.snackBar.open(this._frases.converter('ERRO_PELO_MENOS_UM_PRINCIPIO'), '', { duration: 1000 });
     }
+  }
+  adicionarMedicamento(): void {
+    if (this.verificarPrincipiosAtivos() && this.medicamentoForm.valid) {
+      const quantidade: number = +this.medicamentoForm.get('quantidade').value;
+      const posologia: string = this.medicamentoForm.get('posologia').value;
+      const data: string = this.medicamentoForm.get('validade').value;
+      const tipo: number = +this.medicamentoForm.get('tipo').value;
+      const nomeTipo: string = this.tipoMedicamentos.find(tipoMed => tipoMed.id == tipo).nome;
+      const principios: MedicamentoPrincipioAtivo[] = [];
+      const itemsForm: FormArray = (<FormArray>this.medicamentoForm.get('items'));
+      itemsForm.controls.forEach((controle, indice) => {
+        const item: ElementoDaListaDto = controle.get('id').value;
+        const principio = new MedicamentoPrincipioAtivo({ id: item.id, proporcao: controle.get('proporcao').value, nome: item.nome });
+        principios.push(principio);
+      });
+      let receita: ReceitaMedicamento = new ReceitaMedicamento({
+        id: this._medicamentos.length,
+        quantidade: quantidade,
+        posologia: posologia,
+        validade: data,
+        tipo: tipo,
+        principioAtivos: principios,
+        nome: nomeTipo
+      });
+      this._medicamentos.push(receita);
+      this.medicamentos = [...this._medicamentos];
+      this.changeDetectionRef.detectChanges();
+      for (let i = 1; i < itemsForm.controls.length; i++) {
+        this.removerPrincipioAtivo(i);
+      }
+      let controle: AbstractControl = itemsForm.controls[0];
+      controle.get('id').setValue("");
+      controle.get('proporcao').setValue(1);
+      this.medicamentoForm.reset();
+    }
+  }
+  removerItem($event) {
+    const id: number = $event;
+    let lista: ReceitaMedicamento[] = [...this._medicamentos];
+    this._medicamentos = [];
+    lista.forEach((item, indice) => {
+      if(item.id != id){
+        this._medicamentos.push(Object.assign(lista[indice], { id: this._medicamentos.length }))
+      }
+    });
+    this.medicamentos = [...this._medicamentos];
+    this.changeDetectionRef.detectChanges();
+    this.snackBar.open(this._frases.converter('REMOVER_ITEM_RECEITA_MENSAGEM'), '', { duration: 1000 });
   }
 }

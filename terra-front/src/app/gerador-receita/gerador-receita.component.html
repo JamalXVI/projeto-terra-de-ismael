@@ -14,7 +14,8 @@
               <mat-form-field>
                 <input type="text" placeholder="Selecione um Cliente" matInput formControlName="pessoa"
                   [matAutocomplete]="auto">
-                <mat-hint *ngIf="informationForm.controls['pessoa'].pristine">{{'PESQUISA_PACIENTE' | frases}}</mat-hint>
+                <mat-hint *ngIf="informationForm.controls['pessoa'].pristine">{{'PESQUISA_PACIENTE' | frases}}
+                </mat-hint>
                 <mat-error *ngIf="informationForm.controls['pessoa'].hasError('required')">
                   {{'ERRO_VAZIO' | frases}}
                 </mat-error>
@@ -92,68 +93,63 @@
       </mat-step>
       <mat-step [stepControl]="medicineForm">
         <ng-template matStepLabel>{{'SELECIONE_TIPO_MEDICAMENTO' | frases}}</ng-template>
-        <form [formGroup]="medicineForm">
-          <div fxLayout="column" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="center center">
-            <div fxFlex="25%" fxFlex.xs="100%">
-              <mat-form-field *ngIf="tipoMedicamentos">
-                <mat-select placeholder="Selecione um Tipo de Medicamento" formControlName="tipoMedicamentos">
-                  <mat-option *ngFor="let tipoMedicamento of tipoMedicamentos" [value]="tipoMedicamento.id">
-                    {{tipoMedicamento.nome}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-          <div fxLayout="column" fxLayoutWrap fxLayoutGap="0" fxLayoutAlign="end end">
-            <div fxFlex="25%" fxFlex.xs="100%">
-              <button mat-raised-button color="primary">Primary</button>
-            </div>
-          </div>
-        </form>
         <mat-card class="card">
           <mat-card-header>
-            <mat-card-title>{{'DETALHES_MEDICAMENTO' | frases}}</mat-card-title>
+            <mat-card-title>{{'DETALHES_MEDICAMENTO' | frases | uppercase}}</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <form [formGroup]="medicamentoForm">
               <div fxLayout="column" fxLayoutWrap fxLayoutAlign="left left">
                 <div fxFlex="100%">
                   <div fxLayout="row warp" fxLayoutGap="1%" fxLayoutAlign="left left">
-                    <div fxFlex="99%" fxFlex.md="99%" fxFlex.xl="19%" fxFlex.xs="99%">
+                    <div fxFlex="99%" fxFlex.md="49%" fxFlex.lg="49%" fxFlex.xl="29%" fxFlex.xs="99%">
+                      <mat-form-field *ngIf="tipoMedicamentos">
+                        <mat-select placeholder="Selecione um Tipo de Medicamento" formControlName="tipo">
+                          <mat-option *ngFor="let tipoMedicamento of tipoMedicamentos" [value]="tipoMedicamento.id">
+                            {{tipoMedicamento.nome}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="medicamentoForm.controls['tipo'].invalid">
+                          {{'ERRO_SELECIONAR_VALIDO' | frases}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="99%" fxFlex.md="49%" fxFlex.lg="49%" fxFlex.xl="19%" fxFlex.xs="99%">
                       <mat-form-field>
                         <input matInput [matDatepicker]="validadeMedicamentoPicker"
-                          placeholder="Validade do Medicamento" formControlName="validadeReceita" disabled>
+                          placeholder="Validade do Medicamento" formControlName="validade" disabled>
                         <mat-datepicker-toggle matSuffix [for]="validadeMedicamentoPicker"></mat-datepicker-toggle>
                         <mat-datepicker #validadeMedicamentoPicker disabled="false"></mat-datepicker>
-                        <mat-error *ngIf="medicamentoForm.controls['validadeReceita'].invalid">
+                        <mat-error *ngIf="medicamentoForm.controls['validade'].invalid">
                           {{'ERRO_ENTRADA_INVALIDA' | frases}}
                         </mat-error>
                       </mat-form-field>
                     </div>
-                    <div fxFlex="99%" fxFlex.md="99%" fxFlex.xl="19%" fxFlex.xs="99%">
+                    <div fxFlex="99%" fxFlex.md="49%" fxFlex.lg="49%" fxFlex.xl="19%" fxFlex.xs="99%">
                       <mat-form-field>
-                        <input matInput type="number" placeholder="Peso" formControlname="quantidade" />
+                        <input matInput type="number" placeholder="Quantidade" formControlName="quantidade" />
                         <mat-error *ngIf="medicamentoForm.controls['quantidade'].invalid">
                           {{'ERRO_ENTRADA_INVALIDA' | frases}}
                         </mat-error>
                       </mat-form-field>
                     </div>
-                    <div fxFlex="29%" fxFlex.xs="99%">
-                      <button mat-raised-button color="accent">{{'ADICIONAR_MEDICAMENTO' | frases}}</button>
+                    <div fxFlex="29%" fxFlex.md="49%" fxFlex.lg="49%" fxFlex.xs="99%">
+                      <button mat-raised-button color="accent"
+                        (click)="adicionarMedicamento()">{{'ADICIONAR_MEDICAMENTO' | frases}}</button>
                     </div>
                     <div fxFlex="99%">
                       <mat-form-field>
-                        <input matInput type="text" placeholder="Posologia" formControlname="posologia" />
+                        <input matInput type="text" placeholder="Posologia" formControlName="posologia" />
                       </mat-form-field>
                     </div>
                   </div>
                 </div>
                 <div fxFlex="100%">
-                    <h2 class="mat-body">{{'PRINCIPIOS_ATIVOS' | frases}} <button mat-icon-button color="accent"
+                  <h2 class="mat-body">{{'PRINCIPIOS_ATIVOS' | frases}} <button mat-icon-button color="accent"
                       (click)="adicionarPrincipioAtivo()">
                       <fa-icon [icon]="['fas', 'plus']"></fa-icon>
                     </button></h2>
-                  </div>
+                </div>
               </div>
               <mat-list formArrayName="items" *ngFor="let item of medicamentoForm.get('items').controls; let i = index">
                 <div [formGroupName]="i" fxFlex="100%">
@@ -183,14 +179,14 @@
                                 </span>
                               </ng-container>
                               <ng-container *ngIf="!verificarCarregando(i)">
-                                <mat-option *ngFor="let m of principioAtivo" [value]="m">
+                                <mat-option *ngFor="let m of listaNoMomentoMedicamento[i]" [value]="m">
                                   <span>{{m.nome}}</span>
                                 </mat-option>
                               </ng-container>
                             </mat-autocomplete>
                           </mat-form-field>
                         </div>
-                        <div fxFlex="20%"  fxFlex.xs="79%">
+                        <div fxFlex="20%" fxFlex.xs="79%">
                           <mat-form-field>
                             <input matInput type="number" placeholder="Proporção" formControlName="proporcao" />
                             <mat-error
@@ -203,7 +199,7 @@
                             </mat-error>
                           </mat-form-field>
                         </div>
-                        <div fxFlex="20%"  fxFlex.xs="20.5%">
+                        <div fxFlex="20%" fxFlex.xs="20.5%">
                           <button mat-icon-button color="primary" (click)="removerPrincipioAtivo(i)">X</button>
                         </div>
                       </div>
@@ -214,6 +210,10 @@
             </form>
           </mat-card-content>
         </mat-card>
+        <div *ngIf="medicamentos.length > 0">
+          <h1 class="centralizado">{{'MEDICAMENTOS_NA_RECEITA' | frases | uppercase}}</h1>
+          <app-tabela-receita [itens]="medicamentos" (remover)="removerItem($event)"></app-tabela-receita>
+        </div>
       </mat-step>
     </mat-horizontal-stepper>
   </mat-card-content>
