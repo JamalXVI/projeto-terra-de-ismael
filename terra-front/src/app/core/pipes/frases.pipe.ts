@@ -58,6 +58,7 @@ enum Frases{
   SEM_POSOLOGIA="Não existe posologia para este medicamento",
   QUANTIDADE="Quantidade",
   TIPO="Tipo",
-  ACAO="Ação"
+  ACAO="Ação",
+  PESO="Peso"
 
 }

@@ -36,7 +36,7 @@ export class TabelaReceitaComponent implements OnInit {
     return !medicamento.posologia ? 'SEM_POSOLOGIA' : medicamento.posologia;
   }
 
-  private colunas: String[] = ["tipo", "quantidade"];
+  private colunas: String[] = ["tipo", "quantidade", "peso"];
   private colunasPrincipio: String[] = ["nome", "proporcao"];
   constructor() {
 

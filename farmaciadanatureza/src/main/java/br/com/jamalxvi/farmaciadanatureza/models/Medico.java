@@ -5,17 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -49,7 +39,7 @@ public class Medico extends EntidadeBase {
   @JoinColumn(name="ID_PES")
   @JsonBackReference
   private Pessoa pessoa;
-  @OneToMany(mappedBy = "medico", targetEntity = Receita.class, fetch = FetchType.LAZY)
+  @ManyToMany(mappedBy = "medico", targetEntity = Receita.class, fetch = FetchType.LAZY)
   @JsonManagedReference
   private List<Receita> receitas;
 }

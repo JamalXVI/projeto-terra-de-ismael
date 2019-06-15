@@ -64,7 +64,8 @@ export class GeradorReceitaComponent implements OnInit {
       dataReceita: new FormControl('', [Validators.required])
     });
     this.medicamentoForm = this._formBuilder.group({
-      quantidade: new FormControl('', [Validators.required, Validators.pattern('\\d+(\.\\d+)?')]),
+      quantidade: new FormControl('1', [Validators.required, Validators.pattern('\\d+(\.\\d+)?')]),
+      peso: new FormControl('', [Validators.required, Validators.pattern('\\d+(\.\\d+)?')]),
       posologia: new FormControl(''),
       validade: new FormControl('', Validators.required),
       tipo: new FormControl('', Validators.required),
@@ -95,7 +96,7 @@ export class GeradorReceitaComponent implements OnInit {
   createPrincipioAtivo(): FormGroup {
     return this._formBuilder.group({
       id: new FormControl('', [Validators.required]),
-      proporcao: new FormControl('', [Validators.required, Validators.pattern('\\d{1,2}')])
+      proporcao: new FormControl('1', [Validators.required, Validators.pattern('\\d{1,2}')])
     });
   }
 
@@ -222,6 +223,7 @@ export class GeradorReceitaComponent implements OnInit {
   adicionarMedicamento(): void {
     if (this.verificarPrincipiosAtivos() && this.medicamentoForm.valid) {
       const quantidade: number = +this.medicamentoForm.get('quantidade').value;
+      const peso: number = +this.medicamentoForm.get('peso').value;
       const posologia: string = this.medicamentoForm.get('posologia').value;
       const data: string = this.medicamentoForm.get('validade').value;
       const tipo: number = +this.medicamentoForm.get('tipo').value;
@@ -236,6 +238,7 @@ export class GeradorReceitaComponent implements OnInit {
       let receita: ReceitaMedicamento = new ReceitaMedicamento({
         id: this._medicamentos.length,
         quantidade: quantidade,
+        peso: peso,
         posologia: posologia,
         validade: data,
         tipo: tipo,
