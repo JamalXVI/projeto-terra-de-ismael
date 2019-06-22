@@ -1,6 +1,8 @@
 package br.com.jamalxvi.farmaciadanatureza.service;
 
+import br.com.jamalxvi.farmaciadanatureza.models.Medicamento;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.ElementoDeListaDto;
+import br.com.jamalxvi.farmaciadanatureza.models.dto.FormularioReceitaDto;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.RetornoDosMedicamentosDto;
 
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
  * @version 0.1
  * @since 0.1
  */
-public interface MedicamentoService {
+public interface MedicamentoService extends BaseService<Medicamento> {
 
     /**
      * Retorna a lista de possíveis medicamentos
@@ -22,4 +24,8 @@ public interface MedicamentoService {
     List<ElementoDeListaDto> retornaListaDeTipoDeMedicamento();
 
     List<ElementoDeListaDto> retonarListaPrincipioAtivo(String pesquisa, Integer limite);
+
+    Medicamento cria(Integer tipo);
+
+    Medicamento salva(Medicamento m);
 }

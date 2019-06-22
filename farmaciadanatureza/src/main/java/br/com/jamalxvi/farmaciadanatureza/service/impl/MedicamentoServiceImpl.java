@@ -1,8 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.service.impl;
 
-import static br.com.jamalxvi.farmaciadanatureza.util.MetodosGenericosUtils.transformarEnumEmDTO;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumTipoMedicamento;
+import br.com.jamalxvi.farmaciadanatureza.models.Medicamento;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.ElementoDeListaDto;
-import br.com.jamalxvi.farmaciadanatureza.models.dto.RetornoDosMedicamentosDto;
 import br.com.jamalxvi.farmaciadanatureza.repository.MedicamentoRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.PrincipioAtivoRepository;
 import br.com.jamalxvi.farmaciadanatureza.service.MedicamentoService;
@@ -21,16 +19,21 @@ import lombok.NoArgsConstructor;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-public class MedicamentoServiceImpl implements MedicamentoService {
+public class MedicamentoServiceImpl extends BaseServiceImpl<Medicamento, MedicamentoRepository>
+    implements MedicamentoService {
   @Autowired
   MedicamentoRepository medicamentoRepository;
   @Autowired
   PrincipioAtivoRepository principioAtivoRepository;
 
   @Override
+  void config() {
+    this.repository = medicamentoRepository;
+  }
+
+  @Override
   public List<ElementoDeListaDto> retornaListaDeTipoDeMedicamento() {
-    return Arrays.asList(EnumTipoMedicamento.values()).stream().map(m -> transformarEnumEmDTO(m))
-        .collect(Collectors.toList());
+    return montaDtoDeLista(EnumTipoMedicamento.values());
   }
 
   @Override
@@ -40,4 +43,22 @@ public class MedicamentoServiceImpl implements MedicamentoService {
         .collect(Collectors.toList());
   }
 
+  @Override
+  public Medicamento cria(Integer tipo){
+
+    EnumTipoMedicamento tipoMedicamento = EnumTipoMedicamento
+            .encontra(tipo).orElseThrow(() -> new RuntimeException());
+    Medicamento medicamento = Medicamento.builder().tipoMedicamento(tipoMedicamento).build();
+    return salva(medicamento);
+  }
+
+  @Override
+  public Medicamento salva(Medicamento m){
+    try{
+      Medicamento medicamento = medicamentoRepository.save(m);
+      return medicamento;
+    }catch (Exception e){
+      throw  e;
+    }
+  }
 }

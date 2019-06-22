@@ -37,7 +37,7 @@ public class UsuarioController {
 
     @RequestMapping(method = GET, value = "/user/{userId}")
     public Usuario loadById(@PathVariable Long userId) {
-        return this.usuarioService.encontrarPeloId(userId);
+        return this.usuarioService.encontra(userId);
     }
 
     @RequestMapping(method = GET, value = "/user/find")

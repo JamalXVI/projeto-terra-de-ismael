@@ -2,6 +2,7 @@ package br.com.jamalxvi.farmaciadanatureza.service;
 
 import java.util.List;
 
+import br.com.jamalxvi.farmaciadanatureza.models.Medico;
 import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.PessoaDto;
 
@@ -12,14 +13,7 @@ import br.com.jamalxvi.farmaciadanatureza.models.dto.PessoaDto;
  * @version 0.1
  * @since 0.1
  */
-public interface PessoaService {
-  /**
-   * Encontra a pessoa pelo id
-   *
-   * @param id da pessoa em questão
-   * @return a Pessoa, se encontrada, ou nulo.
-   */
-  Pessoa encontrarPeloId(Long id);
+public interface PessoaService extends BaseService<Pessoa> {
 
   /**
    * Encontra a pessoa pelo Cpf

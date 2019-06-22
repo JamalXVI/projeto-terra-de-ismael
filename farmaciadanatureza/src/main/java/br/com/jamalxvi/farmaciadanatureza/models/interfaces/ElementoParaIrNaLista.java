@@ -9,6 +9,6 @@ package br.com.jamalxvi.farmaciadanatureza.models.interfaces;
  * @since 0.1
  */
 public interface ElementoParaIrNaLista {
-    public Integer getId();
-    public String getDesc();
+    Integer getId();
+    String getDesc();
 }

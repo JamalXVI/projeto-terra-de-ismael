@@ -35,7 +35,7 @@ public enum EnumTipoMedicamento implements ElementoParaIrNaLista {
      * @param id o id do tipo de medicamento
      * @return um optional com o Enum de medicamento
      */
-    public static Optional<EnumTipoMedicamento> encontrarPeloId(Integer id) {
+    public static Optional<EnumTipoMedicamento> encontra(Integer id) {
         return Arrays.asList(values()).stream().filter(m -> m.getId() == id).findFirst();
     }
 }

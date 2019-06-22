@@ -14,9 +14,13 @@ import br.com.jamalxvi.farmaciadanatureza.service.PessoaService;
 import br.com.jamalxvi.farmaciadanatureza.service.UsuarioService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,9 +42,8 @@ import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.*;
  */
 
 @Service
-@NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioServiceImpl extends BaseService implements UsuarioService {
+public class UsuarioServiceImpl extends BaseServiceImpl<Usuario, UsuarioRepository> implements UsuarioService {
 
   @Autowired
   private UsuarioRepository usuarioRepository;
@@ -51,8 +54,15 @@ public class UsuarioServiceImpl extends BaseService implements UsuarioService {
   @Autowired
   private PessoaService pessoaService;
 
+  final static Logger logger = LoggerFactory.getLogger(UsuarioServiceImpl.class);
+
   @Autowired
   private AutoridadeService autoridadeService;
+
+  @Override
+  void config() {
+    this.repository = usuarioRepository;
+  }
 
   public void resetCredentials() {
     List<Usuario> usuarios = usuarioRepository.findAll();
@@ -78,16 +88,6 @@ public class UsuarioServiceImpl extends BaseService implements UsuarioService {
             .nome(usr.getPessoa().getNome()).sobrenome(usr.getPessoa().getSobrenome()).build())
         .orElseThrow(() -> new MensagemExcecao(ERRO_USUARIO_NAO_ENCONTRADO.getMensagem(),
             EnumExcecaoDto.ATRIBUTOS_VAZIOS_OU_NAO_ENCONTRADO));
-  }
-
-  @PreAuthorize("hasRole('ADMIN')")
-  public Usuario encontrarPeloId(Long id) throws AccessDeniedException {
-    Usuario u = usuarioRepository.findById(id).orElse(null);
-    if (u == null || u.getAtivo() == null || !u.getAtivo()) {
-      throw new MensagemExcecao(ERRO_USUARIO_NAO_ENCONTRADO.getMensagem(),
-          EnumExcecaoDto.NAO_ENCONTRADO);
-    }
-    return u;
   }
 
   @PreAuthorize("hasRole('ADMIN')")
@@ -127,6 +127,24 @@ public class UsuarioServiceImpl extends BaseService implements UsuarioService {
     pessoa.setUsuario(usuario);
     pessoaService.salvar(pessoa);
     return usuario;
+  }
+
+  @Override
+  public Usuario getUsuarioLogado() {
+    logger.info("getUsuarioLogado - Busca do Usuário no Contexto");
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    if (principal instanceof UserDetails){
+      logger.info("getUsuarioLogado - Retorna detalhes do usuário");
+      final String nomeDoUsuario = ((UserDetails) principal).getUsername();
+      logger.info("getUsuarioLogado - Busca usuário no repositório");
+      Optional<Usuario> usuario = usuarioRepository.findByUsuario(nomeDoUsuario);
+      if (usuario.isPresent()){
+        return  usuario.get();
+      }
+    }
+    logger.error("getUsuarioLogado - Usuário Não Encontrado: Erro Inesperado");
+    throw  new RuntimeException();
+
   }
 
 }

@@ -35,6 +35,9 @@ public class ReceitaMedicamento{
     @Column(name = "QTD_REC_MED")
     private BigDecimal quantidade;
 
+    @Column(name = "PES_REC_MED")
+    private BigDecimal peso;
+
     @Column(name = "POS_REC_MED")
     private String posologia;
 

@@ -141,14 +141,20 @@
                         </mat-error>
                       </mat-form-field>
                     </div>
-                    <div fxFlex="29%" fxFlex.md="49%" fxFlex.lg="49%" fxFlex.xs="99%">
+                    <div fxFlex="99%" fxFlex.md="49%" fxFlex.lg="49%"  fxFlex.xl="29%" fxFlex.xs="99%">
                       <button mat-raised-button color="accent"
                         (click)="adicionarMedicamento()">{{'ADICIONAR_MEDICAMENTO' | frases}}</button>
                     </div>
-                    <div fxFlex="99%">
+                    <div fxFlex="69%" fxFlex.md="79%"  fxFlex.lg="89%"   fxFlex.xl="89%" fxFlex.xs="69%">
                       <mat-form-field>
                         <input matInput type="text" placeholder="Posologia" formControlName="posologia" />
                       </mat-form-field>
+                    </div>
+                    <div fxFlex="29%" fxFlex.md="19%"  fxFlex.lg="9%"   fxFlex.xl="9%" fxFlex.xs="29%">
+                      <button mat-raised-button color="primary" matTooltip="Prosseguir para a Próxima Etapa"
+                        [disabled]="medicamentos.length == 0" (click)="proximaEtapa()">
+                        <fa-icon [icon]="['fas', 'arrow-right']"></fa-icon>
+                      </button>
                     </div>
                   </div>
                 </div>

@@ -30,9 +30,6 @@ public class Medicamento extends EntidadeBase{
             mappedBy = "medicamento")
     private List<MedicamentoPrincipioAtivo> principioAtivo;
 
-    @Column(name = "PES_MED")
-    private BigDecimal peso;
-
     @OneToMany(targetEntity = ReceitaMedicamento.class, fetch = FetchType.LAZY,
             mappedBy = "medicamento")
     private List<ReceitaMedicamento> receitaMedicamentos;

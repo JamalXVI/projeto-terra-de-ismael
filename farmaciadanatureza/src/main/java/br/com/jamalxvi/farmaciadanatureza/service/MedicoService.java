@@ -1,5 +1,6 @@
 package br.com.jamalxvi.farmaciadanatureza.service;
 
+import br.com.jamalxvi.farmaciadanatureza.models.Medico;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.MedicoDto;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.PessoaDto;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @version 0.1
  * @since 0.1
  */
-public interface MedicoService {
+public interface MedicoService extends BaseService<Medico> {
 
     /**
      * Retorna todos os médicos ativos convertidas em Dto
@@ -28,5 +29,4 @@ public interface MedicoService {
      * @return a lista de pessoas conforme os resultados
      */
     List<MedicoDto> pesquisar(String pesquisa, Integer limite);
-
 }

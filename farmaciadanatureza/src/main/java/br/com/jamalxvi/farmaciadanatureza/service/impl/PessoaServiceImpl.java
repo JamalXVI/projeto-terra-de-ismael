@@ -32,19 +32,13 @@ import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.ERRO_LISTAR_
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
-public class PessoaServiceImpl extends BaseService implements PessoaService {
+public class PessoaServiceImpl extends BaseServiceImpl<Pessoa, PessoaRepository> implements PessoaService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
     @Override
-    public Pessoa encontrarPeloId(Long id) {
-        Pessoa pessoa = null;
-        try {
-            pessoa = pessoaRepository.findById(id).orElse(null);
-        } catch (Exception e) {
-            return null;
-        }
-        return pessoa;
+    void config() {
+        this.repository = pessoaRepository;
     }
 
     @Override

@@ -61,13 +61,13 @@ export class GeradorReceitaComponent implements OnInit {
     this.informationForm = this._formBuilder.group({
       pessoa: new FormControl('', Validators.required),
       medico: new FormControl('', Validators.required),
-      dataReceita: new FormControl('', [Validators.required])
+      dataReceita: new FormControl(new Date(), [Validators.required])
     });
     this.medicamentoForm = this._formBuilder.group({
       quantidade: new FormControl('1', [Validators.required, Validators.pattern('\\d+(\.\\d+)?')]),
       peso: new FormControl('', [Validators.required, Validators.pattern('\\d+(\.\\d+)?')]),
       posologia: new FormControl(''),
-      validade: new FormControl('', Validators.required),
+      validade: new FormControl(new Date(), Validators.required),
       tipo: new FormControl('', Validators.required),
       items: this._formBuilder.array([this.createPrincipioAtivo()])
     });
@@ -254,7 +254,6 @@ export class GeradorReceitaComponent implements OnInit {
       let controle: AbstractControl = itemsForm.controls[0];
       controle.get('id').setValue("");
       controle.get('proporcao').setValue(1);
-      this.medicamentoForm.reset();
     }
   }
   removerItem($event) {
@@ -262,12 +261,14 @@ export class GeradorReceitaComponent implements OnInit {
     let lista: ReceitaMedicamento[] = [...this._medicamentos];
     this._medicamentos = [];
     lista.forEach((item, indice) => {
-      if(item.id != id){
+      if (item.id != id) {
         this._medicamentos.push(Object.assign(lista[indice], { id: this._medicamentos.length }))
       }
     });
     this.medicamentos = [...this._medicamentos];
     this.changeDetectionRef.detectChanges();
     this.snackBar.open(this._frases.converter('REMOVER_ITEM_RECEITA_MENSAGEM'), '', { duration: 1000 });
+  }
+  proximaEtapa() {
   }
 }

@@ -21,9 +21,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Classe que representa as configurações do projeto, como o controle de acesso pela autenticação
- * @author      Jamal XVI <henriquearantest@gmail.com>
- * @version     0.1
- * @since       0.1
+ * 
+ * @author Jamal XVI <henriquearantest@gmail.com>
+ * @version 0.1
+ * @since 0.1
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -72,17 +73,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private ManipuladorDeAutenticacaoFalhada manipuladorDeAutenticacaoFalhada;
 
   @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().ignoringAntMatchers(EnumRotasEntrada.ROTA_LOGIN.getRota(), EnumRotasEntrada.ROTA_CADASTRAR.getRota())
-        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+  protected void configure(HttpSecurity httpSecurity) throws Exception {
+    httpSecurity.csrf().disable();
+    httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .exceptionHandling().authenticationEntryPoint(pontoDeEntradaAutenticacaoRest).and()
+        .authorizeRequests().anyRequest().authenticated().and()
         .addFilterBefore(jwtAuthenticationTokenFilter(), BasicAuthenticationFilter.class)
-        .authorizeRequests().anyRequest().authenticated().and().formLogin()
-        .loginPage(EnumRotasEntrada.ROTA_LOGIN.getRota()).successHandler(manipuladorDeAutenticacaoSucedida)
-        .failureHandler(manipuladorDeAutenticacaoFalhada).and()
-        .logout().logoutRequestMatcher(new AntPathRequestMatcher(EnumRotasEntrada.ROTA_DESLOGAR.getRota()))
+        .formLogin().loginPage(EnumRotasEntrada.ROTA_LOGIN.getRota())
+        .successHandler(manipuladorDeAutenticacaoSucedida)
+        .failureHandler(manipuladorDeAutenticacaoFalhada).and().logout()
+        .logoutRequestMatcher(new AntPathRequestMatcher(EnumRotasEntrada.ROTA_DESLOGAR.getRota()))
         .logoutSuccessHandler(sucessoEmLogout).deleteCookies(TOKEN_COOKIE);
+    super.configure(httpSecurity);
 
   }
 

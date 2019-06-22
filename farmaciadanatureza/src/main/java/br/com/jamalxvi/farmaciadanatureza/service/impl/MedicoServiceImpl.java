@@ -1,6 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.service.impl;
 
 import br.com.jamalxvi.farmaciadanatureza.models.Medico;
+import br.com.jamalxvi.farmaciadanatureza.models.Pessoa;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.MedicoDto;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.PessoaDto;
 import br.com.jamalxvi.farmaciadanatureza.repository.MedicoRepository;
@@ -14,11 +15,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@NoArgsConstructor
-@AllArgsConstructor
-public class MedicoServiceImpl extends BaseService implements MedicoService {
+public class MedicoServiceImpl extends BaseServiceImpl<Medico, MedicoRepository> implements MedicoService {
+
     @Autowired
-    private MedicoRepository medicoRepository;
+    MedicoRepository medicoRepository;
+
+    MedicoServiceImpl()
+    {
+        super();
+        this.repository = medicoRepository;
+    }
+
+    @Override
+    void config() {
+        this.repository = medicoRepository;
+    }
 
     @Override
     public List<MedicoDto> listarTodosDto() {
@@ -29,7 +40,7 @@ public class MedicoServiceImpl extends BaseService implements MedicoService {
 
     @Override
     public List<MedicoDto> pesquisar(String pesquisa, Integer limite) {
-        List<Medico> medicos = medicoRepository.findByPesquisa(pesquisa, limite);
+        List<Medico> medicos = repository.findByPesquisa(pesquisa, limite);
         return construirMedicoDto(medicos);
     }
 
