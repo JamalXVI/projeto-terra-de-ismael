@@ -42,18 +42,19 @@ import java.util.List;
  */
 @Entity
 @Table(name="USUARIO", uniqueConstraints = {@UniqueConstraint(columnNames = "USR_USR")})
+@AttributeOverrides(value = {
+		@AttributeOverride(name = "id", column = @Column(name = "ID_USR")),
+		@AttributeOverride(name = "versao", column = @Column(name = "VER_USR")),
+		@AttributeOverride(name = "dataCriacao", column = @Column(name = "DAT_CRI_USR")),
+})
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Usuario implements UserDetails, Serializable {
+public class Usuario extends EntidadeBase implements UserDetails, Serializable {
 
 	private static final long serialVersionUID = -4936434517036231231L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ID_USR")
-	private Long id;
 	@NotNull
 	@NotEmpty
 	@Column(name="USR_USR")

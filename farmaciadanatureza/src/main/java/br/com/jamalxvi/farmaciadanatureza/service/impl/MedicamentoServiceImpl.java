@@ -51,14 +51,4 @@ public class MedicamentoServiceImpl extends BaseServiceImpl<Medicamento, Medicam
     Medicamento medicamento = Medicamento.builder().tipoMedicamento(tipoMedicamento).build();
     return salva(medicamento);
   }
-
-  @Override
-  public Medicamento salva(Medicamento m){
-    try{
-      Medicamento medicamento = medicamentoRepository.save(m);
-      return medicamento;
-    }catch (Exception e){
-      throw  e;
-    }
-  }
 }

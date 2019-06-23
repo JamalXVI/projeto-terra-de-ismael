@@ -20,6 +20,7 @@ export class ReceitaMedicamento{
         this.posologia = obj && obj.posologia || "";
         this.tipo = obj && obj.tipo || 0;
         this.nome = obj && obj.nome || "";
+        this.validade = obj && obj.validade || "";
     }
 
 }

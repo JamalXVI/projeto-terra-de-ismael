@@ -1,5 +1,7 @@
 package br.com.jamalxvi.farmaciadanatureza.service.impl;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.jamalxvi.farmaciadanatureza.models.Medicamento;
@@ -10,7 +12,11 @@ import br.com.jamalxvi.farmaciadanatureza.models.dto.MedicamentoPrincipioAtivoDt
 import br.com.jamalxvi.farmaciadanatureza.repository.MedicamentoPrincipioAtivoRepository;
 import br.com.jamalxvi.farmaciadanatureza.service.MedicamentoPrincipioAtivoService;
 import br.com.jamalxvi.farmaciadanatureza.service.PrincipioAtivoService;
+import org.springframework.stereotype.Service;
 
+@Service
+@AllArgsConstructor
+@NoArgsConstructor
 public class MedicamentoPrincipioAtivoServiceImpl implements MedicamentoPrincipioAtivoService {
 
   @Autowired

@@ -13,13 +13,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping(value = "/api/receita", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ReceitaController {
 
     @Autowired
     private ReceitaService receitaService;
 
-    @RequestMapping(method = POST, value = "/")
+    @RequestMapping(method = POST, value = "/receita/")
     public void nova(@RequestBody FormularioReceitaDto dto){
         receitaService.cadastra(dto);
     }

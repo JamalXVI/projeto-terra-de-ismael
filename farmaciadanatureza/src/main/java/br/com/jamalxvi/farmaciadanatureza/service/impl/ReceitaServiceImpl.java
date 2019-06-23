@@ -55,13 +55,13 @@ public class ReceitaServiceImpl extends BaseServiceImpl<Receita, ReceitaReposito
     final Receita receita = cria(receitaDto);
 
     List<ReceitaMedicamento> receitaMedicamentos = new ArrayList<>();
-    receitaDto.getReceita().stream().peek(receitaMedicamentoDto -> {
+    receitaDto.getReceita().stream().forEach(receitaMedicamentoDto -> {
 
       List<MedicamentoPrincipioAtivo> principioAtivos = new ArrayList<>();
 
       final Medicamento medicamento = medicamentoService.cria(receitaMedicamentoDto.getTipo());
 
-      receitaMedicamentoDto.getPrincipioAtivos().stream().peek(principioAtivoDto -> {
+      receitaMedicamentoDto.getPrincipioAtivos().stream().forEach(principioAtivoDto -> {
 
         principioAtivos.add(medicamentoPrincipioAtivoService.cria(principioAtivoDto, medicamento));
 
@@ -71,7 +71,7 @@ public class ReceitaServiceImpl extends BaseServiceImpl<Receita, ReceitaReposito
 
       final Medicamento med = medicamentoService.salva(medicamento);
 
-      receitaMedicamentos.add(receitaMedicamentoService.cria(receita, receitaMedicamentoDto, medicamento));
+      receitaMedicamentos.add(receitaMedicamentoService.cria(receita, receitaMedicamentoDto, med));
 
 
     });

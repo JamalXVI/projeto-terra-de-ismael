@@ -52,6 +52,10 @@ import { MedicoMockService } from './core/medico/medico-mock.service';
 import { MedicoService } from './core/medico/medico.service';
 import { FrasesPipe } from './core/pipes/frases.pipe';
 import { TabelaReceitaComponent } from './tabela-receita/tabela-receita.component';
+import { ReceitaWebService } from './core/receita/receita-web.service';
+import { ReceitaMockService } from './core/receita/receita-mock.service';
+import { ReceitaService } from './core/receita/receita.service';
+import { DatePipe } from '@angular/common';
 
 library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
   faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse, faSearch, faPlus, faTrashAlt);
@@ -124,6 +128,7 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
       multi: true
     },
     { provide: MAT_DATE_LOCALE, useValue: 'br' },
+    DatePipe,
     MedicamentoMockService,
     MedicamentoWebService,
     MedicamentoService,
@@ -133,6 +138,9 @@ library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
     MedicoMockService,
     MedicoWebService,
     MedicoService,
+    ReceitaWebService,
+    ReceitaService,
+    ReceitaMockService
   ],
   schemas: [],
   bootstrap: [AppComponent]

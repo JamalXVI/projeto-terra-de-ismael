@@ -2,6 +2,7 @@ package br.com.jamalxvi.farmaciadanatureza.service.impl;
 
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens;
 import br.com.jamalxvi.farmaciadanatureza.enums.EnumTipoMedicamento;
+import br.com.jamalxvi.farmaciadanatureza.models.EntidadeBase;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.ElementoDeListaDto;
 import br.com.jamalxvi.farmaciadanatureza.models.interfaces.ElementoParaIrNaLista;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,13 +11,14 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static br.com.jamalxvi.farmaciadanatureza.enums.EnumMesagens.pegarMensagemPeloCodigo;
 
-public abstract class BaseServiceImpl<J, K extends JpaRepository<J, Long>> {
+public abstract class BaseServiceImpl<J extends EntidadeBase, K extends JpaRepository<J, Long>> {
 
   K repository;
 
@@ -48,6 +50,8 @@ public abstract class BaseServiceImpl<J, K extends JpaRepository<J, Long>> {
 
   public J salva(J obj) {
     buscaConfig();
+    obj.setDataCriacao(LocalDate.now());
+    obj.setVersao(1);
     try {
       return repository.save(obj);
     } catch (Exception e) {

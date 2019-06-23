@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray, AbstractControl } from '@angular/forms';
+import { DatePipe } from '@angular/common'
 
 import { MedicamentoService } from '../core/medicamento/medicamento.service';
 import { ElementoDaListaDto } from '../core/models/elemento-da-lista-dto.model';
@@ -16,6 +17,7 @@ import { FORMATOS } from '../core/const/constants';
 import { MedicamentoPrincipioAtivo } from '../core/medicamento/medicamento-principio-ativo.model';
 import { FrasesService } from '../core/pipes/frases.service';
 import { ReceitaMedicamento } from '../core/medicamento/receita-medicamento.model';
+import { ReceitaService } from '../core/receita/receita.service';
 
 @Component({
   selector: 'app-gerador-receita',
@@ -53,6 +55,8 @@ export class GeradorReceitaComponent implements OnInit {
     private _pessoaService: PessoaService,
     private _medicoService: MedicoService,
     private _frases: FrasesService,
+    private _receitaService: ReceitaService,
+    private _datePipe: DatePipe,
     private snackBar: MatSnackBar) {
     this.medicineForm = this._formBuilder.group({
       medicamento: new FormControl('', Validators.required),
@@ -116,6 +120,7 @@ export class GeradorReceitaComponent implements OnInit {
       const medico: Medico = this.informationForm.get('medico').value;
       this.formulario.paciente = paciente.codigo;
       this.formulario.medico = medico.codigo;
+      this.formulario.dataReceita = this._datePipe.transform(this.informationForm.get('dataReceita').value, 'dd/MM/yyyy');
       step.next();
     }
   }
@@ -240,7 +245,7 @@ export class GeradorReceitaComponent implements OnInit {
         quantidade: quantidade,
         peso: peso,
         posologia: posologia,
-        validade: data,
+        validade: this._datePipe.transform(data, 'dd/MM/yyyy'),
         tipo: tipo,
         principioAtivos: principios,
         nome: nomeTipo
@@ -270,5 +275,8 @@ export class GeradorReceitaComponent implements OnInit {
     this.snackBar.open(this._frases.converter('REMOVER_ITEM_RECEITA_MENSAGEM'), '', { duration: 1000 });
   }
   proximaEtapa() {
+    this.formulario.receita = this._medicamentos;
+    this._receitaService.nova(this.formulario);
+    this.snackBar.open('TESTE');
   }
 }
