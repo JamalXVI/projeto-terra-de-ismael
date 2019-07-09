@@ -18,11 +18,7 @@ export abstract class AbstractAuthService {
         protected router: Router,
         protected http: HttpClient,
         protected errorService: ErrorsService
-    ) {
-        this.userService.getUsers().subscribe(users => {
-            this.users = users
-        });
-    }
+    ) { }
     abstract isLoggedIn(): Observable<Boolean>;
     isAdmin(): Observable<Boolean> {
         const id: Number = this.localStorage.getItem(DEFAULT_LOGIN_NAME);

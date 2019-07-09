@@ -4,6 +4,7 @@ import { Inject } from '@angular/core';
 
 import { ErrorsService } from '../errors/errors.service';
 import { FormularioReceita } from './formulario-receita.model';
+import { Observable } from 'rxjs';
 
 @Inject({ providedIn: 'root' })
 export abstract class AbstractReceitaService {
@@ -13,5 +14,5 @@ export abstract class AbstractReceitaService {
         protected errorService: ErrorsService
     ) {
     }
-    public abstract nova(receita: FormularioReceita): void;
+    public abstract nova(receita: FormularioReceita): Observable<Object>;
 }

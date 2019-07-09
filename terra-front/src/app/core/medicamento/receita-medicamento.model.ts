@@ -8,6 +8,7 @@ export class ReceitaMedicamento{
     peso: number;
     posologia: string;
     validade: string;
+    lote: number;
     tipo: number;
     nome: string;
 
@@ -21,6 +22,7 @@ export class ReceitaMedicamento{
         this.tipo = obj && obj.tipo || 0;
         this.nome = obj && obj.nome || "";
         this.validade = obj && obj.validade || "";
+        this.lote = obj && obj.lote || 0;
     }
 
 }

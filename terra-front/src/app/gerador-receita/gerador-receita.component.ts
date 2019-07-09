@@ -18,6 +18,7 @@ import { MedicamentoPrincipioAtivo } from '../core/medicamento/medicamento-princ
 import { FrasesService } from '../core/pipes/frases.service';
 import { ReceitaMedicamento } from '../core/medicamento/receita-medicamento.model';
 import { ReceitaService } from '../core/receita/receita.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gerador-receita',
@@ -29,6 +30,7 @@ import { ReceitaService } from '../core/receita/receita.service';
   ],
 })
 export class GeradorReceitaComponent implements OnInit {
+  gerouImpressao: boolean = false;
   medicineForm: FormGroup;
   medicamentoForm: FormGroup;
   informationForm: FormGroup;
@@ -57,6 +59,7 @@ export class GeradorReceitaComponent implements OnInit {
     private _frases: FrasesService,
     private _receitaService: ReceitaService,
     private _datePipe: DatePipe,
+    private _router: Router,
     private snackBar: MatSnackBar) {
     this.medicineForm = this._formBuilder.group({
       medicamento: new FormControl('', Validators.required),
@@ -67,11 +70,14 @@ export class GeradorReceitaComponent implements OnInit {
       medico: new FormControl('', Validators.required),
       dataReceita: new FormControl(new Date(), [Validators.required])
     });
+    const data:Date = new Date();
+    data.setFullYear(new Date().getFullYear() + 1);
     this.medicamentoForm = this._formBuilder.group({
       quantidade: new FormControl('1', [Validators.required, Validators.pattern('\\d+(\.\\d+)?')]),
-      peso: new FormControl('', [Validators.required, Validators.pattern('\\d+(\.\\d+)?')]),
+      peso: new FormControl('0', [Validators.required, Validators.pattern('\\d+(\.\\d+)?')]),
       posologia: new FormControl(''),
-      validade: new FormControl(new Date(), Validators.required),
+      lote: new FormControl('0', [Validators.required, Validators.pattern('\\d+')]),
+      validade: new FormControl(data, Validators.required),
       tipo: new FormControl('', Validators.required),
       items: this._formBuilder.array([this.createPrincipioAtivo()])
     });
@@ -232,6 +238,7 @@ export class GeradorReceitaComponent implements OnInit {
       const posologia: string = this.medicamentoForm.get('posologia').value;
       const data: string = this.medicamentoForm.get('validade').value;
       const tipo: number = +this.medicamentoForm.get('tipo').value;
+      const lote: number = +this.medicamentoForm.get('lote').value;
       const nomeTipo: string = this.tipoMedicamentos.find(tipoMed => tipoMed.id == tipo).nome;
       const principios: MedicamentoPrincipioAtivo[] = [];
       const itemsForm: FormArray = (<FormArray>this.medicamentoForm.get('items'));
@@ -247,6 +254,7 @@ export class GeradorReceitaComponent implements OnInit {
         posologia: posologia,
         validade: this._datePipe.transform(data, 'dd/MM/yyyy'),
         tipo: tipo,
+        lote: lote,
         principioAtivos: principios,
         nome: nomeTipo
       });
@@ -276,7 +284,16 @@ export class GeradorReceitaComponent implements OnInit {
   }
   proximaEtapa() {
     this.formulario.receita = this._medicamentos;
-    this._receitaService.nova(this.formulario);
-    this.snackBar.open('TESTE');
+    this.gerouImpressao = true;
+    this._receitaService.nova(this.formulario)
+      .subscribe((blob: Blob) => {
+        let url = URL.createObjectURL(new Blob([blob], { type: 'application/pdf', }));
+        window.open(url, '_blank');
+        this._router.routeReuseStrategy.shouldReuseRoute = function () {
+          return false;
+        }
+        this._router.navigated = false;
+        this._router.navigate([this._router.url]);
+      });
   }
 }

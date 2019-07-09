@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="etiqueta" language="java" pageWidth="90" pageHeight="35" orientation="Landscape" columnWidth="60" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d01c3b16-7e60-4bd8-86d9-044f7d597947">
+	<property name="ireport.zoom" value="8.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.unit." value="mm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="mm"/>
+	<parameter name="P_ID" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+     CONCAT(pessoa_A.`NOM_PES`,' ',pessoa_A.`SOB_PES`) AS medico,
+     CONCAT(pessoa.`NOM_PES`,' ',pessoa.`SOB_PES`) AS paciente,
+     DATE_FORMAT(receita_medicamento.`VAL_REC_MED`,'%d/%m/%Y') AS validadeMedicamento,
+     DATE_FORMAT(receita.`VAL_REC`,'%d/%m/%Y') AS validadeReceita,
+     GROUP_CONCAT(principio_ativo.`NOM_PRI_ATV` SEPARATOR ' & ') AS medicamento,
+     DATE_FORMAT(receita.`DAT_CRI_REC`,'%d/%m/%Y') AS dataCriacao,
+     receita.`ID_REC` AS numero,
+     IF(receita_medicamento.`PES_REC_MED` > 0,CONCAT('Vol: ',receita_medicamento.`PES_REC_MED`,'ml'),CONCAT('QTD: ',receita_medicamento.`QTD_REC_MED`)) AS unidade,
+     receita_medicamento.`POS_REC_MED` AS posologia,
+     medicamento.`TIP_MED` AS tipo,
+     medico.`CRM_MED` AS crm,
+     IF(receita_medicamento.`LOT_REC_MED` > 0, receita_medicamento.`LOT_REC_MED`, 'S/L') AS lote
+FROM
+     `receita` receita INNER JOIN `receita_medicamento` receita_medicamento ON receita.`ID_REC` = receita_medicamento.`ID_REC`
+     INNER JOIN `medicamento` medicamento ON receita_medicamento.`ID_MED` = medicamento.`ID_MED`
+     INNER JOIN `medicamento_principio_ativo` medicamento_principio_ativo ON medicamento.`ID_MED` = medicamento_principio_ativo.`ID_MED`
+     INNER JOIN `principio_ativo` principio_ativo ON medicamento_principio_ativo.`ID_PRI_ATV` = principio_ativo.`ID_PRI_ATV`
+     INNER JOIN `medico` medico ON receita.`ID_MED` = medico.`ID_MED`
+     INNER JOIN `pessoa` pessoa ON receita.`ID_PES` = pessoa.`ID_PES`
+     INNER JOIN `pessoa` pessoa_A ON medico.`ID_PES` = pessoa_A.`ID_PES`
+WHERE
+     receita.ID_REC = $P{P_ID}
+GROUP BY
+     medicamento.ID_MED]]>
+	</queryString>
+	<field name="medico" class="java.lang.String"/>
+	<field name="paciente" class="java.lang.String"/>
+	<field name="validadeMedicamento" class="java.lang.String"/>
+	<field name="validadeReceita" class="java.lang.String"/>
+	<field name="medicamento" class="java.lang.String"/>
+	<field name="dataCriacao" class="java.lang.String"/>
+	<field name="numero" class="java.lang.Long"/>
+	<field name="unidade" class="java.lang.String"/>
+	<field name="posologia" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="crm" class="java.lang.String"/>
+	<field name="lote" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="35">
+			<property name="local_mesure_unitheight" value="mm"/>
+			<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+			<property name="local_mesure_unity" value="mm"/>
+			<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+			<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+			<textField>
+				<reportElement x="30" y="0" width="40" height="4" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="c49e0757-3301-4aed-b480-4969d39eadc1">
+					<property name="local_mesure_unitheight" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					<property name="local_mesure_unity" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paciente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="4" width="59" height="8" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="c49e0757-3301-4aed-b480-4969d39eadc1">
+					<property name="local_mesure_unitheight" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					<property name="local_mesure_unity" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{medicamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="12" width="59" height="8" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="dc3cb5ab-7767-49c7-9e90-06c21f9c7050">
+					<property name="local_mesure_unitheight" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					<property name="local_mesure_unity" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pos: "+$F{posologia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="28" width="28" height="4" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="0c1356e0-cdd9-474a-b5d7-359148fd8382">
+					<property name="local_mesure_unitheight" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					<property name="local_mesure_unity" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Med: "+$F{medico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="58" y="28" width="31" height="4" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="5cfd099e-4d51-4060-8839-934ccc0b6749">
+					<property name="local_mesure_unitheight" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					<property name="local_mesure_unity" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CRM: "+$F{crm}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="24" width="29" height="4" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="81a2c327-657b-4080-941a-dda4e73f71f7">
+					<property name="local_mesure_unitheight" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					<property name="local_mesure_unity" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Val: "+$F{validadeMedicamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="0" width="19" height="4" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="34acc685-b342-4e7b-8a42-d7b19fb38a97">
+					<property name="local_mesure_unitheight" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					<property name="local_mesure_unity" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Reg: "+$F{numero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="24" width="29" height="4" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="de7bada2-4004-47aa-9dd2-e03e26d3a587">
+					<property name="local_mesure_unitheight" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					<property name="local_mesure_unity" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Lote: "+$F{lote}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="20" width="29" height="4" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="e66a785f-ba78-4a8f-8af9-b54d28eb4bc4">
+					<property name="local_mesure_unitheight" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					<property name="local_mesure_unity" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Data: "+$F{dataCriacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="20" width="29" height="4" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" uuid="3a4d62c3-3f6c-4233-8bdf-b21ee7c62123">
+					<property name="local_mesure_unitheight" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					<property name="local_mesure_unity" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unidade}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

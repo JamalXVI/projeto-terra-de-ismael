@@ -17,7 +17,7 @@ export class MainNavComponent {
   @ViewChild(BotaoHamburgerComponent)
   botaoHamburger: BotaoHamburgerComponent;
   username: String = '';
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.HandsetPortrait)
     .pipe(
       map(result => !!result.matches ? result.matches : false)
     );

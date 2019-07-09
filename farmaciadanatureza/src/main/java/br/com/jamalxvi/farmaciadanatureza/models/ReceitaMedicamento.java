@@ -22,7 +22,7 @@ public class ReceitaMedicamento{
     private ReceitaMedicamentoPk chave;
 
     @JoinColumn(name = "ID_REC")
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = PrincipioAtivo.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Receita.class)
     @MapsId("chave.idReceita")
     private Receita receita;
 
@@ -37,6 +37,9 @@ public class ReceitaMedicamento{
 
     @Column(name = "PES_REC_MED")
     private BigDecimal peso;
+
+    @Column(name = "LOT_REC_MED")
+    private Long lote;
 
     @Column(name = "POS_REC_MED")
     private String posologia;

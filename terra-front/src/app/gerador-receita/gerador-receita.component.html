@@ -102,7 +102,7 @@
               <div fxLayout="column" fxLayoutWrap fxLayoutAlign="left left">
                 <div fxFlex="100%">
                   <div fxLayout="row warp" fxLayoutGap="1%" fxLayoutAlign="left left">
-                    <div fxFlex="99%" fxFlex.md="49%" fxFlex.lg="49%" fxFlex.xl="29%" fxFlex.xs="99%">
+                    <div fxFlex="99%" fxFlex.md="49%" fxFlex.lg="29%" fxFlex.xl="29%" fxFlex.xs="99%">
                       <mat-form-field *ngIf="tipoMedicamentos">
                         <mat-select placeholder="Selecione um Tipo de Medicamento" formControlName="tipo">
                           <mat-option *ngFor="let tipoMedicamento of tipoMedicamentos" [value]="tipoMedicamento.id">
@@ -114,7 +114,7 @@
                         </mat-error>
                       </mat-form-field>
                     </div>
-                    <div fxFlex="99%" fxFlex.md="49%" fxFlex.lg="49%" fxFlex.xl="19%" fxFlex.xs="99%">
+                    <div fxFlex="99%" fxFlex.md="49%" fxFlex.lg="19%" fxFlex.xl="19%" fxFlex.xs="99%">
                       <mat-form-field>
                         <input matInput [matDatepicker]="validadeMedicamentoPicker"
                           placeholder="Validade do Medicamento" formControlName="validade" disabled>
@@ -125,7 +125,7 @@
                         </mat-error>
                       </mat-form-field>
                     </div>
-                    <div fxFlex="99%" fxFlex.md="24%" fxFlex.lg="24%" fxFlex.xl="9%" fxFlex.xs="99%">
+                    <div fxFlex="99%" fxFlex.md="24%" fxFlex.lg="9%" fxFlex.xl="9%" fxFlex.xs="99%">
                       <mat-form-field>
                         <input matInput type="number" placeholder="Quantidade" formControlName="quantidade" />
                         <mat-error *ngIf="medicamentoForm.controls['quantidade'].invalid">
@@ -133,7 +133,7 @@
                         </mat-error>
                       </mat-form-field>
                     </div>
-                    <div fxFlex="99%" fxFlex.md="24%" fxFlex.lg="24%" fxFlex.xl="9%" fxFlex.xs="99%">
+                    <div fxFlex="99%" fxFlex.md="24%" fxFlex.lg="9%" fxFlex.xl="9%" fxFlex.xs="99%">
                       <mat-form-field>
                         <input matInput type="number" placeholder="Peso" formControlName="peso" />
                         <mat-error *ngIf="medicamentoForm.controls['peso'].invalid">
@@ -141,7 +141,15 @@
                         </mat-error>
                       </mat-form-field>
                     </div>
-                    <div fxFlex="99%" fxFlex.md="49%" fxFlex.lg="49%"  fxFlex.xl="29%" fxFlex.xs="99%">
+                    <div fxFlex="99%" fxFlex.md="49%"  fxFlex.lg="9%"   fxFlex.xl="9%" fxFlex.xs="99%">
+                      <mat-form-field>
+                        <input matInput type="number" placeholder="Lote" formControlName="lote" />
+                        <mat-error *ngIf="medicamentoForm.controls['lote'].invalid">
+                          {{'ERRO_ENTRADA_INVALIDA' | frases}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="99%" fxFlex.md="49%" fxFlex.lg="9%"  fxFlex.xl="9%" fxFlex.xs="99%">
                       <button mat-raised-button color="accent"
                         (click)="adicionarMedicamento()">{{'ADICIONAR_MEDICAMENTO' | frases}}</button>
                     </div>
@@ -152,8 +160,8 @@
                     </div>
                     <div fxFlex="29%" fxFlex.md="19%"  fxFlex.lg="9%"   fxFlex.xl="9%" fxFlex.xs="29%">
                       <button mat-raised-button color="primary" matTooltip="Prosseguir para a Próxima Etapa"
-                        [disabled]="medicamentos.length == 0" (click)="proximaEtapa()">
-                        <fa-icon [icon]="['fas', 'arrow-right']"></fa-icon>
+                        [disabled]="medicamentos.length == 0 || gerouImpressao" (click)="proximaEtapa()">
+                        <fa-icon [icon]="['fas', 'print']"></fa-icon>
                       </button>
                     </div>
                   </div>

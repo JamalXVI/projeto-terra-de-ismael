@@ -16,23 +16,23 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReceitaMedicamentoServiceImpl implements ReceitaMedicamentoService {
-  @Autowired
-  ReceitaMedicamentoRepository receitaMedicamentoRepository;
+    @Autowired
+    ReceitaMedicamentoRepository receitaMedicamentoRepository;
 
-  @Override
-  public ReceitaMedicamento cria(Receita receita, ReceitaMedicamentoDto receitaMedicamentoDto,
-      Medicamento medicamento) {
+    @Override
+    public ReceitaMedicamento cria(Receita receita, ReceitaMedicamentoDto receitaMedicamentoDto,
+                                   Medicamento medicamento) {
 
-    ReceitaMedicamento receitaMedicamento = ReceitaMedicamento.builder()
-        .peso(receitaMedicamentoDto.getPeso()).medicamento(medicamento).receita(receita)
-        .chave(ReceitaMedicamentoPk.builder().idReceita(receita.getId())
-            .idMedicamento(medicamento.getId()).build())
-        .posologia(receitaMedicamentoDto.getPosologia())
-        .quantidade(receitaMedicamentoDto.getQuantidade())
-        .validadeReceita(receitaMedicamentoDto.getValidade()).build();
+        ReceitaMedicamento receitaMedicamento = ReceitaMedicamento.builder()
+                .peso(receitaMedicamentoDto.getPeso()).medicamento(medicamento).receita(receita)
+                .chave(ReceitaMedicamentoPk.builder().idReceita(receita.getId())
+                        .idMedicamento(medicamento.getId()).build()).lote(receitaMedicamentoDto.getLote())
+                .posologia(receitaMedicamentoDto.getPosologia())
+                .quantidade(receitaMedicamentoDto.getQuantidade())
+                .validadeReceita(receitaMedicamentoDto.getValidade()).build();
 
-      return salva(receitaMedicamento);
-  }
+        return salva(receitaMedicamento);
+    }
 
     private ReceitaMedicamento salva(ReceitaMedicamento receitaMedicamento) {
         try {

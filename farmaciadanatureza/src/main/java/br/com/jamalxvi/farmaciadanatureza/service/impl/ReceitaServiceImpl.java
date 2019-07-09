@@ -2,16 +2,18 @@ package br.com.jamalxvi.farmaciadanatureza.service.impl;
 
 import br.com.jamalxvi.farmaciadanatureza.models.*;
 import br.com.jamalxvi.farmaciadanatureza.models.dto.FormularioReceitaDto;
-import br.com.jamalxvi.farmaciadanatureza.repository.ReceitaMedicamentoRepository;
 import br.com.jamalxvi.farmaciadanatureza.repository.ReceitaRepository;
 import br.com.jamalxvi.farmaciadanatureza.service.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -29,6 +31,8 @@ public class ReceitaServiceImpl extends BaseServiceImpl<Receita, ReceitaReposito
   MedicamentoPrincipioAtivoService medicamentoPrincipioAtivoService;
   @Autowired
   ReceitaMedicamentoService receitaMedicamentoService;
+  @Autowired
+  ReportService reportService;
 
 
   @Autowired
@@ -50,7 +54,7 @@ public class ReceitaServiceImpl extends BaseServiceImpl<Receita, ReceitaReposito
 
 
   @Override
-  public void cadastra(FormularioReceitaDto receitaDto) {
+  public JasperPrint cadastra(FormularioReceitaDto receitaDto) {
 
     final Receita receita = cria(receitaDto);
 
@@ -75,7 +79,15 @@ public class ReceitaServiceImpl extends BaseServiceImpl<Receita, ReceitaReposito
 
 
     });
-    salva(receita);
+
+    receita.setReceita(receitaMedicamentos);
+    Receita receitaSalva = salva(receita);
+
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("P_ID", receitaSalva.getId());
+
+    return reportService.gerarRelatorio("etiqueta", params);
   }
 
   @Override

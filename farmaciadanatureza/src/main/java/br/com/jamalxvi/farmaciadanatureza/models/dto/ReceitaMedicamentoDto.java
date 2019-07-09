@@ -22,5 +22,6 @@ public class ReceitaMedicamentoDto {
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate validade;
   private Integer tipo;
+  private Long lote;
   private String nome;
 }

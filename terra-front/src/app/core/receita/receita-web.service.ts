@@ -6,6 +6,7 @@ import { ErrorsService } from '../errors/errors.service';
 import { ReceitaUrl } from '../const/receita-url.enum';
 import { AbstractReceitaService } from './abstract-receita.service';
 import { FormularioReceita } from './formulario-receita.model';
+import { Observable } from 'rxjs';
 
 @Inject({ providedIn: 'root' })
 export class ReceitaWebService extends AbstractReceitaService {
@@ -16,7 +17,7 @@ export class ReceitaWebService extends AbstractReceitaService {
     ) {
         super(router, http, errorService);
     }
-    public nova(receita:FormularioReceita): void {
-        this.http.post(ReceitaUrl.NOVA, receita);
+    public nova(receita:FormularioReceita): Observable<Object> {
+        return this.http.post(ReceitaUrl.NOVA, receita,{  responseType: 'blob'});
     }
 }

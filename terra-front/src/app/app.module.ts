@@ -18,7 +18,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
-  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse, faSearch, faPlus, faTrashAlt
+  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse, faSearch, faPlus, faTrashAlt, faPrint
 } from '@fortawesome/free-solid-svg-icons';
 
 import { LoginComponent } from './login/login.component';
@@ -58,7 +58,7 @@ import { ReceitaService } from './core/receita/receita.service';
 import { DatePipe } from '@angular/common';
 
 library.add(faNotesMedical, faMortarPestle, faTablets, faPills, faCapsules,
-  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse, faSearch, faPlus, faTrashAlt);
+  faPrescriptionBottle, faTint, faEyeDropper, faUser, faLeaf, faUserPlus, faArrowRight, faUserNurse, faSearch, faPlus, faTrashAlt, faPrint);
 
 @NgModule({
   declarations: [

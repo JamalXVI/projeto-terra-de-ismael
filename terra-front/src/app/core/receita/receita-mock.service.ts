@@ -18,6 +18,7 @@ export class ReceitaMockService extends AbstractReceitaService {
     ) {
         super(router, http, errorService);
     }
-    public nova(receita: FormularioReceita): void {
+    public nova(receita: FormularioReceita): Observable<Object> {
+        return null;
     }
 }
